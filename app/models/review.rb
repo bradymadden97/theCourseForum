@@ -4,6 +4,7 @@ class Review < ActiveRecord::Base
   belongs_to :course_professor
   belongs_to :course
   belongs_to :professor
+  has_many :comments, :foreign_key => "review_id"
 
   #Can cast votes for reviews
   acts_as_voteable
