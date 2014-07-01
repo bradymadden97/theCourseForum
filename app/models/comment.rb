@@ -16,7 +16,14 @@ class Comment < ActiveRecord::Base
   end
 
   def children
-    return Comment.find_by(comment_id: self.id)
+    children = Comment.where(comment_id: self.id)
+
+    if children.nil?
+      return []
+    end
+
+    return children
+
   end
 
 

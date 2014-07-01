@@ -1,0 +1,4 @@
+.row
+  = comment.text
+  - comment.children.each do |c|
+    = render 'comment', comment: c

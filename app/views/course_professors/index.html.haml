@@ -152,6 +152,13 @@
         .col-xs-2.col-sm-1
           .btn.btn-primary.btn-xs{:id => "vote_down_#{r.id}", :style => "font-size:12px;text-align:center;" + (current_user.voted_for?(r) ? "opacity: 0.4;" : "")}
             No
+      - r.comments.each do |comment|
+        .row
+          = comment.text
+          - if !comment.children.empty?
+            - comment.children.each do |c|
+              = render 'comment', comment: c
+              
   = will_paginate @reviews
 - else
   %h2 No reviews :(
