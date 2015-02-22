@@ -1,7 +1,7 @@
 class Student < ActiveRecord::Base
-  has_many :majors, :through => :student_majors
-  has_many :student_majors, :dependent => :destroy
   belongs_to :user
+
+  has_and_belongs_to_many :majors
 
   validates :grad_year, presence: true
 end

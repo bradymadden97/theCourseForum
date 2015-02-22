@@ -131,7 +131,7 @@ course_words = ["Intro to", "Intermediate", "Advanced", "Special Topics in", "St
 Subdepartment.count.times do |i|
   10.times do
     Course.find_or_create_by(title: course_words[rand(5)].to_s + " " + generate_topic_name(),
-                             course_number: 1000+rand(8000), subdepartment_id: i+1)
+                             number: 1000+rand(8000), subdepartment_id: i+1)
   end
 end
 

@@ -14,10 +14,12 @@ day_times
 added unique constraint to day, start_time, end_time (why have duplicate day_times)
 added not null day, start_time, end_time
 
-day_times_sections
+day_times_sections (SPLIT)
 
 renamed day_times_sections to day_times_locations_sections, added unique key for triple columns
 added keys for all three foreign keys
+day_times_sections and day_times_locations
+no need for redundant data
 
 departments
 

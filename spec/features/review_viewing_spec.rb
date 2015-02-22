@@ -5,7 +5,7 @@ feature 'Viewing a Review' do
   before :each do 
     # pending "FIX SIGN UP"
     Subdepartment.create(name: "Computer Science", mnemonic: "CS")
-    Course.create(title: "Intro to Programming", course_number: "1110", subdepartment_id: 1)
+    Course.create(title: "Intro to Programming", number: "1110", subdepartment_id: 1)
     Professor.create(first_name: "Mark", last_name: "Sherriff")
     @review = Review.create(comment: "This is the worst.", course_id: 1, professor_id: 1)
 

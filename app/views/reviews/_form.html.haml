@@ -19,7 +19,7 @@
             = select_tag :subdept_select, options_for_select(@subdepartments.map{|s| [s.name + " (#{s.mnemonic})", s.id]}, @subdept_id), :include_blank => true, :class => "form-control"
           .col-md-4{:align=>"center", :id=>"courses"}
             = f.label 'Course:'
-            = select_tag :course_select, options_for_select(@courses.map{|c| [@mnemonic + " #{c.course_number}", c.id]}, @course_id), :include_blank => true
+            = select_tag :course_select, options_for_select(@courses.map{|c| [@mnemonic + " #{c.number}", c.id]}, @course_id), :include_blank => true
           .col-md-4{:align=>"center", :id=>"professors"}
             = f.label 'Professor:'
             = select_tag :prof_select, options_for_select(@professors.map{|p| ["#{p.last_name}, #{p.first_name}", p.id]}, @prof_id), :include_blank => true

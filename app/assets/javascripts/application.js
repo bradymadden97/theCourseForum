@@ -95,7 +95,7 @@ $(document).ready(function() {
 		success: function( data ) {
 			response( $.map(data.slice(0,9), function( item ) {
 			return {
-				label: item.subdepartment_code + " " + item.course_number + "-" + item.last_name,
+				label: item.subdepartment_code + " " + item.number + "-" + item.last_name,
 				value: "c=" + item.course_id + "&p=" + item.professor_id
 			}
 			}));

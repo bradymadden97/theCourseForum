@@ -40,8 +40,8 @@ $(document).ready(function() {
 
     function course_compare(a,b)
     {
-      var course1 = a.subdepartment.mnemonic + " " + a.course_number
-      var course2 = b.subdepartment.mnemonic + " " + b.course_number
+      var course1 = a.subdepartment.mnemonic + " " + a.number
+      var course2 = b.subdepartment.mnemonic + " " + b.number
 
       if (course1.toUpperCase() < course2.toUpperCase()) return -1;
       if (course1.toUpperCase() > course2.toUpperCase()) return 1;
@@ -64,7 +64,7 @@ $(document).ready(function() {
           $.each(data, function(){
             $('#course_select').append($("<option/>", {
               value: this.id,
-              text: this.subdepartment.mnemonic + " " + this.course_number
+              text: this.subdepartment.mnemonic + " " + this.number
             }));
           });     
           

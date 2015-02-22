@@ -17,7 +17,7 @@
     %select#saved-courses
       %option -- Select Course --
       - current_user.courses.each do |course|
-        %option= "#{course.subdepartment.mnemonic} #{course.course_number}"
+        %option= "#{course.subdepartment.mnemonic} #{course.number}"
       end
     .btn.btn-primary#clear-courses Clear Saved Courses
     %h5#results-title Courses

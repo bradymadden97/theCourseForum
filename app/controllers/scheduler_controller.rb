@@ -14,11 +14,11 @@ class SchedulerController < ApplicationController
   end
 
 	def search_sections
-    unless params[:mnemonic] and params[:course_number]
+    unless params[:mnemonic] and params[:number]
       render :nothing => true, :status => 404 and return
     else
       subdept = Subdepartment.find_by(:mnemonic => params[:mnemonic])
-      course = Course.find_by(:subdepartment_id => subdept.id, :course_number => params[:course_number]) if subdept
+      course = Course.find_by(:subdepartment_id => subdept.id, :number => params[:number]) if subdept
       
       render :nothing => true, :status => 404 and return unless course
 
@@ -31,16 +31,16 @@ class SchedulerController < ApplicationController
   end
 
   def search_course
-    unless params[:mnemonic] and params[:course_number]
+    unless params[:mnemonic] and params[:number]
       render :nothing => true, :status => 404 and return
     else
       subdept = Subdepartment.find_by(:mnemonic => params[:mnemonic])
-      course = Course.find_by(:subdepartment_id => subdept.id, :course_number => params[:course_number]) if subdept
+      course = Course.find_by(:subdepartment_id => subdept.id, :number => params[:number]) if subdept
       
       render :nothing => true, :status => 404 and return unless course
 
       render :json => course.as_json.merge({
-        :course_mnemonic => "#{params[:mnemonic].upcase} #{params[:course_number]}",
+        :course_mnemonic => "#{params[:mnemonic].upcase} #{params[:number]}",
         :lectures => rsections_to_jssections(course.sections.where(:semester_id => Semester.now.id, :section_type => 'Lecture')),
         :discussions => rsections_to_jssections(course.sections.where(:semester_id => Semester.now.id, :section_type => 'Discussion')),
         :laboratories => rsections_to_jssections(course.sections.where(:semester_id => Semester.now.id, :section_type => 'Laboratory'))
@@ -54,7 +54,7 @@ class SchedulerController < ApplicationController
 
   def save_course
     subdept = Subdepartment.find_by(:mnemonic => params[:mnemonic])
-    course = Course.find_by(:subdepartment_id => subdept.id, :course_number => params[:course_number]) if subdept
+    course = Course.find_by(:subdepartment_id => subdept.id, :number => params[:number]) if subdept
 
     current_user.courses << course unless current_user.courses.include? course
 
@@ -154,8 +154,8 @@ class SchedulerController < ApplicationController
       end
       {
         :section_id => section.id,
-        :title => "#{section.course.subdepartment.mnemonic} #{section.course.course_number}",
-        :location => section.locations.empty? ? 'NA' : section.locations.first.location,
+        :title => "#{section.course.subdepartment.mnemonic} #{section.course.number}",
+        :location => section.locations.empty? ? 'NA' : section.locations.first.name,
         :days => days,
         :start_times => start_times,
         :end_times => end_times,
@@ -240,9 +240,9 @@ class SchedulerController < ApplicationController
         event.dtend   = Icalendar::Values::DateTime.new event_end, 'tzid' => tzid
 
         #other event fields
-        event.summary = "#{section.course.subdepartment.mnemonic} #{section.course.course_number}"
-        event.description = "#{section.course.subdepartment.mnemonic} #{section.course.course_number}"
-        event.location = section.locations.first.location
+        event.summary = "#{section.course.subdepartment.mnemonic} #{section.course.number}"
+        event.description = "#{section.course.subdepartment.mnemonic} #{section.course.number}"
+        event.location = section.locations.first.name
         event.rrule = "FREQ=WEEKLY;UNTIL=20150428T000000Z" #repeats once a week until hardcoded course end date (could do COUNT= if num occurences is known)
 
         #other unused fields

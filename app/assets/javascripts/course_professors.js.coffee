@@ -13,6 +13,6 @@ $(document).ready () ->
       type: "POST"
       data:
         mnemonic: course[0]
-        course_number: course[1]
+        number: course[1]
       success:
         alert('Course Saved!')

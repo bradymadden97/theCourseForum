@@ -42,16 +42,23 @@ ActiveRecord::Schema.define(version: 20141109022627) do
 
   add_index "day_times", ["day", "start_time", "end_time"], name: "index_day_times_on_day_and_start_time_and_end_time", unique: true, using: :btree
 
-  create_table "day_times_locations_sections", id: false, force: true do |t|
+  create_table "day_times_locations", id: false, force: true do |t|
     t.integer "day_time_id", null: false
-    t.integer "section_id",  null: false
     t.integer "location_id", null: false
   end
 
-  add_index "day_times_locations_sections", ["day_time_id", "location_id", "section_id"], name: "index_day_times_locations_sections", unique: true, using: :btree
-  add_index "day_times_locations_sections", ["day_time_id"], name: "index_day_times_locations_sections_on_day_time_id", using: :btree
-  add_index "day_times_locations_sections", ["location_id"], name: "index_day_times_locations_sections_on_location_id", using: :btree
-  add_index "day_times_locations_sections", ["section_id"], name: "index_day_times_locations_sections_on_section_id", using: :btree
+  add_index "day_times_locations", ["day_time_id", "location_id"], name: "index_day_times_locations_on_day_time_id_and_location_id", unique: true, using: :btree
+  add_index "day_times_locations", ["day_time_id"], name: "index_day_times_locations_on_day_time_id", using: :btree
+  add_index "day_times_locations", ["location_id"], name: "index_day_times_locations_on_location_id", using: :btree
+
+  create_table "day_times_sections", id: false, force: true do |t|
+    t.integer "day_time_id", null: false
+    t.integer "section_id",  null: false
+  end
+
+  add_index "day_times_sections", ["day_time_id", "section_id"], name: "index_day_times_sections_on_day_time_id_and_section_id", unique: true, using: :btree
+  add_index "day_times_sections", ["day_time_id"], name: "index_day_times_sections_on_day_time_id", using: :btree
+  add_index "day_times_sections", ["section_id"], name: "index_day_times_sections_on_section_id", using: :btree
 
   create_table "departments", force: true do |t|
     t.string   "name",       null: false
@@ -104,6 +111,15 @@ ActiveRecord::Schema.define(version: 20141109022627) do
   end
 
   add_index "locations", ["name"], name: "index_locations_on_name", unique: true, using: :btree
+
+  create_table "locations_sections", id: false, force: true do |t|
+    t.integer "location_id", null: false
+    t.integer "section_id",  null: false
+  end
+
+  add_index "locations_sections", ["location_id", "section_id"], name: "index_locations_sections_on_location_id_and_section_id", unique: true, using: :btree
+  add_index "locations_sections", ["location_id"], name: "index_locations_sections_on_location_id", using: :btree
+  add_index "locations_sections", ["section_id"], name: "index_locations_sections_on_section_id", using: :btree
 
   create_table "majors", force: true do |t|
     t.string   "name",       null: false

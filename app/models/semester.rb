@@ -1,5 +1,7 @@
 class Semester < ActiveRecord::Base
+  has_many :reviews
   has_many :sections
+
   has_many :courses, :through => :sections
 
   def to_s

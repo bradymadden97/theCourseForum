@@ -24,7 +24,7 @@ class ReviewsController < ApplicationController
     @review = Review.new
     @subdepartments = Subdepartment.all.order(:name)
     @years = (2009..Time.now.year).to_a
-   # @courses = Course.all.sort_by{|e| e[:course_number]}
+   # @courses = Course.all.sort_by{|e| e[:number]}
    # @professors = Professor.all.sort_by{|e| e[:last_name]}
 
     @course_id = params[:c]

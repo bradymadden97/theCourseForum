@@ -234,10 +234,10 @@ $(document).ready(function() {
 			course = course.split(' ');
 			$.ajax('search_sections', {
 				// mnemonic - "CS"
-				// course_number - "2150"
+				// number - "2150"
 				data: {
 					mnemonic: course[0],
-					course_number: course[1]
+					number: course[1]
 				},
 				success: function(response) {
 					var calendarSections = calendarCourses.map(function(element) {
