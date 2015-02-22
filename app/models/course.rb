@@ -6,6 +6,8 @@ class Course < ActiveRecord::Base
 
   has_and_belongs_to_many :users
 
+  has_many :day_times, :through => :sections
+  has_many :locations, :through => :sections
   has_many :semesters, :through => :sections
   has_many :professors, :through => :sections
   has_many :departments, :through => :subdepartment
