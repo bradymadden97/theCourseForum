@@ -1,0 +1,118 @@
+courses
+
+course_number renamed to number
+added not null to number
+removed title_changed column
+
+courses_users
+
+added btree keys to column (two key, one unique)
+added not null to user_id and course_id
+
+day_times
+
+added unique constraint to day, start_time, end_time (why have duplicate day_times)
+added not null day, start_time, end_time
+
+day_times_sections
+
+renamed day_times_sections to day_times_locations_sections, added unique key for triple columns
+added keys for all three foreign keys
+
+departments
+
+use btree for schools_id index (DESPITE THAT SOME DEPARTMENTS DON'T BELONG TO SCHOOL)
+
+departments_subdepartments
+
+added not null to department_id, subdepartment_id
+added unique key to department_id, subdepartment_id
+
+grades
+
+surprising, despite the potential for grade.semester not matching grade.section.semester, no conflicting records
+dropped column semester_id
+added not null to section_id
+7 records of conflicting gpas
+added unique key to section_id using btree
+IF UNIQUE KEY ALREADY EXISTS - WHY IS IT NOT PRIMARY KEY?
+
+locations
+
+location renamed to name
+added not null to name
+added unique key using name, no btree
+
+majors
+
+added not null to name
+added unique key using name, no btree
+
+majors_students
+
+renamed from student_majors
+dropped id (not needed)
+dropped created_at, updated_at
+majors_students has many duplicate records - when imposing unique key for major_id and student_id
+added not null to student_id, major_id
+added unique key using student_id, major_id using btree
+added keys for student_id, major_id
+
+professors
+
+not touching this due to has_one (is_a) relationship not properly being mapped
+
+reviews
+
+course_professors_id is null in every record
+dropped column course_professors_id
+not touching anything else until meeting
+
+schools
+
+added not null to name
+added unique key using name, not using btree
+
+professors_sections
+
+renamed from section_professors
+dropped id(not needed)
+dropped created_at, updated_at
+added not null to professor_id, section_id
+added unique key using professor_id, section_id using btree
+added keys for student_id, major_id using btree
+
+sections_users
+
+added not null to section_id, user_id
+added unique key using section_id, user_id using btree
+added keys for section_id, user_id using btree
+
+semesters
+
+added not null to number, year, season
+added unique key using number using btree
+added unique key using year, season
+
+settings
+
+not touching
+
+students
+
+added not null to user_id
+362 students are not bound to user (no user_id)
+
+subdepartments
+
+added not null to name, mnemonic
+added unique key using name
+added unique key using mnemonic
+
+users
+
+looks good
+
+votes
+
+not touching
