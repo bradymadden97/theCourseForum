@@ -166,7 +166,7 @@ ActiveRecord::Schema.define(version: 20141109022627) do
   end
 
   add_index "majors_students", ["major_id"], name: "index_majors_students_on_major_id", using: :btree
-  # add_index "majors_students", ["student_id", "major_id"], name: "index_majors_students_on_student_id_and_major_id", unique: true, using: :btree
+  add_index "majors_students", ["student_id", "major_id"], name: "index_majors_students_on_student_id_and_major_id", unique: true, using: :btree
   add_index "majors_students", ["student_id"], name: "index_majors_students_on_student_id", using: :btree
 
   create_table "professors", force: true do |t|
