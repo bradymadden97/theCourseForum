@@ -12,7 +12,7 @@ seasons = {
 ActiveRecord::Base.logger.level = 1
 
 File.open("#{Rails.root.to_s}/data/#{Time.now.strftime("%Y.%m.%d-%H:%M")}.log", 'w') do |log|
-	Dir.entries("#{Rails.root.to_s}/data/raw/").sort_by(&:to_s).each do |file|
+	Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 		if file == '.' or file == '..'
 			next
 		end
