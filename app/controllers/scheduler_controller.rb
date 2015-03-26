@@ -58,8 +58,9 @@ class SchedulerController < ApplicationController
       course = Course.find_by(:subdepartment_id => subdept.id, :course_number => params[:course_number]) if subdept
       # return an error if no such course was found
       render :nothing => true, :status => 404 and return unless course
-
-      semester = Semester.find_by(:year => 2015, :season => 'Fall')
+      
+      # semester = Semester.now
+      semester = Semester.find_by(season: "Fall", year: 2015)
       # Breaks up the course's sections by type, convertubg them to javascript sections,
       # and wraps the result in json
       render :json => course.as_json.merge({
