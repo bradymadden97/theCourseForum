@@ -3,7 +3,7 @@ class Subdepartment < ActiveRecord::Base
 
   has_and_belongs_to_many :departments
 
-  validates_presence_of :name, :mnemonic
+  validates_presence_of :mnemonic
 
   def professors_list
     profs = []
