@@ -29,7 +29,7 @@ File.open("#{Rails.root.to_s}/data/#{Time.now.strftime("%Y.%m.%d-%H:%M")}.log", 
 			})
 		end
 
-		File.open("#{Rails.root.to_s}/data/raw/#{file}").each do |line|
+		File.open("#{Rails.root.to_s}/data/csv/#{file}").each do |line|
 			begin
 				data = CSV.parse_line(line)
 				if data[0] == 'ClassNumber'
