@@ -79,13 +79,19 @@ File.open("#{Rails.root.to_s}/data/#{Time.now.strftime("%Y.%m.%d-%H:%M")}.log", 
 						})
 					else
 						log.puts "Duplicate Professor #{professor} for #{semester.year} #{semester.season} #{subdepartment.mnemonic} #{course.course_number}"
+						course_counts = []
 						possible_professors.each_index do |index|
 							possibility = possible_professors[index]
-							log.puts "#{index}: #{possibility.id} - #{possibility.department}"
+							course_counts << possibility.courses.where(:subdepartment_id => subdepartment.id).count
+							log.puts "#{index}: #{possibility.id} - Taught #{course_counts[index]} courses in #{subdepartment.mnemonic}"
 						end
+
+						max = course_counts.max
+						decision = possible_professors[course_counts.index(max)]
+						log.puts "Choosing #{decision.id} with #{max} courses taught"
 						# log.puts 'Enter Choice'
 						# possible_professors[gets.chomp.to_i]
-						possible_professors[0]
+						decision
 					end
 				end
 
