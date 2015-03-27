@@ -28,4 +28,26 @@ class Professor < ActiveRecord::Base
   end
     
 
+  def courses_in_subdepartment(subdepartment)
+    courses.where(:subdepartment_id => subdepartment.id)
+  end
+
+  def most_taught_subdepartment
+    counts = Hash.new(0)
+
+    courses.each do |course|
+      counts[course.subdepartment.id.to_s.to_sym] += 1
+    end
+
+    subdepartment_id = counts.max_by do |id, count|
+      count
+    end
+
+    if subdepartment_id
+      Subdepartment.find(subdepartment_id.first)
+    else
+      return nil
+    end
+  end
+
 end
