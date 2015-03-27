@@ -215,7 +215,7 @@ File.open("#{Rails.root.to_s}/data/#{Time.now.strftime("%Y.%m.%d-%H:%M")}.log", 
 				section = Section.create({
 					:sis_class_number => data[0],
 					:section_number => data[3],
-					:topic => data[1],
+					:topic => data[10],
 					:units => data[5],
 					:capacity => data[13],
 					:section_type => data[4],
