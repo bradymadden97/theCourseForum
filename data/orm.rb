@@ -32,7 +32,10 @@ File.open("#{Rails.root.to_s}/data/#{Time.now.strftime("%Y.%m.%d-%H:%M")}.log", 
 		semester = Semester.find_by(:number => number.to_i)
 
 		# If semester is not found, then we need to create it
-		unless semester
+		if semester
+			mode = 'update'
+		else
+			mode = 'create'
 			# Log that we're creating a new semester
 			log.puts "Creating Semester: #{number}"
 			# Create semester with following options
