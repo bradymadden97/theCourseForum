@@ -1,3 +1,10 @@
+# Author AlanWei
+
+# IMPORTANT
+# Before you load in semester, you might want to backup the current state of the database before you load in Lou's data, so you can easily reset to that state
+# shell.sql contains just schema information if you want to quickly reset with
+# mysql -u root thecourseforum_development < shell.sql
+
 # FasterCSV library for ease of parsing, handles commas nested inside quotes too
 require 'csv'
 
@@ -32,7 +39,7 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 	# Open log for each CSV
 	log = File.open("#{Rails.root.to_s}/data/lou#{number}_#{csv_time.strftime("%Y.%m.%d-%H:%M")}.log", 'w')
 
-	# Open ldap log for lookups later
+	# Initalize array of professors we want to lookup later using LDAP
 	ldap_professors = []
 
 	# Log which file we're currently working with
@@ -41,9 +48,11 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 	# Attempt to find the matching semester by number
 	semester = Semester.find_by(:number => number.to_i)
 
-	# If semester is not found, then we need to create it
+	# If semester is found, we are UPDATING semester contents
+	# Not done yet (mode is not used anywhere)
 	if semester
 		mode = 'update'
+	# If semester is not found, then create - we are loading in new semester
 	else
 		mode = 'create'
 		# Log that we're creating a new semester
@@ -67,6 +76,7 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 			# Ignore the first line
 			if data[0] == 'ClassNumber'
 				next
+			# Store data into easily accessible object - Array -> Hash
 			else
 				data = {
 					:sis_class_number => data[0],
@@ -102,20 +112,19 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 			# Attempt to find course by course_number and matching subdepartment
 			course = subdepartment.courses.find_by(:course_number => data[:course_number])
 
-			# If course exists, title doesn't match, and we are updating this semester
+			# If course exists
 			if course
+				# If title doesn't match, and we are updating this semester
 				if course.title != data[:title] and mode == 'update'
 					# Log old title vs new title for the same course
 					log.puts "Mismatch Course Title: #{subdepartment.mnemonic} #{course.course_number}"
 					log.puts "#{course.title} vs #{data[:title]}"
 					# Set course title to new content
-					course.title = data[:title]
-					# This actually won't save if new title is blank - keep old title
-					course.save
+					course.update(:title => data[:title])
 				end
 			# If no course exists, need to create
 			else
-				# log.puts "Creating Course: #{data[:mnemonic]} #{data[:course_number]}"
+				log.puts "Creating Course: #{data[:mnemonic]} #{data[:course_number]}"
 				# Only pass in title, course_number, and subdepartment
 				course = subdepartment.courses.create({
 					:title => data[:title], # May change from semester to semester
@@ -124,13 +133,15 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 			end
 
 			# Split input professor string by comma in case of multiple professors
-			# data[:professors] might be "John Smith" or "John Smith, Nancy Jones"				
+			# data[:professors] might be "John Smith" or "John Smith, Nancy Jones"
 			professors = data[:professors].split(',').map do |professor|
+				# professor might be "John Smith" or "John Adam Jones" or " Nancy Jones"
+				# Get rid of whitespace in front of second professor name if it exists, i.e. " Nancy Jones"
 				professor = professor.strip
-				# professor might be "John Smith" or "John Adam Jones"
 				# Split each full name into components by space
 				names = professor.split(' ')
 
+				# If Staff, then we manually handle this case
 				if names[0] == 'Staff'
 					# Find Staff professor, if doesn't exist, then create
 					Professor.find_by(:first_name => 'Staff') or Professor.create(:first_name => 'Staff')
@@ -139,55 +150,73 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 					# First name should be first element, last name should be last element
 					possible_professors = Professor.where(:first_name => names[0], :last_name => names[-1])
 
+					# If no professor found by name, then create new one
 					if possible_professors.count == 0
-						# log.puts "Creating Professor #{professor}"
+						log.puts "Creating Professor #{professor}"
 						# For now, create with only first and last name
 						Professor.create({
 							:first_name => names[0],
 							:last_name => names[-1]
 						})
+					# Otherwise, we examine loop - no matter if we found one or multiple matches
+					# We do same analysis for one vs multiple match because of differing circumstances
 					else
-						# Count for courses taught in subdepartment
+						# Initialize count for how many courses a potential professor has taught in this subdepartment (that we are analyzing)
 						max = 0
+						# Initialize our final machine algorithm decision
 						decision = nil
+						# Loop through all possibilities, whether one professor or multiple
 						possible_professors.each do |possibility|
-							# If professor has previously taught this course, then most likely correct
+							# If professor has previously taught this course, then most likely correct - what are the chances that a new professor with the same name comes in and teaches the same course?
 							if possibility.courses.uniq.include?(course)
-								# NO LDAP
-								# ldap_professors << possibility
+								# If, however, the above scenario actually happened and two professors by the same name has taught this course
 								if decision
-									# log.puts "Duplicate match: #{possibility.full_name} #{data[:sis_class_number]} Same Name Same Course"
-									ldap_professors << professor
+									# Let's log this scenario
+									log.puts "Duplicate match: #{possibility.full_name} #{data[:sis_class_number]} Same Name Same Course"
+									# Only store full name of professor for later lookup if we don't already log it
+									unless ldap_professors.include?(professor)
+										ldap_professors << professor
+									end
+								# Most likely, we only have one match (previously taught this course) and we assign our decision to this possibility
 								else
 									decision = possibility
 								end
+							# Next, we begin considering how many courses each possible professor has taught in the target subdepartment
+							# If no professor has ever taught in this subdepartment, then count will never be greater than initial max (0) so therefore we probably need a new professor
+							# Works no matter if possible_professors found one or multiple matches
 							elsif possibility.courses_in_subdepartment(subdepartment).count > max
 								max = possibility.courses_in_subdepartment(subdepartment).count
 								decision = possibility
 							end
+							# Notice that we don't have an else clause here - it is fully possible that our automated decision matrix does not find a match
 						end
 
-						# If we found a match, return it
+						# If our automated decision matrix found a match, then we probably want to return it
 						if decision
+							# If total possibilities were greater than one, then that means our decision matrix compared course counts in target subdepartment (because the other clause of same name same course is really rare)
 							if possible_professors.count > 1
+								# Let's log those offending scenarios for later lookup
 								unless ldap_professors.include?(professor)
+									log.puts "Duplicate match: #{decision.id} #{decision.full_name} Same Name Different Courses"
 									ldap_professors << professor
-									# log.puts "Duplicate match: #{decision.id} #{decision.full_name} Same Name Different Courses"
 								end
-								ldap_professors << professor
+								# Return our decision
 								decision
+							# Otherwise, if there was only one potential professor, and he matched one of our earlier scenarios (prior taught course or prior taught at least one course in target subdepartment) then we return it
 							else
 								decision
 							end
+						# Only goes here if no professor has ever taught that course or that subdepartment
 						else
+							# Create a new professor!
 							decision = Professor.create({
 								:first_name => names[0],
 								:last_name => names[-1]
 							})
-							# YES LDAP
+							# Remember, we only got here because professor lookup returned a few candidates, yet none of them matched, so we probably want to double check this later via LDAP
 							unless ldap_professors.include?(professor)
+								log.puts "Creating new duplicate professor #{decision.id} #{decision.full_name} #{data[:sis_class_number]} Same Name No Matches"
 								ldap_professors << professor
-								# log.puts "Creating new duplicate professor #{decision.id} #{decision.full_name} #{data[:sis_class_number]} Same Name No Matches"
 							end
 							decision
 						end
@@ -231,6 +260,7 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 				end
 			end
 
+			# Test case for multiple locations... otherwise we don't need our triple join table (or even location model)
 			if data[:location].split(',').count > 1
 				log.puts "Multiple Location #{data[:location]} #{data[:sis_class_number]}"
 			end
@@ -279,19 +309,31 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 	log.puts "Finished #{semester.season} #{semester.year} in #{(Time.now - csv_time) / 60} minutes"
 	puts "Finished #{semester.season} #{semester.year} in #{(Time.now - csv_time) / 60} minutes"
 
+	# Let's uniq ldap_professors just in case some duplicates snuck in (shouldn't be possible, but can't hurt)
 	ldap_professors = ldap_professors.uniq
-	ldap = File.open("#{Rails.root.to_s}/data/ldap1158", 'w')
+	# Open file to log all professors for later lookup
+	# ldap_duplicates_1158 for Fall 2015 for example
+	ldap = File.open("#{Rails.root.to_s}/data/ldap_duplicates_#{number}", 'w')
 	for professor in ldap_professors
+		# Log all professors for later lookup into file
 		ldap.puts professor
 	end
+	# Close file (flush buffer)
 	ldap.close
+
+	# Ask if we want to segue automatically into professor lookup (LDAP)
 	puts "Perform LDAP lookups? #{ldap_professors.count} total? y/n "
 	if gets.chomp == 'y'
 		load('data/professor.rb')
 	end
 
+	# Close log
 	log.close
 end
 
 # Log total running time
 puts "Total Runtime: #{(Time.now - total_time) / 60} minutes"
+
+# IMPORTANT
+# After you run this file for one semester, you probably want to backup the current state of the database before you perform LDAP lookups, so you can easily reset to that state
+# mysqldump -u root thecourseforum_development > ldap1158.sql
