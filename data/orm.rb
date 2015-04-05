@@ -33,7 +33,6 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 	log = File.open("#{Rails.root.to_s}/data/lou#{number}_#{csv_time.strftime("%Y.%m.%d-%H:%M")}.log", 'w')
 
 	# Open ldap log for lookups later
-	ldap_log = File.open("#{Rails.root.to_s}/data/ldap#{number}_#{csv_time.strftime("%Y.%m.%d-%H:%M")}.log", 'w')
 	ldap_professors = []
 
 	# Log which file we're currently working with
@@ -116,11 +115,11 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 				end
 			# If no course exists, need to create
 			else
-				log.puts "Creating Course: #{data[:mnemonic]} #{data[:course_number]}"
+				# log.puts "Creating Course: #{data[:mnemonic]} #{data[:course_number]}"
 				# Only pass in title, course_number, and subdepartment
 				course = subdepartment.courses.create({
 					:title => data[:title], # May change from semester to semester
-					:course_number => data[:course_number].to_i, # i.e. 2150
+					:course_number => data[:course_number] # i.e. 2150
 				})
 			end
 
@@ -141,7 +140,7 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 					possible_professors = Professor.where(:first_name => names[0], :last_name => names[-1])
 
 					if possible_professors.count == 0
-						log.puts "Creating Professor #{professor}"
+						# log.puts "Creating Professor #{professor}"
 						# For now, create with only first and last name
 						Professor.create({
 							:first_name => names[0],
@@ -150,14 +149,15 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 					else
 						# Count for courses taught in subdepartment
 						max = 0
+						decision = nil
 						possible_professors.each do |possibility|
 							# If professor has previously taught this course, then most likely correct
 							if possibility.courses.uniq.include?(course)
 								# NO LDAP
 								# ldap_professors << possibility
 								if decision
-									log.puts "Duplicate match: #{possibility} #{data[:sis_class_number]} Same Name Same Course"
-									ldap_professors << possibility
+									# log.puts "Duplicate match: #{possibility.full_name} #{data[:sis_class_number]} Same Name Same Course"
+									ldap_professors << professor
 								else
 									decision = possibility
 								end
@@ -170,18 +170,25 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 						# If we found a match, return it
 						if decision
 							if possible_professors.count > 1
-								log.puts "Duplicate match: #{decision} #{data[:sis_class_number]} Same Name Different Courses"
+								unless ldap_professors.include?(professor)
+									ldap_professors << professor
+									# log.puts "Duplicate match: #{decision.id} #{decision.full_name} Same Name Different Courses"
+								end
+								ldap_professors << professor
+								decision
 							else
 								decision
 							end
 						else
-							log.puts "Creating new duplicate professor #{professor} #{data[:sis_class_number]} Same Name No Matches"
 							decision = Professor.create({
 								:first_name => names[0],
 								:last_name => names[-1]
 							})
 							# YES LDAP
-							ldap_professors << decision
+							unless ldap_professors.include?(professor)
+								ldap_professors << professor
+								# log.puts "Creating new duplicate professor #{decision.id} #{decision.full_name} #{data[:sis_class_number]} Same Name No Matches"
+							end
 							decision
 						end
 					end
@@ -214,7 +221,7 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 						day_time
 					# If not, then create it
 					else
-						log.puts "Creating DayTime #{day} #{start_time} - #{end_time}"
+						# log.puts "Creating DayTime #{day} #{start_time} - #{end_time}"
 						DayTime.create({
 							:day => day,
 							:start_time => start_time,
@@ -224,15 +231,15 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 				end
 			end
 
+			if data[:location].split(',').count > 1
+				log.puts "Multiple Location #{data[:location]} #{data[:sis_class_number]}"
+			end
 			# Find matching location, i.e. "Wilson Hall 301"
 			location = Location.find_by(:location => data[:location])
-			if location.split(',').count > 1
-				log.puts "Multiple Location #{data[:location]} #{data[sis_class_number]}"
-			end
 
 			# If not found, then create it
 			unless location
-				log.puts "Creating Location #{data[:location]}"
+				# log.puts "Creating Location #{data[:location]}"
 				location = Location.create(:location => data[:location])
 			end
 
@@ -272,14 +279,15 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 	log.puts "Finished #{semester.season} #{semester.year} in #{(Time.now - csv_time) / 60} minutes"
 	puts "Finished #{semester.season} #{semester.year} in #{(Time.now - csv_time) / 60} minutes"
 
-	log.puts "Starting LDAP lookup for professor cases"
-	puts ldap_professors.uniq.count
-	ldap_professors.uniq[0..10].each do |professor|
-		ldap_log.puts "Posting #{professor}"
-		response = RestClient.post('http://www.virginia.edu/cgi-local/ldapweb/', :whitepages => "#{professor.full_name}")
-		if response.include?('Person')
-			puts "Duplicate with #{professor}"
-		end
+	ldap_professors = ldap_professors.uniq
+	ldap = File.open("#{Rails.root.to_s}/data/ldap1158", 'w')
+	for professor in ldap_professors
+		ldap.puts professor
+	end
+	ldap.close
+	puts "Perform LDAP lookups? #{ldap_professors.count} total? y/n "
+	if gets.chomp == 'y'
+		load('data/professor.rb')
 	end
 
 	log.close

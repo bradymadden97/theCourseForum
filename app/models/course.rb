@@ -13,7 +13,7 @@ class Course < ActiveRecord::Base
   has_many :professors, :through => :sections
   has_many :departments, through: :subdepartment
 
-  validates_presence_of :title, :course_number, :subdepartment
+  validates_presence_of :course_number, :subdepartment
 
   def professors_list
     self.professors.uniq{ |p| p.id }.sort_by{|p| p.last_name}
