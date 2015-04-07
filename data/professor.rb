@@ -31,7 +31,7 @@ ldap_log = File.open("#{Rails.root.to_s}/data/ldap#{number}_#{Time.now.strftime(
 
 # Since we are doing another run, wipe the ldap_choices file to store our new set of choices
 # Old choices are stored in previous_choices, so we don't actually rewrite anything important
-ldap_choices = File.open("#{Rails.root.to_s}/data/ldapchoices#{number}", 'w')
+ldap_choices = File.open("#{Rails.root.to_s}/data/ldap_choices_#{number}", 'w')
 
 # Ask how many professors to read in - also log how many total
 puts "How many? #{ldap_professors.count} total"
