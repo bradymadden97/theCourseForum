@@ -32,7 +32,13 @@ class Course < ActiveRecord::Base
   end
 
   def self.find_by_mnemonic_number(mnemonic, number)
-    Subdepartment.find_by(:mnemonic => mnemonic).courses.find_by(:course_number => number)
+    sub = Subdepartment.find_by(:mnemonic => mnemonic)
+    # Watch for calling method on nil class
+    if sub
+      sub.courses.find_by(:course_number => number)
+    else
+      nil
+    end
   end
 
 end
