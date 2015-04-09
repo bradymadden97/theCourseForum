@@ -2,7 +2,7 @@ class Professor < ActiveRecord::Base
   belongs_to :department
 
   has_many :section_professors, dependent: :destroy
-  has_many :reviews
+  has_many :reviews, :dependent => :destroy
 
   has_many :sections, :through => :section_professors
   has_many :courses, :through => :sections

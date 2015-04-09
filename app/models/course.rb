@@ -1,17 +1,17 @@
 class Course < ActiveRecord::Base
   belongs_to :subdepartment
 
-  has_many :sections
-  has_many :reviews
-  has_many :books, :through => :sections
-  has_many :book_requirements, :through => :sections
+  has_many :sections, :dependent => :destroy
+  has_many :reviews, :dependent => :destroy
 
   has_and_belongs_to_many :users
 
   has_many :section_professors, :through => :sections
   has_many :semesters, :through => :sections
   has_many :professors, :through => :sections
-  has_many :departments, through: :subdepartment
+  has_many :departments, :through => :subdepartments
+  has_many :books, :through => :sections
+  has_many :book_requirements, :through => :sections
 
   validates_presence_of :course_number, :subdepartment
 

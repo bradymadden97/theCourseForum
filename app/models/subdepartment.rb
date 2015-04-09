@@ -1,5 +1,5 @@
 class Subdepartment < ActiveRecord::Base
-  has_many :courses
+  has_many :courses, :dependent => :destroy
 
   has_and_belongs_to_many :departments
 
