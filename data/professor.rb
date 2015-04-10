@@ -35,12 +35,16 @@ ldap_choices = File.open("#{Rails.root.to_s}/data/ldap_choices_#{number}", 'w')
 
 # Ask how many professors to read in - also log how many total
 puts "How many? #{ldap_professors.count} total"
+limit = gets.chomp.to_i
+puts "Starting from? (0 indexed)"
+offset = gets.chomp.to_i
+
 
 # Log that we are starting LDAP lookups
-ldap_log.puts "Starting LDAP lookup for professor cases"
+ldap_log.puts "Starting LDAP lookup for professor cases from #{offset} to #{offset + limit}"
 
-# Only go through first X professors, where X is asked previously
-ldap_professors[0..gets.chomp.to_i - 1].each do |full_name|
+# Only go through range
+ldap_professors[offset..limit - 1].each do |full_name|
 	# Post the full_name into LDAP lookup
 	response = RestClient.post('http://www.virginia.edu/cgi-local/ldapweb/', :whitepages => "#{full_name}")
 	# If the response has the word "Person", then there's a table on the page with column headers, which mean multiple matches were found

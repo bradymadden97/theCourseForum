@@ -51,7 +51,15 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 	# If semester is found, we are UPDATING semester contents
 	# Not done yet (mode is not used anywhere)
 	if semester
-		mode = 'update'
+		puts "Previous Semester Detected - Destructive update? (Wipe sections in semester) y/n"
+		answer = gets.chomp
+		if answer == 'y'
+			Section.destroy_all(:semester_id => semester.id)
+			mode = 'recreate'
+		else
+			mode = 'update'
+			section_ids = Section.where(:semester_id => semester.id).ids
+		end
 	# If semester is not found, then create - we are loading in new semester
 	else
 		mode = 'create'
@@ -65,7 +73,7 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 		})
 	end
 
-	log.puts "Starting #{semester.season} #{semester.year}"
+	log.puts "Starting #{semester.season} #{semester.year} with mode #{mode}"
 
 	# Actually start parsing through the CSV file now
 	File.open("#{Rails.root.to_s}/data/csv/#{file}").each do |line|
@@ -79,10 +87,10 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 			# Store data into easily accessible object - Array -> Hash
 			else
 				data = {
-					:sis_class_number => data[0],
+					:sis_class_number => data[0].to_i,
 					:mnemonic => data[1],
 					:course_number => data[2],
-					:section_number => data[3],
+					:section_number => data[3].to_i,
 					:section_type => data[4],
 					:units => data[5],
 					:professors => data[6],
@@ -92,7 +100,7 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 					:topic => data[10],
 					:status => data[11],
 					:enrollment => data[12],
-					:capacity => data[13],
+					:capacity => data[13].to_i,
 					:waitlist => data[14]
 				}
 			end
@@ -200,11 +208,6 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 									log.puts "Duplicate match: #{decision.id} #{decision.full_name} Same Name Different Courses"
 									ldap_professors << professor
 								end
-								# Return our decision
-								decision
-							# Otherwise, if there was only one potential professor, and he matched one of our earlier scenarios (prior taught course or prior taught at least one course in target subdepartment) then we return it
-							else
-								decision
 							end
 						# Only goes here if no professor has ever taught that course or that subdepartment
 						else
@@ -218,12 +221,11 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 								log.puts "Creating new duplicate professor #{decision.id} #{decision.full_name} #{data[:sis_class_number]} Same Name No Matches"
 								ldap_professors << professor
 							end
-							decision
 						end
+						decision
 					end
 				end
 			end
-			
 
 			# Split times string, i.e. "TuTh 12:30PM - 1:45PM"
 			# First split by space
@@ -273,29 +275,125 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 				location = Location.create(:location => data[:location])
 			end
 
-			# Finally, create section
-			section = Section.create({
-				:sis_class_number => data[:sis_class_number],
-				:section_number => data[:section_number],
-				:topic => data[:topic],
-				:units => data[:units],
-				:capacity => data[:capacity],
-				:section_type => data[:section_type],
-				:course_id => course.id,
-				:semester_id => semester.id
-			})
+			# Attempt to find pre-existing section by sis_class_number and semester_id
+			section = Section.find_by(:sis_class_number => data[:sis_class_number], :semester_id => semester.id)
 
-			# Link professors and sections
-			professors.each do |professor|
-				SectionProfessor.create({
-					:section_id => section.id,
-					:professor_id => professor.id
+			# If we found a semester
+			if section
+				# Only if user selected "update" mode in the beginning
+				if mode == 'update'
+					# Remove from master listings; i.e. we found a match in CSV - used to delete database sections without CSV match later
+					section_ids.delete(section.id)
+
+					# Update section only if some attributes have changed
+					if section.section_number != data[:section_number] or section.topic.to_s != data[:topic] or section.units != data[:units] or section.capacity != data[:capacity] or section.section_type != data[:section_type]
+						# Find all differing fields
+						differing = []
+						# Loop through fields
+						[:section_number, :topic, :units, :capacity, :section_type].each do |sym|
+							# If previous content does not match new content
+							if section.send(sym) != data[sym]
+								differing << sym
+							end
+						end
+
+						# Fringe case for nil topics
+						if differing.include?(:topic) and section.topic.to_s == data[:topic]
+							differing.delete(:topic)
+						end
+
+						log.print "Updating Section Metadata ID: #{section.id} SIS: #{section.sis_class_number}"
+						differing.each do |sym|
+							log.print " #{sym.to_s}: #{section.send(sym)} vs #{data[sym]},"
+						end
+						log.puts
+						# Update the section with new attributes
+						section.update({
+							:section_number => data[:section_number],
+							:topic => data[:topic],
+							:units => data[:units],
+							:capacity => data[:capacity],
+							:section_type => data[:section_type],
+						})
+					end
+
+					# If day_times or locations have changed
+					if section.day_times != day_times or section.locations[0] != location
+						log.print "Updating Section DayTimes ID: #{section.id} SIS: #{section.sis_class_number}"
+						# Find all new day_times through array subtraction
+						new_day_times = day_times - section.day_times
+						old_day_times = section.day_times - day_times
+						# Delete current relationships between section and day_times
+						section.day_times.each do |day_time|
+							if old_day_times.include?(day_time)
+								log.print " removing #{day_time.day} #{day_time.start_time} - #{day_time.end_time} from section"
+							end
+							ActiveRecord::Base.connection.execute("DELETE FROM day_times_sections WHERE section_id = #{section.id} AND day_time_id = #{day_time.id}")
+						end
+						# Re-insert new relationships between section and day_times
+						day_times.each do |day_time|
+							# If new day_time was found
+							if new_day_times.include?(day_time)
+								log.print " adding #{day_time.day} #{day_time.start_time} - #{day_time.end_time}"
+							end
+							ActiveRecord::Base.connection.execute("INSERT INTO day_times_sections (day_time_id, section_id, location_id) VALUES (#{day_time.id}, #{section.id}, #{location.id})")
+						end
+						log.puts
+						# Flag all schedules associated with this section if location or day_times has changed
+						section.schedules.each do |schedule|
+							schedule.update(:flagged => true)
+						end
+					end
+
+					# If professors have changed - check only by name so we don't inadvertently update duplicates
+					if section.professors.map(&:full_name).sort != professors.map(&:full_name).sort
+						log.print "Updating Section Professors ID: #{section.id} SIS: #{section.sis_class_number}"
+						# Delete all current links between section and professor
+						section.section_professors.each do |section_professor|
+							log.print " removing #{section_professor.professor.full_name}"
+							SectionProfessor.destroy(section_professor)
+						end
+						# Recreate links with new data
+						professors.each do |professor|
+							log.print " adding #{professor.full_name}"
+							SectionProfessor.create({
+								:section_id => section.id,
+								:professor_id => professor.id
+							})
+						end
+						log.puts
+					end
+				# Otherwise, section already exists - something went wrong
+				else
+					puts "Fatal Error! Preexisting Section #{sis_class_number} in #{semester.season} #{semester.year}"
+					break
+				end
+			# Otherwise, we create the semester
+			else
+				# Finally, create section
+				section = Section.create({
+					:sis_class_number => data[:sis_class_number],
+					:section_number => data[:section_number],
+					:topic => data[:topic],
+					:units => data[:units],
+					:capacity => data[:capacity],
+					:section_type => data[:section_type],
+					:course_id => course.id,
+					:semester_id => semester.id
 				})
-			end
 
-			# Bind day_times and sections with locations
-			day_times.each do |day_time|
-				ActiveRecord::Base.connection.execute("INSERT INTO day_times_sections (day_time_id, section_id, location_id) VALUES (#{day_time.id}, #{section.id}, #{location.id})")
+				# Bind day_times and sections with locations
+				day_times.each do |day_time|
+					ActiveRecord::Base.connection.execute("INSERT INTO day_times_sections (day_time_id, section_id, location_id) VALUES (#{day_time.id}, #{section.id}, #{location.id})")
+				end
+
+				# Link professors and sections
+				professors.each do |professor|
+					SectionProfessor.create({
+						:section_id => section.id,
+						:professor_id => professor.id
+					})
+				end
 			end
 
 		# If CSV was malformed, log it
@@ -303,6 +401,16 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 			log.puts er.message
 			log.puts "#{file} and #{line}"
 		end
+	end
+
+	# If mode was update, then we delete all sections in database without a CSV match
+	section_ids.each do |section_id|
+		section = Section.find(section_id)
+		section.day_times.each do |day_time|
+			log.puts "Deleting Section ID: #{section.id} SIS: #{section.sis_class_number}"
+			ActiveRecord::Base.connection.execute("DELETE FROM day_times_sections WHERE section_id = #{section.id} AND day_time_id = #{day_time.id}")
+		end
+		Section.destroy(section)
 	end
 
 	# Log current running time
