@@ -12,7 +12,7 @@ number = 1158
 
 # Read from file professors from orm.rb to read in
 ldap_professors = []
-File.open("#{Rails.root.to_s}/data/ldap_#{number}").each do |line|
+File.open("#{Rails.root.to_s}/data/ldap_duplicates_#{number}").each do |line|
 	# Strip (leading whitespace) and chomp (trailing whitespace)
 	ldap_professors << line.strip.chomp
 end
