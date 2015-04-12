@@ -22,6 +22,8 @@ require 'csv'
 require 'digest/sha1'
 DELIMITER = Digest::SHA1.hexdigest 'DELIMITER'
 
+# Squash SQL outputs into the log - can remove to see raw sql queries made
+ActiveRecord::Base.logger.level = 1
 
 puts "Dump or Import: (d/i)"
 dori = gets.chomp
@@ -50,15 +52,15 @@ if dori == 'd'
 
 			# Check if there is assoc. course
 			unless item.course
-				log.puts "Error: NO COURSE"
-				log.puts "Skipping review #{item.id}"
+				log.puts "\tError: NO COURSE"
+				log.puts "\tSkipping review #{item.id}"
 				next
 			end
 
 			# Check if there is assoc. prof
 			unless item.professor
-				log.puts "Error: NO PROFESSOR"
-				log.puts "Skipping review #{item.id}"
+				log.puts "\tError: NO PROFESSOR"
+				log.puts "\tSkipping review #{item.id}"
 				next
 			end
 
@@ -107,9 +109,7 @@ elsif dori == 'i'
 
 		# Try to find course
 		course = Course.find_by_mnemonic_number(row["mnemonic"], row["course_number"])
-		if course
-			c_id = course.id
-		else
+		unless course
 			log.puts "\tError: Course not found: #{row["mnemonic"]} #{row["course_number"]}"
 			log.puts "\tSkipping.."
 			next
@@ -126,29 +126,27 @@ elsif dori == 'i'
 				break
 			end
 		end
-		if professor
-			p_id = professor.id
-		else
+		unless professor
 			log.puts "\tError: Professor not found: #{row["first_name"]} #{row["last_name"]}"
 			log.puts "\tSkipping.."
 			next
 		end
 
-		# Get rid the non-attribu data
+		# Get rid the non-attribute data
 		columns = raw.delete_if do |key, value|
 			Review.column_names.exclude? key
 		end
+
 		# Add the discovered id's!
-		columns["course_id"] = c_id
-		columns["professor_id"] = p_id
+		columns["course_id"] = course.id
+		columns["professor_id"] = professor.id
 
 		# Test to see if parsing works
 		# columns.each do |key, value|
 		# 	log.puts "\t#{key}: #{value}"
 		# end
 
-		# Convert columns (CSV::row -> Hash)
-		# and CREATE!
+		# Convert columns (CSV::row -> Hash) and CREATE!
 		Review.create(columns.to_hash)
 
 		log.puts "Review created!"

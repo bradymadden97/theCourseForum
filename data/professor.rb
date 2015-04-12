@@ -58,7 +58,7 @@ ldap_professors[offset..limit - 1].each do |full_name|
 		# Helps when spread is like EVSC and EVEC (both probably the same professor)
 		puts "Subdepartments Taught: #{professors.map(&:courses).flatten.map(&:subdepartment).map(&:mnemonic).uniq.join(', ')}"
 		# Ask if we should consolidate into one professor, (y)es(n)o(Q)uit
-		puts "Should we consolidate? #{full_name} ynQ"
+		puts "Should we consolidate? #{full_name} ynQ OR grouping (i.e. 12 3)"
 		# If we previously made a choice about this professor, try to fetch it
 		previous_choice = previous_choices[full_name.to_sym]
 		# If we previously made a choice (not nil)
@@ -79,21 +79,14 @@ ldap_professors[offset..limit - 1].each do |full_name|
 		# If user chose to consolidate professors into one
 		if answer == 'y'
 			names = full_name.split(' ')
-			# Arbitrarily choose first professor to assign all sections to
-			root = professors[0]
-			# For all other duplicate professors
-			for professor in professors[1..-1]
-				# For each section_professor in each duplicate professor
-				professor.section_professors.each do |section_professor|
-					# Assign each section_professor with the root professor's id
-					section_professor.update(:professor_id => root.id)
-				end
-				# After we clear out section_professors for this professor, we delete it
-				professor.destroy
-			end
+			Professor.consolidate(professors)
 		# If we chose to quit our analysis
 		elsif answer == 'Q'
 			break
+		elsif answer == 'n'
+		else
+			
+			
 		end
 		# Log each choice for resuming later
 		ldap_choices.puts "#{full_name};#{answer}"
@@ -102,18 +95,7 @@ ldap_professors[offset..limit - 1].each do |full_name|
 		names = full_name.split(' ')
 		# Find all duplicate professors to consolidate into one
 		professors = Professor.where(:first_name => names[0], :last_name => names[-1])
-		# Arbitrarily choose first professor to assign all sections to
-		root = professors[0]
-		# For all other duplicate professors
-		for professor in professors[1..-1]
-			# For each section_professor in each duplicate professor
-			professor.section_professors.each do |section_professor|
-				# Assign each section_professor with the root professor's id
-				section_professor.update(:professor_id => root.id)
-			end
-			# After we clear out section_professors for this professor, we delete it
-			professor.destroy
-		end
+		Professor.consolidate(professors)
 		# Might as well assign email_alias while we found a match while we're at it
 		# The 3rd table data element has what we want - is hard coded (sorry!)
 		email_alias = Nokogiri::HTML(response).css('td')[3].children[0].text.strip

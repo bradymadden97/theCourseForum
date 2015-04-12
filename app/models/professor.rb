@@ -11,7 +11,7 @@ class Professor < ActiveRecord::Base
   validates_presence_of :first_name, :last_name
 
   def courses_list
-    return self.courses.uniq{ |p| p.id }#.sort_by{|p| p.subdepartment.mnemonic}     # Sort causing issues with call to mnemonic.. idk
+    return self.courses.uniq{ |p| p.id }#.sort_by{|p| p.subdepartment.mnemonic}
   end
 
   def full_name
@@ -69,6 +69,24 @@ class Professor < ActiveRecord::Base
       Subdepartment.find(subdepartment_id.first)
     else
       return nil
+    end
+  end
+
+  def self.consolidate(professors)
+    # Arbitrarily choose first professor to assign all sections to
+    root = professors[0]
+    # For all other duplicate professors
+    for professor in professors[1..-1]
+      # For each section_professor in each duplicate professor
+      professor.section_professors.each do |section_professor|
+        # Assign each section_professor with the root professor's id
+        SectionProfessor.create({
+          :professor_id => root.id,
+          :section_id => section_professor.section_id
+        })
+      end
+      # After we clear out section_professors for this professor, we delete it
+      professor.destroy
     end
   end
 
