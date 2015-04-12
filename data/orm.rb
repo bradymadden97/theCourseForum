@@ -403,14 +403,16 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 		end
 	end
 
-	# If mode was update, then we delete all sections in database without a CSV match
-	section_ids.each do |section_id|
-		section = Section.find(section_id)
-		section.day_times.each do |day_time|
-			log.puts "Deleting Section ID: #{section.id} SIS: #{section.sis_class_number}"
-			ActiveRecord::Base.connection.execute("DELETE FROM day_times_sections WHERE section_id = #{section.id} AND day_time_id = #{day_time.id}")
+	if mode == 'update'
+		# If mode was update, then we delete all sections in database without a CSV match
+		section_ids.each do |section_id|
+			section = Section.find(section_id)
+			section.day_times.each do |day_time|
+				log.puts "Deleting Section ID: #{section.id} SIS: #{section.sis_class_number}"
+				ActiveRecord::Base.connection.execute("DELETE FROM day_times_sections WHERE section_id = #{section.id} AND day_time_id = #{day_time.id}")
+			end
+			Section.destroy(section)
 		end
-		Section.destroy(section)
 	end
 
 	# Log current running time
