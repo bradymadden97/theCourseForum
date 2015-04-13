@@ -33,3 +33,5 @@ config/initializers/secret_token.rb
 # Ignore generated words.json file
 lib/words.json
 
+# Ignore grade information
+/grades
