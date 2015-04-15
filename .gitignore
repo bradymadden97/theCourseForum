@@ -14,6 +14,7 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /lou/log
+/lou/data/csv/*.csv
 /tmp
 /config/database.yml
 

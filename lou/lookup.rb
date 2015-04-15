@@ -8,7 +8,7 @@
 ActiveRecord::Base.logger.level = 1
 
 # Manually assign semester number here
-number = 1158
+number = Dir.entries("#{Rails.root.to_s}/lou/data/csv").sort_by(&:to_s)[-1][2..5]
 
 # Read from file professors from orm.rb to read in
 ldap_professors = []
@@ -31,7 +31,7 @@ ldap_log = File.open("#{Rails.root.to_s}/lou/log/ldap#{number}_#{Time.now.strfti
 
 # Since we are doing another run, wipe the ldap_choices file to store our new set of choices
 # Old choices are stored in previous_choices, so we don't actually rewrite anything important
-ldap_choices = File.open("#{Rails.root.to_s}/log/choices/ldap_choices_#{number}", 'w')
+ldap_choices = File.open("#{Rails.root.to_s}/lou/choices/ldap_choices_#{number}", 'w')
 
 # Ask how many professors to read in - also log how many total
 puts "How many? #{ldap_professors.count} total"
@@ -44,7 +44,9 @@ offset = gets.chomp.to_i
 ldap_log.puts "Starting LDAP lookup for professor cases from #{offset} to #{offset + limit}"
 
 # Only go through range
-ldap_professors[offset..limit - 1].each do |full_name|
+ldap_professors[offset..limit - 1].each_index do |index|
+	full_name = ldap_professors[offset..limit - 1][index]
+	puts "#{index}/#{limit}"
 	# Post the full_name into LDAP lookup
 	response = RestClient.post('http://www.virginia.edu/cgi-local/ldapweb/', :whitepages => "#{full_name}")
 	# If the response has the word "Person", then there's a table on the page with column headers, which mean multiple matches were found
@@ -111,6 +113,7 @@ ldap_professors[offset..limit - 1].each do |full_name|
 		# Might as well assign email_alias while we found a match while we're at it
 		# The 3rd table data element has what we want - is hard coded (sorry!)
 		email_alias = Nokogiri::HTML(response).css('td')[3].children[0].text.strip
+		root = professors[0]
 		# Update the root professor with new email_alias
 		root.update(:email_alias => "#{email_alias}@virginia.edu")
 		# Log that we successfully consolidated this professor

@@ -8963,16 +8963,16 @@ ClassNumber,Mnemonic,Number,Section,Type,Units,Instructor,Days,Room,Title,Topic,
 12022,RELG,2630,004,Seminar,"3","Ashley Hurst","TuTh 12:30PM - 1:45PM","Gibson Hall 341","Business, Ethics, and Society","",Closed,26,25,0
 12021,RELG,2630,005,Seminar,"3","Paul Gleason","TuTh 3:30PM - 4:45PM","Gibson Hall 141","Business, Ethics, and Society","",Closed,23,25,0
 16322,RELG,2630,006,Seminar,"3","Lauren Purnell","TuTh 11:00AM - 12:15PM","Gibson Hall 141","Business, Ethics, and Society","",Closed,29,25,0
-15210,RELG,2660,100,Lecture,"3","Matthew Hedstrom","MoWe 1:00PM - 1:50PM","Minor Hall 125",""Spiritual But Not Religious": Spirituality in America","",Closed,178,180,0
-15962,RELG,2660,101,Discussion,"3","Kayla Kauffman","Th 6:00PM - 6:50PM","Shannon House 109",""Spiritual But Not Religious": Spirituality in America","",Closed,21,20,0
-15963,RELG,2660,102,Discussion,"3","Kayla Kauffman","Th 7:00PM - 7:50PM","Shannon House 109",""Spiritual But Not Religious": Spirituality in America","",Closed,20,20,0
-15964,RELG,2660,103,Discussion,"3","Kayla Kauffman","Th 8:00PM - 8:50PM","Shannon House 109",""Spiritual But Not Religious": Spirituality in America","",Open,18,20,0
-15965,RELG,2660,104,Discussion,"3","Matthew Farley","We 8:00PM - 8:50PM","Gibson Hall 341",""Spiritual But Not Religious": Spirituality in America","",Closed,20,20,0
-15966,RELG,2660,105,Discussion,"3","Matthew Farley","We 6:00PM - 6:50PM","Gibson Hall 341",""Spiritual But Not Religious": Spirituality in America","",Closed,20,20,0
-15960,RELG,2660,106,Discussion,"3","Matthew Farley","We 7:00PM - 7:50PM","Gibson Hall 341",""Spiritual But Not Religious": Spirituality in America","",Closed,20,20,0
-20773,RELG,2660,107,Discussion,"3","Daniel Wise","Fr 12:00PM - 12:50PM","Nau Hall 141",""Spiritual But Not Religious": Spirituality in America","",Closed,20,20,0
-20774,RELG,2660,108,Discussion,"3","Daniel Wise","Fr 1:00PM - 1:50PM","Nau Hall 141",""Spiritual But Not Religious": Spirituality in America","",Closed,20,20,0
-20775,RELG,2660,109,Discussion,"3","Daniel Wise","Fr 2:00PM - 2:50PM","New Cabell Hall 291",""Spiritual But Not Religious": Spirituality in America","",Open,19,20,0
+15210,RELG,2660,100,Lecture,"3","Matthew Hedstrom","MoWe 1:00PM - 1:50PM","Minor Hall 125","""Spiritual But Not Religious"": Spirituality in America","",Closed,178,180,0
+15962,RELG,2660,101,Discussion,"3","Kayla Kauffman","Th 6:00PM - 6:50PM","Shannon House 109","""Spiritual But Not Religious"": Spirituality in America","",Closed,21,20,0
+15963,RELG,2660,102,Discussion,"3","Kayla Kauffman","Th 7:00PM - 7:50PM","Shannon House 109","""Spiritual But Not Religious"": Spirituality in America","",Closed,20,20,0
+15964,RELG,2660,103,Discussion,"3","Kayla Kauffman","Th 8:00PM - 8:50PM","Shannon House 109","""Spiritual But Not Religious"": Spirituality in America","",Open,18,20,0
+15965,RELG,2660,104,Discussion,"3","Matthew Farley","We 8:00PM - 8:50PM","Gibson Hall 341","""Spiritual But Not Religious"": Spirituality in America","",Closed,20,20,0
+15966,RELG,2660,105,Discussion,"3","Matthew Farley","We 6:00PM - 6:50PM","Gibson Hall 341","""Spiritual But Not Religious"": Spirituality in America","",Closed,20,20,0
+15960,RELG,2660,106,Discussion,"3","Matthew Farley","We 7:00PM - 7:50PM","Gibson Hall 341","""Spiritual But Not Religious"": Spirituality in America","",Closed,20,20,0
+20773,RELG,2660,107,Discussion,"3","Daniel Wise","Fr 12:00PM - 12:50PM","Nau Hall 141","""Spiritual But Not Religious"": Spirituality in America","",Closed,20,20,0
+20774,RELG,2660,108,Discussion,"3","Daniel Wise","Fr 1:00PM - 1:50PM","Nau Hall 141","""Spiritual But Not Religious"": Spirituality in America","",Closed,20,20,0
+20775,RELG,2660,109,Discussion,"3","Daniel Wise","Fr 2:00PM - 2:50PM","New Cabell Hall 291","""Spiritual But Not Religious"": Spirituality in America","",Open,19,20,0
 15954,RELG,3485,001,Seminar,"3","John Portmann","MoWe 2:00PM - 3:15PM","Gibson Hall 341","Moral Leadership","",Closed,28,25,0
 20776,RELG,3559,002,Seminar,"3","Michael Wellmon","MoWe 2:00PM - 3:15PM","Gibson Hall 211","New Course in Religious Studies","Human Dignity",Closed,42,60,0
 20815,RELG,3630,001,Seminar,"3","Asher Biemann","TuTh 9:30AM - 10:45AM","Gibson Hall 141","Idolatry","",Open,22,30,0
@@ -9404,7 +9404,7 @@ ClassNumber,Mnemonic,Number,Section,Type,Units,Instructor,Days,Room,Title,Topic,
 15745,SOC,2470,109,Discussion,"3","Fauzia Husain","Fr 8:00AM - 8:50AM","New Cabell Hall 044","American Society and Popular Culture","",Open,18,20,0
 15746,SOC,2470,110,Discussion,"3","Jaime Hartless","Th 10:00AM - 10:50AM","McLeod Hall 2008","American Society and Popular Culture","",Open,16,20,0
 11561,SOC,2600,001,Lecture,"3","Tom Bateman","MoWe 11:00AM - 12:15PM","Robertson Hall 120","Leadership Across the Disciplines","",Closed,170,160,16
-21466,SOC,2950,001,Lecture,"3","Kimberly Hoosier","TuTh 12:30PM - 1:45PM","Dell 2 103",""The Wire" - Sociology Through TV & Film","",Closed,34,35,0
+21466,SOC,2950,001,Lecture,"3","Kimberly Hoosier","TuTh 12:30PM - 1:45PM","Dell 2 103","""The Wire"" - Sociology Through TV & Film","",Closed,34,35,0
 11562,SOC,3020,100,Lecture,"3","Rachel Rinaldo","MoWe 11:00AM - 11:50AM","Monroe Hall 130","Introduction to Social Theory","",Open,77,80,0
 11563,SOC,3020,101,Discussion,"3","Claire Maiers","Th 9:00AM - 9:50AM","New Cabell Hall 283","Introduction to Social Theory","",Open,19,20,0
 11564,SOC,3020,102,Discussion,"3","Claire Maiers","Th 8:00AM - 8:50AM","New Cabell Hall 111","Introduction to Social Theory","",Open,18,20,0

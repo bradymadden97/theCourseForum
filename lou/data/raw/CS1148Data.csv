@@ -4466,7 +4466,7 @@ ClassNumber,Mnemonic,Number,Section,Type,Units,Instructor,Days,Room,Title,Topic,
 21627,GBUS,8304,1,Lecture,"1.5","Staff","WeThFr 11:45AM - 1:10PM","TBA","Consumer Psychology","",Closed,40,40,0
 21580,GBUS,8308,001,Lecture,"1.5","Alexander Horniman","TBA","TBA","Leadership Learning Lab","",Open,0,65,0
 21487,GBUS,8401,001,Lecture,"1","Staff","TBA","TBA","Cross-Cultural Internship","",Open,65,300,0
-21488,GBUS,8404,001,Lecture,"1.5","George Barbee","MoTu 2:45PM - 4:10PM","TBA","Innovating and Integrating in Services - The "New" Economy","",Open,0,65,0
+21488,GBUS,8404,001,Lecture,"1.5","George Barbee","MoTu 2:45PM - 4:10PM","TBA","Innovating and Integrating in Services - The ""New"" Economy","",Open,0,65,0
 21833,GBUS,8410,1,Lecture,"1.5","Paul Simko","WeThFr 10:00AM - 11:25AM","TBA","Financial Statement Analysis and Corporate Valuation","",Open,64,65,0
 21490,GBUS,8414,001,Lecture,"1.5","June West","MoTu 2:45PM - 4:10PM","TBA","Advanced Managerial Communication","",Open,0,42,0
 21834,GBUS,8419,1,Lecture,"1.5","Staff","MoTu 4:30PM - 5:55PM","TBA","International Deal Making: Legal & Business Aspects","",Open,29,45,0
@@ -5240,7 +5240,7 @@ ClassNumber,Mnemonic,Number,Section,Type,Units,Instructor,Days,Room,Title,Topic,
 21396,ISLS,4100,470,Lecture,"3","John Mirabella","Fr 7:00PM - 9:45PM","NVCC Loudoun Campus","Addressing Future Needs: Taking Action Today","",Open,8,15,0
 21393,ISSS,3080,470,Lecture,"3","Luke Wright","We 7:00PM - 9:45PM","NVCC Loudoun Campus","Islam","",Open,6,12,0
 21383,ISSS,3150,201,Lecture,"3","Timothy Supler","Fr 7:00PM - 9:45PM","Tidewater Virginia Cmty Colleg","Constitutional Law","",Open,6,24,0
-21375,ISSS,3280,101,Lecture,"3","Douglas Jerolimov","Tu 7:00PM - 9:45PM","Web-Based Course-No class mtgs","The American Built Environment: "Place" in America","",Open,23,24,0
+21375,ISSS,3280,101,Lecture,"3","Douglas Jerolimov","Tu 7:00PM - 9:45PM","Web-Based Course-No class mtgs","The American Built Environment: ""Place"" in America","",Open,23,24,0
 21735,ISSS,3305,470,Lecture,"3","Robert Guttman","Mo 7:00PM - 9:45PM","NVCC Loudoun Campus","The Impact of Media on the Development of Popular Culture","",Open,20,24,0
 21381,ISSS,3412,201,Lecture,"3","Beverly Supler","Mo 7:00PM - 9:45PM","Tidewater Virginia Cmty Colleg","Developmental and Psychological Models of Self-Awareness","",Open,16,24,0
 21379,ISSS,3420,201,Lecture,"3","Clair Berube","We 7:00PM - 9:45PM","Tidewater Virginia Cmty Colleg","Human Thought and Behavior","",Open,7,24,0
