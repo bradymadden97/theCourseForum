@@ -71,36 +71,41 @@ html, body {
 
 body {
   font-family: "Futura", sans-serif;
-  background-color: $blue;
-  overflow: hidden;
+  background-color: #E6E7EC;
+  overflow: scroll;
   font-size: $regular-font-size;
 }
 
+#wrapper {
+  width: 1200px;
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 aside {
-  width: $sidebar-width !important;
+  width: $sidebar-width;
+  overflow: auto;
+  background-color: white;
+  padding-bottom: 20px;
+  padding-top: 20px;
   float: left;
+  @media only screen and (max-width: 1200px) {
+    display: none;
+  }
 }
 
 section#main {
-  margin-left: $sidebar-width;
-  position: fixed;
-  top: $navbar-height;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  margin-left: $sidebar-width + 50px;
+  @media only screen and (max-width: 1200px) {
+    margin-left: 0;
+  }
   
-  // http://stackoverflow.com/questions/7198282/how-to-make-div-occupy-remaining-height
-  // bottom: 0;
-  // top: $navbar-height;
-  // right: 0;
-  // left: 0;
-  // position: absolute;
-
   #main-container {
     background-color: #EEE;
     height: 100%;
     overflow: auto;
-    padding: 40px 50px;
+    padding: 20px 20px;
 
     #content-container {
       box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.4), inset 0px 0px 0px 1px rgba(255, 255, 255, 0.07);
@@ -109,6 +114,11 @@ section#main {
       padding-top: 20px;
     }
   }
+}
+
+#search-bar {
+  float: left;
+  min-width: 200px;
 }
 
 #welcome-container {

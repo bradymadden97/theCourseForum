@@ -1,16 +1,14 @@
 @import "variables";
 
 #nav-footer {
-  left: auto;
-  right: auto;
+  margin-top: 25px;
   text-align: center;
-  opacity: 0.5;
-  padding-bottom: 25px;
+  padding-bottom: 10px;
   font-size: 12px;
   width: $sidebar-width;
 
   a {
-    color: white;
+    color: rgba(25, 25, 25, 0.5);
   }
 
 }
@@ -21,7 +19,6 @@
   }
 
   #search-query {
-    background-color: $blue;
     border: 0;
     outline: none;
     width: 150px;
@@ -34,24 +31,21 @@
 }
 
 .site-nav-links {
-  color: white;
   list-style-type: none;
-  margin-top: 8px;
 
   .nav-row {
     font-size: $sidebar-font-size;
     height: 100%;
-    color: rgba(255,255,255,0.5);
-
+    color: rgba(25,25,25,0.5);
 
     .col-wrapper {
       padding-top: 18px;
       padding-bottom: 18px;
-      border-bottom: 1px solid rgba(255,255,255,0.5);
+      border-bottom: 1px solid rgba(25,25,25,0.5);
 
       a {
         margin-left: $sidebar-left-margin;
-        color: rgba(255,255,255,0.5);
+        color: rgba(25,25,25,0.5);
 
         i {
           padding-right: $sidebar-icon-padding;
@@ -59,13 +53,14 @@
       }
 
       a:hover {
-        color: rgba(255,255,255,1.0);
+        color: black;
       }
     }
   }
 
   .search-row {
     .col-wrapper {
+      border-top: 1px solid rgba(25,25,25,0.5);
       span {
         margin-left: $sidebar-left-margin;
         padding-right: $sidebar-icon-padding;

@@ -6,28 +6,19 @@
   margin-bottom: 0;
 }
 
-.navbar-default .navbar-brand {
-  padding: 0;
-  width: $sidebar-width;
-  background-color: $orange;
-  color: white;
-  text-align: center;
-
-  h1 {
-    margin-top: ($navbar-height - 39px) / 2;
-    margin-bottom: ($navbar-height - 39px) / 2;
+.navbar-default {
+  .navbar-brand {
+    padding: 0;
+    width: $sidebar-width;
+    text-align: center;
+    #logo {
+      padding: 10px;
+    }
   }
-}
-
-.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
-  background-color: $orange;
-  color: white;
-}
-
-#logo {
-  max-height: $navbar-height;
-  max-width: 80%;
-  padding: 5px;
+  // .navbar-brand:focus, .navbar-brand:hover {
+  //   background-color: $orange;
+  //   color: white;
+  // }
 }
 
 .navbar-default .navbar-nav > li > a {
