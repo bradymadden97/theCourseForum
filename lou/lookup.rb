@@ -12,7 +12,7 @@ number = 1158
 
 # Read from file professors from orm.rb to read in
 ldap_professors = []
-File.open("#{Rails.root.to_s}/data/ldap_duplicates_#{number}").each do |line|
+File.open("#{Rails.root.to_s}/lou/duplicates/ldap_duplicates_#{number}").each do |line|
 	# Strip (leading whitespace) and chomp (trailing whitespace)
 	ldap_professors << line.strip.chomp
 end
@@ -20,18 +20,18 @@ end
 # Previous choices are stored in ldap_choices, which we want to read in when we continue our analysis (since we can pause)
 # Choices are explained later (y = consolidate into one professor)
 previous_choices = {}
-File.open("#{Rails.root.to_s}/data/ldap_choices_#{number}", "r").each do |line|
+File.open("#{Rails.root.to_s}/lou/choices/ldap_choices_#{number}", "r").each do |line|
 	line = line.strip.chomp.split(';')
 	# Store as hash, i.e. {:"Lukas Tamm" => 'y'}
 	previous_choices[line[0].to_sym] = line[1]
 end
 
 # Open LDAP log
-ldap_log = File.open("#{Rails.root.to_s}/data/ldap#{number}_#{Time.now.strftime("%Y.%m.%d-%H:%M")}.log", 'w')
+ldap_log = File.open("#{Rails.root.to_s}/lou/log/ldap#{number}_#{Time.now.strftime("%Y.%m.%d-%H:%M")}.log", 'w')
 
 # Since we are doing another run, wipe the ldap_choices file to store our new set of choices
 # Old choices are stored in previous_choices, so we don't actually rewrite anything important
-ldap_choices = File.open("#{Rails.root.to_s}/data/ldap_choices_#{number}", 'w')
+ldap_choices = File.open("#{Rails.root.to_s}/log/choices/ldap_choices_#{number}", 'w')
 
 # Ask how many professors to read in - also log how many total
 puts "How many? #{ldap_professors.count} total"
@@ -56,9 +56,18 @@ ldap_professors[offset..limit - 1].each do |full_name|
 		professors = Professor.where(:first_name => names[0], :last_name => names[-1])
 		# Show spread of subdepartments taught by all professors by this name in the database
 		# Helps when spread is like EVSC and EVEC (both probably the same professor)
-		puts "Subdepartments Taught: #{professors.map(&:courses).flatten.map(&:subdepartment).map(&:mnemonic).uniq.join(', ')}"
+		# puts "Subdepartments Taught: #{professors.map(&:courses).flatten.map(&:subdepartment).map(&:mnemonic).uniq.join(', ')}"
+		puts "Subdepartments Taught by #{professors.count} professors"
+		professors.each_index do |i|
+			print "#{i}) "
+			professor = professors[i]
+			professor.courses.map(&:subdepartment).uniq.each do |subdepartment|
+				print "#{subdepartment.mnemonic}: #{professor.courses_in_subdepartment(subdepartment).count} "
+			end
+			puts
+		end
 		# Ask if we should consolidate into one professor, (y)es(n)o(Q)uit
-		puts "Should we consolidate? #{full_name} ynQ OR grouping (i.e. 12 3)"
+		puts "Should we consolidate? #{full_name} ynQ OR grouping (i.e. 02 3)"
 		# If we previously made a choice about this professor, try to fetch it
 		previous_choice = previous_choices[full_name.to_sym]
 		# If we previously made a choice (not nil)
@@ -85,8 +94,11 @@ ldap_professors[offset..limit - 1].each do |full_name|
 			break
 		elsif answer == 'n'
 		else
-			
-			
+			groupings = answer.split(' ')
+			groupings.each do |grouping|
+				grouping.scan(/./).map
+				Professor.consolidate(professors.values_at(*grouping.scan(/./)))
+			end
 		end
 		# Log each choice for resuming later
 		ldap_choices.puts "#{full_name};#{answer}"

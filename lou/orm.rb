@@ -24,9 +24,9 @@ ActiveRecord::Base.logger.level = 1
 
 # Go through every file inside data/csv to load into database
 # Sorted so earlier semesters are done first
-Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
+Dir.entries("#{Rails.root.to_s}/lou/data/csv/").sort_by(&:to_s).each do |file|
 	# Skip these directory contents
-	if file == '.' or file == '..'
+	if file[0] == '.'
 		next
 	end
 
@@ -37,7 +37,7 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 	number = file[2..5]
 
 	# Open log for each CSV
-	log = File.open("#{Rails.root.to_s}/data/lou#{number}_#{csv_time.strftime("%Y.%m.%d-%H:%M")}.log", 'w')
+	log = File.open("#{Rails.root.to_s}/lou/log/lou#{number}_#{csv_time.strftime("%Y.%m.%d-%H:%M")}.log", 'w')
 
 	# Initalize array of professors we want to lookup later using LDAP
 	ldap_professors = []
@@ -76,7 +76,7 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 	log.puts "Starting #{semester.season} #{semester.year} with mode #{mode}"
 
 	# Actually start parsing through the CSV file now
-	File.open("#{Rails.root.to_s}/data/csv/#{file}").each do |line|
+	File.open("#{Rails.root.to_s}/lou/data/csv/#{file}").each do |line|
 		# Try to catch CSV malformed lines and gracefully log them
 		begin
 			# CSV will parse each line into array into data
@@ -423,7 +423,7 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 	ldap_professors = ldap_professors.uniq
 	# Open file to log all professors for later lookup
 	# ldap_duplicates_1158 for Fall 2015 for example
-	ldap = File.open("#{Rails.root.to_s}/data/ldap_duplicates_#{number}", 'w')
+	ldap = File.open("#{Rails.root.to_s}/lou/duplicates/ldap_duplicates_#{number}", 'w')
 	for professor in ldap_professors
 		# Log all professors for later lookup into file
 		ldap.puts professor
@@ -431,14 +431,11 @@ Dir.entries("#{Rails.root.to_s}/data/csv/").sort_by(&:to_s).each do |file|
 	# Close file (flush buffer)
 	ldap.close
 
-	# Ask if we want to segue automatically into professor lookup (LDAP)
-	puts "Perform LDAP lookups? #{ldap_professors.count} total? y/n "
-	if gets.chomp == 'y'
-		load('data/professor.rb')
-	end
-
 	# Close log
 	log.close
+
+	# Dump mysql
+	system("mysqldump -u root thecourseforum_development > #{Rails.root.to_s}/lou/backups/pre_ldap_#{number}_$(date '+%b_%d_%Y_%H_%M_%S').sql")
 end
 
 # Log total running time

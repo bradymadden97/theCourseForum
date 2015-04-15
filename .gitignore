@@ -13,8 +13,7 @@
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
-/data/*.log
-/data/ldap_*
+/lou/log
 /tmp
 /config/database.yml
 
