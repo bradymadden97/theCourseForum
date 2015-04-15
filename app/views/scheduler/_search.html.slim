@@ -1,0 +1,19 @@
+#search-bar
+  h2 Class Search
+  input#class-search name="class-search" type="text" placeholder="ex. ECON 2010 or Biology"
+  .btn.btn-primary.glyphicon.glyphicon-search#search-classes
+  select#saved-courses
+    option -- Select Course --
+    - current_user.courses.each do |course|
+      option= "#{course.subdepartment.mnemonic} #{course.course_number}"
+    | end
+
+  .btn.btn-primary#clear-courses Clear Saved Courses
+  h5#results-title Courses
+  #results-box
+  .row.row-no-padding#search-footer
+    .col-md-5
+      #credits 0 credits
+    .col-md-7
+      .btn.btn-primary#generate-schedules Generate
+  .btn.btn-primary#generate-options Generate with Options
