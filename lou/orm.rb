@@ -435,7 +435,7 @@ Dir.entries("#{Rails.root.to_s}/lou/data/csv/").sort_by(&:to_s).each do |file|
 	log.close
 
 	# Dump mysql
-	system("mysqldump -u root thecourseforum_development > #{Rails.root.to_s}/lou/backups/pre_ldap_#{number}_$(date '+%b_%d_%Y_%H_%M_%S').sql")
+	system("mysqldump -u root -p thecourseforum_development > #{Rails.root.to_s}/lou/backups/pre_ldap_#{number}_$(date '+%b_%d_%Y_%H_%M_%S').sql")
 end
 
 # Log total running time

@@ -130,3 +130,6 @@ end
 # Flush buffer into logs
 ldap_log.close
 ldap_choices.close
+
+# Dump mysql
+system("mysqldump -u root -p thecourseforum_development > #{Rails.root.to_s}/lou/backups/post_ldap_#{number}_$(date '+%b_%d_%Y_%H_%M_%S').sql")
