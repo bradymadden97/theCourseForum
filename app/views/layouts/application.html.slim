@@ -14,12 +14,12 @@ html
 
   body
     = render 'layouts/header'
+    = render 'layouts/notice'
     - if current_user
       #wrapper
         aside
           = render 'layouts/sidebar'
         section#main
-          = render 'layouts/notice'
           .container-fluid#main-container
             - if content_for?(:page_heading)
             .row#header
@@ -35,7 +35,6 @@ html
       - if controller.controller_name == "scheduler" && controller.action_name == "scheduler"
         = render 'scheduler/modals'
     - else
-      = render 'layouts/notice'
       .container-fluid#welcome-container
         = yield
       = render 'layouts/footer'

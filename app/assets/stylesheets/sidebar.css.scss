@@ -44,7 +44,7 @@
       border-bottom: 1px solid rgba(25,25,25,0.5);
 
       a {
-        margin-left: $sidebar-left-margin;
+        margin-left: $sidebar-row-margin;
         color: rgba(25,25,25,0.5);
 
         i {
@@ -62,7 +62,7 @@
     .col-wrapper {
       border-top: 1px solid rgba(25,25,25,0.5);
       span {
-        margin-left: $sidebar-left-margin;
+        margin-left: $sidebar-row-margin;
         padding-right: $sidebar-icon-padding;
       }      
     }
