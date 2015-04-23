@@ -7,28 +7,27 @@
 ### Introductory ###
 
 # 1. Return how many Subdepartments there are.
-# Subdepartment.all.count
+# Subdepartment.count
 
-# 1. Return the number of courses in a given Subdepartment - say the CS department.
+# 2. Return the number of courses in a given Subdepartment - say the CS department.
 # Subdepartment.find_by(:mnemonic => 'CS').courses.count
 
-# 2. Return an array of professors that correspond to a given course - say ECON 2010.
+# 3. Return an array of professors that correspond to a given course - say ECON 2010.
 # Course.find_by_mnemonic_number('ECON', 2010).professors.uniq
 
-# 3. Return an array of days i.e. [Mo,We], that a course has been offered, ever - say ECON 2010.
-# Course.find_by_mnemonic_number('ECON', 2010).sections.map(&:day_times).flatten.map(&:day).uniq
+# 4. Return an array of days i.e. [Mo,We], that a course has been offered, ever - say ECON 2010.
+# Course.find_by_mnemonic_number('ECON', 2010).sections.includes(:day_times).map(&:day_times).flatten.map(&:day).uniq
 
-# 4. Return an array of Subdepartment mnemonics that a Professor teaches in - say Roquinaldo Ferreira.
+# 5. Return an array of Subdepartment mnemonics that a Professor teaches in - say Roquinaldo Ferreira.
 # Professor.find_by(:first_name => 'Roquinaldo', :last_name => 'Ferreira').subdepartments.map(&:mnemonic).uniq
 
-# 5. Find the Subdepartment with the most courses.
+# 6. Find the Subdepartment with the most courses.
 # Subdepartment.all.map{|x| [x.name, x.courses.count]}.sort_by{|x| x.last}.last
-
 
 ### Intermediate ###
 
 # 1. Compute the average rating for all courses in the COMM subdepartment.
-# Subdepartment.find_by(:mnemonic => 'COMM').courses.map{|x| [x.title,x.reviews.map{|y| ((y.recommend+y.enjoyability+y.professor_rating)/(3*x.reviews.length)).round(2)}.inject(:+)]}
+puts Subdepartment.find_by(:mnemonic => 'COMM').courses.map{|x| [x.title,x.reviews.map{|y| ((y.recommend+y.enjoyability+y.professor_rating)/(3*x.reviews.length)).round(2)}.inject(:+)]}
 
 # 2. Find the subdepartment with the largest amount of reviews.
 # Subdepartment.all.map{|x| [x.name, x.courses.map{|y| y.reviews}.flatten.count]}.sort_by{|x| x[1]}.last # This takes a while
@@ -41,6 +40,8 @@
 # 	}.count
 
 # 4. Find the Subdepartment with the most total capacity.
+# puts Subdepartment.includes(:courses => :sections).load#.map(&:sections)
+
 # 5. Find the average units per course in the CS department.
 # 6. Return a course matching by title, i.e. "Program and Data" - notice no "Representation"!
 # 7. Now make the prior method match both "Program and Data", "data representation".
