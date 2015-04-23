@@ -153,7 +153,7 @@ Dir.entries("#{Rails.root.to_s}/lou/data/csv/").sort_by(&:to_s).each do |file|
 				# If Staff, then we manually handle this case
 				if names[0] == 'Staff'
 					# Find Staff professor, if doesn't exist, then create
-					Professor.find_by(:first_name => 'Staff') or Professor.create(:first_name => 'Staff')
+					Professor.find_by(:first_name => 'Faculty') or Professor.create(:first_name => 'Faculty', :last_name => 'Staff')
 				else
 					# Search database by first name, last name
 					# First name should be first element, last name should be last element
