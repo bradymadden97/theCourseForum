@@ -76,7 +76,12 @@ ldap_professors[offset..limit - 1].each_index do |index|
 		# If we previously made a choice (not nil)
 		if previous_choice
 			if auto_accept
-				answer = previous_choice
+				if previous_choice == 'n' and professors.count > 2
+					puts "Ignoring previous n choice"
+					answer = gets.chomp
+				else
+					answer = previous_choice
+				end
 			else
 				puts "Accept prior? yn: #{previous_choice}"
 				choice = gets.chomp

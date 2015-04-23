@@ -500,7 +500,7 @@ ClassNumber,Mnemonic,Number,Section,Type,Units,Instructor,Days,Room,Title,Topic,
 27888,ARAH,8999,024,Independent Study,"1 - 12","Tyler Smith","TBA","TBA","Non-Topical Research, Masters","",Open,0,30,0
 14913,ARAH,9505,001,Seminar,"3","Tyler Smith","Mo 3:30PM - 6:00PM","Fayerweather Hall 215","Seminar in Ancient Art/Archaeology","Greek Religion",Closed,15,12,0
 26129,ARAH,9515,001,Seminar,"3","Amy Ogden, Lisa Reilly","Mo 1:00PM - 3:30PM","Fayerweather Hall 215","Seminar in Medieval Art","Medieval Encounters",Closed,12,6,0
-14921,ARAH,9545,001,Seminar,"3","Matthew Affron","Th 10:00AM - 12:30PM","Fayerweather Hall 208","Seminar in 20th/21st Century Art",""Primitivism" and Modern Art",Open,9,12,0
+14921,ARAH,9545,001,Seminar,"3","Matthew Affron","Th 10:00AM - 12:30PM","Fayerweather Hall 208","Seminar in 20th/21st Century Art","'Primitivism' and Modern Art",Open,9,12,0
 26138,ARAH,9565,001,Seminar,"3","John Summers","Tu 10:00AM - 12:30PM","Fayerweather Hall 208","Seminar in Art Theory, Comparative & Other Topics","Cultural Time",Open,6,12,0
 27179,ARAH,9570,001,Seminar,"3","Louis Nelson","We 10:00AM - 12:30PM","Fayerweather Hall 215","Seminar in the Architecture of the Americas","The Greater Caribbean",Open,5,6,0
 16479,ARAH,9995,001,Independent Study,"3 - 12","Lisa Reilly","TBA","TBA","Supervised Research","",Open,0,10,0
@@ -4366,7 +4366,7 @@ ClassNumber,Mnemonic,Number,Section,Type,Units,Instructor,Days,Room,Title,Topic,
 22479,GBUS,8301,1,Lecture,"1.5","Randall Smith","Tu 4:30PM - 7:30PM","Darden School 040","Emerging Information Technologies Seminar","",Closed,24,24,0
 28882,GBUS,8308,001,Lecture,"1.5","Alexander Horniman","ThFr 8:00AM - 9:25AM","TBA","Leadership Learning Lab","",Open,33,65,0
 22481,GBUS,8401,1,Lecture,"1","Staff","TBA","TBA","Cross-Cultural Internship","",Open,36,300,0
-22483,GBUS,8404,1,Lecture,"1.5","George Barbee","MoTu 2:45PM - 4:10PM","TBA","Innovating and Integrating in Services - The "New" Economy","",Open,44,65,0
+22483,GBUS,8404,1,Lecture,"1.5","George Barbee","MoTu 2:45PM - 4:10PM","TBA","Innovating and Integrating in Services - The 'New' Economy","",Open,44,65,0
 22487,GBUS,8414,1,Lecture,"1.5","June West","MoTu 2:45PM - 4:10PM","TBA","Advanced Managerial Communication","",Open,35,36,0
 22641,GBUS,8423,13,Lecture,"1.5","Kenneth Eades","TBA","Darden School 290","Corporate Financial Policies","",Open,27,60,0
 22587,GBUS,8426,1,Lecture,"1.5","Staff","TBA","TBA","Derivative Securities: Options and Futures","",Open,0,65,0
@@ -5396,7 +5396,7 @@ ClassNumber,Mnemonic,Number,Section,Type,Units,Instructor,Days,Room,Title,Topic,
 28844,LAW,7087,1,Lecture,"3","Douglas Leslie","TuWeTh 11:30AM - 12:30PM","Slaughter Hall 294","Sports Law","",Closed,52,50,0
 23041,LAW,7093,1,Lecture,"0","Joshua Fischman","Th 11:30AM - 12:50PM","Withers-Brown Hall 129","Law and Economics Colloquium (YR)","",Open,11,16,0
 29044,LAW,7096,1,Lecture,"0","Margaret Riley","Th 6:15PM - 7:30PM","Withers-Brown Hall 102","Themes in Law and Biomedicine: Technology/Cost/Our Healthcare Future (YR)","",Open,26,50,0
-22871,LAW,7605,1,Lecture,"2","Michael Ross","MoTuWeThFr 8:30AM - 10:30AM","Withers-Brown Hall 121","Ethics, Integrity, and Avoiding "Club Fed" (SC)","",Open,7,20,0
+22871,LAW,7605,1,Lecture,"2","Michael Ross","MoTuWeThFr 8:30AM - 10:30AM","Withers-Brown Hall 121","Ethics, Integrity, and Avoiding 'Club Fed' (SC)","",Open,7,20,0
 23031,LAW,7606,1,Lecture,"1","Richard Crawford","ThFr 4:00PM - 5:30PM","Slaughter Hall 366","Finance of Small Enterprise (SC)","",Open,15,17,0
 22969,LAW,7609,1,Lecture,"1","Robert Sayler","We 1:20PM - 3:20PM","Withers-Brown Hall 116","Rhetoric (SC)","",Closed,16,16,0
 22887,LAW,7613,1,Lecture,"1","Timothy McEvoy","MoTuWeTh 2:05PM - 3:35PM","Withers-Brown Hall 121","Globalization and International Civil Litigation (SC)","",Open,10,20,0
@@ -7224,7 +7224,7 @@ ClassNumber,Mnemonic,Number,Section,Type,Units,Instructor,Days,Room,Title,Topic,
 29298,PERS,5230,001,Lecture,"3","Alireza Korangy","TuTh 2:00PM - 3:15PM","Mcleod Hall 2008","Introduction to Classical Persian Literature","",Open,1,5,0
 12807,PERS,8993,001,Independent Study,"1 - 3","Alireza Korangy","TBA","TBA","Independent Study in Persian","",Open,1,5,0
 26792,PETR,3559,001,Lecture,"3","Farzaneh Milani","MoWe 4:30PM - 5:45PM","New Cabell Hall 320","New Course in Persian Translation","Life&Poetry Forugh Farrokhzad",Open,11,20,0
-26793,PETR,3559,002,Lecture,"3","Alireza Korangy","Tu 3:30PM - 6:00PM","New Cabell Hall 139","New Course in Persian Translation","Attar's "Dscours of the Birds"",Open,7,20,0
+26793,PETR,3559,002,Lecture,"3","Alireza Korangy","Tu 3:30PM - 6:00PM","New Cabell Hall 139","New Course in Persian Translation","Attar's 'Discours of the Birds',Open,7,20,0
 29059,PETR,5559,001,Lecture,"1 - 4","Farzaneh Milani","MoWe 4:30PM - 5:45PM","New Cabell Hall 320","New Course in Persian Translation","Life&Poetry Forugh Farrokhzad",Open,4,5,0
 12809,PHAR,7010,001,Lecture,"1","Ira Schulman","Th 4:00PM - 5:00PM","Jordan Hall 1-17","Seminar in Pharmacology","",Open,5,15,0
 12811,PHAR,8110,001,Lecture,"1","Chien Li","Tu 12:00PM - 1:00PM","Jordan Hall 5023","Pharmacology Literature","",Open,5,110,0

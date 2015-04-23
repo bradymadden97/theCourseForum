@@ -4632,7 +4632,7 @@ ClassNumber,Mnemonic,Number,Section,Type,Units,Instructor,Days,Room,Title,Topic,
 21929,GBUS,8304,1,Lecture,"1.5","Staff","TBA","TBA","Consumer Psychology","",Open,0,30,0
 18789,GBUS,8308,001,Lecture,"1.5","Alexander Horniman","ThFr 8:00AM - 9:25AM","TBA","Leadership Learning Lab","",Open,32,65,0
 18694,GBUS,8401,001,Lecture,"1","Staff","TBA","TBA","Cross-Cultural Internship","",Open,75,300,0
-18695,GBUS,8404,001,Lecture,"1.5","George Barbee","MoTu 2:45PM - 4:10PM","TBA","Innovating and Integrating in Services - The "New" Economy","",Open,25,65,0
+18695,GBUS,8404,001,Lecture,"1.5","George Barbee","MoTu 2:45PM - 4:10PM","TBA","Innovating and Integrating in Services - The 'New' Economy","",Open,25,65,0
 18697,GBUS,8414,001,Lecture,"1.5","June West","MoTu 2:45PM - 4:10PM","TBA","Advanced Managerial Communication","",Open,0,42,0
 18773,GBUS,8423,013,Lecture,"1.5","Kenneth Eades","TBA","TBA","Corporate Financial Policies","",Open,0,60,0
 18747,GBUS,8426,001,Lecture,"1.5","Staff","TBA","TBA","Derivative Securities: Options and Futures","",Open,0,65,0
@@ -5748,7 +5748,7 @@ ClassNumber,Mnemonic,Number,Section,Type,Units,Instructor,Days,Room,Title,Topic,
 21497,LAW,7112,1,Lecture,"2","Edward Flippen","Mo 4:00PM - 6:00PM","Withers-Brown Hall 116","Energy Regulation and Policy","",Open,14,16,0
 21480,LAW,7113,1,Lecture,"3","Jason Johnston","MoWe 10:00AM - 11:20AM","Withers-Brown Hall 114","Law and Game Theory","",Open,18,23,0
 22265,LAW,7500,1,Lecture,"1","Staff","We 10:10AM - 12:00PM","TBA","JAG School Course","Survey of Military Justice",Open,6,7,0
-18886,LAW,7605,1,Lecture,"2","Michael Ross","MoTuWeThFr 1:00PM - 3:00PM","Slaughter Hall 284","Ethics, Integrity, and Avoiding "Club Fed" (SC)","",Open,9,19,0
+18886,LAW,7605,1,Lecture,"2","Michael Ross","MoTuWeThFr 1:00PM - 3:00PM","Slaughter Hall 284","Ethics, Integrity, and Avoiding 'Club Fed' (SC)","",Open,9,19,0
 18953,LAW,7606,1,Lecture,"1","Richard Crawford","ThFr 4:00PM - 5:30PM","Slaughter Hall 366","Finance of Small Enterprise (SC)","",Open,11,17,0
 18925,LAW,7609,1,Lecture,"1","Robert Sayler","We 1:30PM - 3:30PM","Withers-Brown Hall 129","Rhetoric (SC)","",Closed,16,16,0
 18893,LAW,7613,1,Lecture,"1","Timothy McEvoy","TuTh 11:25AM - 12:55PM","Withers-Brown Hall 127","Globalization and International Civil Litigation (SC)","",Open,16,19,0

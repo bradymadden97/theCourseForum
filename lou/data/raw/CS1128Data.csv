@@ -799,7 +799,7 @@ ClassNumber,Mnemonic,Number,Section,Type,Units,Instructor,Days,Room,Title,Topic,
 14443,ARTH,1051,112,Discussion,"4","Alicia Dissinger","Th 6:00PM - 6:50PM","Contact Department","History of Art I","",Open,3,15,0
 10324,ARTH,2251,100,Lecture,"3","Paul Barolsky","TuTh 12:30PM - 1:45PM","Campbell Hall 160","Italian Renaissance Art","",Open,81,90,0
 16121,ARTH,2281,001,Lecture,"3","Lawrence Goedde","MoWe 5:00PM - 6:15PM","Campbell Hall 160","Baroque Art in Europe","",Open,57,90,0
-19810,ARTH,2372,001,Lecture,"3","Sarah Betzer","TuTh 11:00AM - 12:15PM","Campbell Hall 160","Paris, "Capital of the Nineteenth Century"","",Open,89,90,0
+19810,ARTH,2372,001,Lecture,"3","Sarah Betzer","TuTh 11:00AM - 12:15PM","Campbell Hall 160","Paris, 'Capital of the Nineteenth Century'","",Open,89,90,0
 11998,ARTH,2471,100,Lecture,"4","Howard Singerman","TuTh 3:30PM - 4:45PM","Campbell Hall 153","Art Since 1945","",Open,132,135,0
 11999,ARTH,2471,101,Discussion,"4","Jennifer Grayburn","Mo 9:00AM - 9:50AM","Fayerweather Hall 208","Art Since 1945","",Closed,15,15,0
 12000,ARTH,2471,102,Discussion,"4","Jennifer Grayburn","Mo 10:00AM - 10:50AM","Fayerweather Hall 208","Art Since 1945","",Closed,15,15,0
@@ -4756,7 +4756,7 @@ ClassNumber,Mnemonic,Number,Section,Type,Units,Instructor,Days,Room,Title,Topic,
 21437,GBUS,8304,1,Lecture,"1.5","Staff","TBA","TBA","Consumer Psychology","",Open,0,0,0
 21389,GBUS,8308,001,Lecture,"1.5","Alexander Horniman","ThFr 8:00AM - 9:25AM","TBA","Leadership Learning Lab","",Open,38,65,0
 21295,GBUS,8401,001,Lecture,"1","Staff","TBA","TBA","Cross-Cultural Internship","",Open,50,300,0
-21296,GBUS,8404,001,Lecture,"1.5","George Barbee","MoTu 2:45PM - 4:10PM","TBA","Innovating and Integrating in Services - The "New" Economy","",Open,28,65,0
+21296,GBUS,8404,001,Lecture,"1.5","George Barbee","MoTu 2:45PM - 4:10PM","TBA","Innovating and Integrating in Services - The 'New' Economy","",Open,28,65,0
 21298,GBUS,8414,001,Lecture,"1.5","June West","MoTu 2:45PM - 4:10PM","TBA","Advanced Managerial Communication","",Open,0,42,0
 21374,GBUS,8423,013,Lecture,"1.5","Kenneth Eades","TBA","TBA","Corporate Financial Policies","",Open,26,65,0
 21348,GBUS,8426,001,Lecture,"1.5","Staff","TBA","TBA","Derivative Securities: Options and Futures","",Open,0,0,0

@@ -8835,14 +8835,14 @@ ClassNumber,Mnemonic,Number,Section,Type,Units,Instructor,Days,Room,Title,Topic,
 12347,RELG,2630,004,Seminar,"3","Shelli Poe","TuTh 12:30PM - 1:45PM","Gibson Hall 341","Business, Ethics, and Society","",Open,20,25,0
 12346,RELG,2630,005,Seminar,"3","Laura Alexander","TuTh 12:30PM - 1:45PM","Gibson Hall 342","Business, Ethics, and Society","",Open,24,25,0
 21234,RELG,2630,006,Seminar,"3","Stephen Braun","TuTh 11:00AM - 12:15PM","Gibson Hall 142","Business, Ethics, and Society","",Open,19,20,0
-16314,RELG,2660,100,Lecture,"3","Matthew Hedstrom","MoWe 1:00PM - 1:50PM","Nau Hall 101",""Spiritual But Not Religious": Spirituality in America","",Closed,130,130,0
-20087,RELG,2660,101,Discussion,"3","Aaron Walton","Th 5:00PM - 5:50PM","New Cabell Hall 419",""Spiritual But Not Religious": Spirituality in America","",Closed,21,20,0
-20088,RELG,2660,102,Discussion,"3","Aaron Walton","Th 6:00PM - 6:50PM","Nau Hall 141",""Spiritual But Not Religious": Spirituality in America","",Closed,20,20,0
-20089,RELG,2660,103,Discussion,"3","Aaron Walton","Th 7:00PM - 7:50PM","Gibson Hall 242",""Spiritual But Not Religious": Spirituality in America","",Closed,21,20,0
-20090,RELG,2660,104,Discussion,"3","Reuben Shank","We 8:00PM - 8:50PM","Gibson Hall 141",""Spiritual But Not Religious": Spirituality in America","",Open,18,20,0
-20091,RELG,2660,105,Discussion,"3","Reuben Shank","We 6:00PM - 6:50PM","Gibson Hall 041",""Spiritual But Not Religious": Spirituality in America","",Closed,20,20,0
-20085,RELG,2660,106,Discussion,"3","Reuben Shank","We 7:00PM - 7:50PM","Gibson Hall 141",""Spiritual But Not Religious": Spirituality in America","",Open,18,20,0
-20086,RELG,2660,107,Discussion,"3","Matthew Hedstrom","We 7:00PM - 7:50PM","Gibson Hall 241",""Spiritual But Not Religious": Spirituality in America","",Closed,12,10,0
+16314,RELG,2660,100,Lecture,"3","Matthew Hedstrom","MoWe 1:00PM - 1:50PM","Nau Hall 101","'Spiritual But Not Religious': Spirituality in America","",Closed,130,130,0
+20087,RELG,2660,101,Discussion,"3","Aaron Walton","Th 5:00PM - 5:50PM","New Cabell Hall 419","'Spiritual But Not Religious': Spirituality in America","",Closed,21,20,0
+20088,RELG,2660,102,Discussion,"3","Aaron Walton","Th 6:00PM - 6:50PM","Nau Hall 141","'Spiritual But Not Religious': Spirituality in America","",Closed,20,20,0
+20089,RELG,2660,103,Discussion,"3","Aaron Walton","Th 7:00PM - 7:50PM","Gibson Hall 242","'Spiritual But Not Religious': Spirituality in America","",Closed,21,20,0
+20090,RELG,2660,104,Discussion,"3","Reuben Shank","We 8:00PM - 8:50PM","Gibson Hall 141","'Spiritual But Not Religious': Spirituality in America","",Open,18,20,0
+20091,RELG,2660,105,Discussion,"3","Reuben Shank","We 6:00PM - 6:50PM","Gibson Hall 041","'Spiritual But Not Religious': Spirituality in America","",Closed,20,20,0
+20085,RELG,2660,106,Discussion,"3","Reuben Shank","We 7:00PM - 7:50PM","Gibson Hall 141","'Spiritual But Not Religious': Spirituality in America","",Open,18,20,0
+20086,RELG,2660,107,Discussion,"3","Matthew Hedstrom","We 7:00PM - 7:50PM","Gibson Hall 241","'Spiritual But Not Religious': Spirituality in America","",Closed,12,10,0
 20909,RELG,2713,100,Lecture,"3","Gregory Goering","MoWe 2:00PM - 2:50PM","Gibson Hall 211","Sensing the Sacred: Sensory Perceptions and Religious Imagination","",Open,19,60,0
 20910,RELG,2713,101,Discussion,"3","Matthew Farley","Fr 9:00AM - 9:50AM","Gibson Hall 342","Sensing the Sacred: Sensory Perceptions and Religious Imagination","",Open,4,20,0
 20911,RELG,2713,102,Discussion,"3","Matthew Farley","Fr 10:00AM - 10:50AM","Gibson Hall 341","Sensing the Sacred: Sensory Perceptions and Religious Imagination","",Open,8,20,0

@@ -26,28 +26,9 @@ class Professor < ActiveRecord::Base
       return self.last_name + ", " + self.first_name
     end
   end
-    
 
-  def courses_in_subdepartment(subdepartment)
-    courses.where(:subdepartment_id => subdepartment.id)
-  end
-
-  def most_taught_subdepartment
-    counts = Hash.new(0)
-
-    courses.each do |course|
-      counts[course.subdepartment.id.to_s.to_sym] += 1
-    end
-
-    subdepartment_id = counts.max_by do |id, count|
-      count
-    end
-
-    if subdepartment_id
-      Subdepartment.find(subdepartment_id.first)
-    else
-      return nil
-    end
+  def courses_in_departments(subdepartment)
+    courses.where(:subdepartment_id => subdepartment.departments.flat_map(&:subdepartments).uniq.map(&:id))
   end
 
   def courses_in_subdepartment(subdepartment)
@@ -88,6 +69,14 @@ class Professor < ActiveRecord::Base
       # After we clear out section_professors for this professor, we delete it
       professor.destroy
     end
+  end
+
+  def self.find_by_name(name)
+    find_by(:first_name => name.split(' ')[0], :last_name => name.split(' ')[1])
+  end
+
+  def self.where_name(name)
+    where(:first_name => name.split(' ')[0], :last_name => name.split(' ')[1])
   end
 
 end

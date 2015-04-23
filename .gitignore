@@ -16,6 +16,7 @@
 /lou/log
 /lou/data/csv/*.csv
 /lou/duplicates
+/lou/backups
 /tmp
 /config/database.yml
 

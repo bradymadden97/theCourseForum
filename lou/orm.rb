@@ -111,6 +111,7 @@ Dir.entries("#{Rails.root.to_s}/lou/data/csv/").sort_by(&:to_s).each do |file|
 			# If no subdepartment exists, need to create
 			unless subdepartment
 				log.puts "Creating Subdepartment: #{data[:mnemonic]}"
+				puts "Creating Subdepartment: #{data[:mnemonic]}"
 				# Only pass in mnemonic
 				subdepartment = Subdepartment.create({
 					:mnemonic => data[:mnemonic] # i.e. "CS"
@@ -192,8 +193,8 @@ Dir.entries("#{Rails.root.to_s}/lou/data/csv/").sort_by(&:to_s).each do |file|
 							# Next, we begin considering how many courses each possible professor has taught in the target subdepartment
 							# If no professor has ever taught in this subdepartment, then count will never be greater than initial max (0) so therefore we probably need a new professor
 							# Works no matter if possible_professors found one or multiple matches
-							elsif possibility.courses_in_subdepartment(subdepartment).count > max
-								max = possibility.courses_in_subdepartment(subdepartment).count
+							elsif possibility.courses_in_departments(subdepartment).count > max
+								max = possibility.courses_in_departments(subdepartment).count
 								decision = possibility
 							end
 							# Notice that we don't have an else clause here - it is fully possible that our automated decision matrix does not find a match
