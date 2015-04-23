@@ -27,7 +27,7 @@
 ### Intermediate ###
 
 # 1. Compute the average rating for all courses in the COMM subdepartment.
-puts Subdepartment.find_by(:mnemonic => 'COMM').courses.map{|x| [x.title,x.reviews.map{|y| ((y.recommend+y.enjoyability+y.professor_rating)/(3*x.reviews.length)).round(2)}.inject(:+)]}
+# Subdepartment.find_by(:mnemonic => 'COMM').courses.map{|x| [x.title,x.reviews.map{|y| ((y.recommend+y.enjoyability+y.professor_rating)/(3*x.reviews.length)).round(2)}.inject(:+)]}
 
 # 2. Find the subdepartment with the largest amount of reviews.
 # Subdepartment.all.map{|x| [x.name, x.courses.map{|y| y.reviews}.flatten.count]}.sort_by{|x| x[1]}.last # This takes a while
