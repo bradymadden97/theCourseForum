@@ -40,7 +40,7 @@
 # 	}.count
 
 # 4. Find the Subdepartment with the most total capacity.
-# puts Subdepartment.includes(:courses => :sections).load#.map(&:sections)
+puts Subdepartment.includes(:courses => :sections).where('sections.semester_id = ?', 24).load.map{|x| [x.name, x.courses]}.map{|x| [x[0], x[1].map{|c| c.sections.map(&:capacity).inject(:+)}.inject(:+)]}.max_by{|x| x[1]}
 
 # 5. Find the average units per course in the CS department.
 # 6. Return a course matching by title, i.e. "Program and Data" - notice no "Representation"!
