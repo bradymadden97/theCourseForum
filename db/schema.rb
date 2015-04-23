@@ -50,11 +50,6 @@ ActiveRecord::Schema.define(version: 20150401202146) do
     t.integer  "user_id"
   end
 
-  create_table "calendar_sections", force: true do |t|
-    t.integer "section_id"
-    t.integer "user_id"
-  end
-
   create_table "courses", force: true do |t|
     t.string   "title"
     t.decimal  "course_number",    precision: 4, scale: 0, default: 0
@@ -102,8 +97,8 @@ ActiveRecord::Schema.define(version: 20150401202146) do
   end
 
   create_table "grades", force: true do |t|
-    t.integer  "section_id"
-    t.integer  "semester_id"
+    t.integer  "section_id",                                           null: false
+    t.integer  "professor_id",                                         null: false
     t.decimal  "gpa",            precision: 4, scale: 3, default: 0.0
     t.integer  "count_a"
     t.integer  "count_aminus"
@@ -126,8 +121,7 @@ ActiveRecord::Schema.define(version: 20150401202146) do
     t.integer  "total"
   end
 
-  add_index "grades", ["section_id"], name: "index_grades_on_CourseProfessor_id", using: :btree
-  add_index "grades", ["semester_id"], name: "index_grades_on_semester_id", using: :btree
+  add_index "grades", ["section_id", "professor_id"], name: "unique_index", unique: true, using: :btree
 
   create_table "locations", force: true do |t|
     t.string   "location"
@@ -248,13 +242,6 @@ ActiveRecord::Schema.define(version: 20150401202146) do
     t.integer  "course_id"
     t.integer  "semester_id"
   end
-
-  create_table "sections_users", id: false, force: true do |t|
-    t.integer "section_id"
-    t.integer "user_id"
-  end
-
-  add_index "sections_users", ["user_id", "section_id"], name: "index_sections_users_on_user_id_and_section_id", unique: true, using: :btree
 
   create_table "semesters", force: true do |t|
     t.integer  "number"
