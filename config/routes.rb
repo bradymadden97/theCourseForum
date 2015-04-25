@@ -22,7 +22,7 @@ TheCourseForum::Application.routes.draw do
 
   resources :courses, :only => [:show]
 
-  resources :majors, :only => [:index]
+  resources :majors, :only => [:index, :show]
 
   get '/scheduler' => 'scheduler#scheduler'
   get '/scheduler/search' => 'scheduler#search'

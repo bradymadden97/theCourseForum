@@ -1,19 +1,7 @@
-- content_for :title, "Majors"
-h1 Majors
-.row
-  .col-md-12
-    = select_tag "major-name".to_sym, options_for_select(@majors.map(&:name)), include_blank: true, class: 'form-control'
+- content_for :page_heading, "Major Requirements"
 
-hr
-
-p id="loading" style="display: none" Loading...
-
-.row
-  .col-md-12 id="major-requirements-list"
-
-p &nbsp
-
-javascript:
-
-  document.getElementById("major-name").selectedIndex = -1;
-      
+h2 Majors
+- @majors.each do |major|
+  .row
+    .col-sm-6
+      = link_to major.full_name, major_path(major.id)

@@ -26,3 +26,17 @@ bme = MajorRequirement.create(
 	:category => 'BME Elective',
 	:credits_required => 9
 )
+
+bme.courses = Course.find_by_mnemonic_numbers([
+	'BME 4414',
+	'BME 4641',
+	'BME 4890',
+	'BME 4550',
+	'BME 4280',
+	'BME 4417',
+	'BME 4783',
+	'BME 4806',
+	'BME 4550',
+	'BME 4995',
+	'BME 4993'
+])

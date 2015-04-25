@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150424205011) do
+ActiveRecord::Schema.define(version: 20150425173535) do
 
   create_table "book_requirements", id: false, force: true do |t|
     t.integer "section_id"
@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(version: 20150424205011) do
 
   add_index "courses", ["subdepartment_id"], name: "index_courses_on_subdepartment_id", using: :btree
 
-  create_table "courses_major_requirements_tables", force: true do |t|
+  create_table "courses_major_requirements", force: true do |t|
     t.integer "course_id"
     t.integer "major_requirement_id"
   end
@@ -107,8 +107,8 @@ ActiveRecord::Schema.define(version: 20150424205011) do
   end
 
   create_table "grades", force: true do |t|
-    t.integer  "section_id"
-    t.integer  "semester_id"
+    t.integer  "section_id",                                           null: false
+    t.integer  "professor_id",                                         null: false
     t.decimal  "gpa",            precision: 4, scale: 3, default: 0.0
     t.integer  "count_a"
     t.integer  "count_aminus"
@@ -131,9 +131,6 @@ ActiveRecord::Schema.define(version: 20150424205011) do
     t.integer  "total"
   end
 
-  add_index "grades", ["section_id"], name: "index_grades_on_CourseProfessor_id", using: :btree
-  add_index "grades", ["semester_id"], name: "index_grades_on_semester_id", using: :btree
-
   create_table "locations", force: true do |t|
     t.string   "location"
     t.datetime "created_at"
@@ -141,18 +138,18 @@ ActiveRecord::Schema.define(version: 20150424205011) do
   end
 
   create_table "major_requirements", force: true do |t|
-    t.integer  "major_id",            null: false
-    t.string   "category",            null: false
-    t.integer  "percentage_required", null: false
+    t.integer  "major_id"
+    t.integer  "credits_required", null: false
+    t.string   "category"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "majors", force: true do |t|
-    t.string   "name",           null: false
-    t.string   "specialization", null: false
+    t.string   "name"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.string   "specialization"
   end
 
   create_table "professor_salary", force: true do |t|

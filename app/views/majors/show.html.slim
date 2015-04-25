@@ -1,0 +1,23 @@
+- content_for :page_heading, "#{@major.full_name}"
+
+#major-accordion.panel-group aria-multiselectable="true" role="tablist"
+  - @major.major_requirements.each do |major_requirement|
+    .panel.panel-default
+      .panel-heading role="tab" id="#{major_requirement.id}-heading"
+        .panel-title
+          a.collapsed aria-controls="#{major_requirement.id}-collapse" aria-expanded="false" data-parent="#major-accordion" data-toggle="collapse" href="##{major_requirement.id}-collapse"
+            .major-glyph
+              span.glyphicon class="glyphicon-#{['plus', 'star', 'th-list', 'pencil', 'ok', 'search', 'time', 'home', 'tag', 'flag', 'edit', 'share'].sample}"
+            h3.category-title = "#{major_requirement.category} - #{major_requirement.credits_required} credits required"
+      .panel-collapse.collapse aria-labelledby="#{major_requirement.id}-heading" role="tabpanel" id="#{major_requirement.id}-collapse"
+        .panel-body
+          .row
+            .col-sm-6
+              - (0..major_requirement.courses.count - 1).step(2) do |index|
+                - course = major_requirement.courses[index]
+                .major = link_to "#{course.mnemonic_number} - #{course.title}", course_path(course)
+            .col-sm-6
+              - (1..major_requirement.courses.count - 1).step(2) do |index|
+                - course = major_requirement.courses[index]
+                - if course
+                  .major = link_to "#{course.mnemonic_number} - #{course.title}", course_path(course)
