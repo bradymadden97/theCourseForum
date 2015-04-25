@@ -26,10 +26,10 @@ DELIMITER = Digest::SHA1.hexdigest 'DELIMITER'
 ActiveRecord::Base.logger.level = 1
 
 puts "Dump or Import: (d/i)"
-dori = gets.chomp
+choice = gets.chomp
 
 ######## DUMP ########
-if dori == 'd'
+if choice == 'd'
 	# For timing purposes
 	start_time = Time.now
 	# open log file
@@ -39,21 +39,22 @@ if dori == 'd'
 
 	log.puts "DUMPING REVIEWS"
 
+	bad_reviews = 0
+
 	# Generate the csv (an all or nothing approach)
 	csv_string = CSV.generate do |csv|
 		
 		# Create the proper header
-		header = (Review.column_names - ["course_id", "professor_id"]) + ["mnemonic", "course_number", "first_name", "last_name"]
+		header = (Review.column_names - ["course_id", "professor_id"]) + ["mnemonic", "course_number", "first_name", "last_name", "professor_email", "student_email"]
 		csv << header
 
 		# Dump all reviews
 		Review.includes(:course, :professor).load.each do |review|
-			log.puts "Dumping review #{review.id}"
-
 			# Check if there is assoc. course
 			unless review.course
 				log.puts "\tError: NO COURSE"
 				log.puts "\tSkipping review #{review.id}"
+				bad_reviews += 1
 				next
 			end
 
@@ -61,6 +62,7 @@ if dori == 'd'
 			unless review.professor
 				log.puts "\tError: NO PROFESSOR"
 				log.puts "\tSkipping review #{review.id}"
+				bad_reviews += 1
 				next
 			end
 
@@ -69,9 +71,9 @@ if dori == 'd'
 			# Include mnemonic and course_number
 			course_info = review.course.subdepartment.attributes.values_at("mnemonic") + review.course.attributes.values_at("course_number")
 			# Include professor first/last name
-			prof_info = review.professor.attributes.values_at("first_name", "last_name")
+			prof_info = review.professor.attributes.values_at("first_name", "last_name", "professor_email")
 
-			csv << column_info + course_info + prof_info
+			csv << column_info + course_info + prof_info + [review.user.email]
 		end
 	end
 
@@ -83,52 +85,57 @@ if dori == 'd'
 	log.close
 
 	# How long did this take?
+	puts "#{bad_reviews} total bad reviews"
 	puts "Dump Reviews - Total Runtime: #{((Time.now - start_time) / 60).round(2)} minutes"
-	
-
 
 ######## IMPORT ########
-elsif dori == 'i'
+else
 	# For timing purposes
 	start_time = Time.now
 	# open log file
-	log = File.open("#{Rails.root.to_s}/data/ReviewsImportLog_#{start_time.strftime("%Y.%m.%d-%H:%M")}.log", 'w')
+	log = File.open("#{Rails.root.to_s}/lou/reviews_import_log_#{start_time.strftime("%Y.%m.%d-%H:%M")}.log", 'w')
 	# Open ReviewsDump.csv file
-	file = File.read("#{Rails.root.to_s}/data/ReviewsDump.csv")
+	file = File.read("#{Rails.root.to_s}/lou/reviews_dump.csv")
 	# Parse the csv file, 
 	csv = CSV.parse(file, :headers => true)
 	
 	log.puts "IMPORTING REVIEWS"
+
+	failed = 0
 
 	# Go through each line in the csv file
 	csv.each do |raw|
 		# Create the hash (this works because :headers => true)
 		row = raw.to_hash
 
-		log.puts "Importing review #{row["id"]}"
-
 		# Try to find course
-		course = Course.find_by_mnemonic_number(row["mnemonic"], row["course_number"])
+		course = Course.find_by_mnemonic_number("#{row["mnemonic"]} #{row["course_number"]}")
 		unless course
-			log.puts "\tError: Course not found: #{row["mnemonic"]} #{row["course_number"]}"
-			log.puts "\tSkipping.."
+			log.puts "Error: Course not found: #{row["mnemonic"]} #{row["course_number"]}"
+			failed += 1
 			next
 		end
 
 		# Declare Professor
 		professor = nil
 		# Try to find professor
-		Professor.where("first_name" => row["first_name"], "last_name" => row["last_name"]).each do |temp_prof|
+		if row["professor_email"]
+			professor = Professor.find_by(:email_alias => row["professor_email"])
+		else
+			Professor.where(:first_name => row["first_name"], :last_name => row["last_name"]).each do |candidate|
 			# Operating under the assumption that there are no professors with the same name that have taught the same course. 
 			# future TODO? build in logic to log the case ^^
-			if temp_prof.courses_list.include?(course)
-				professor = temp_prof
-				break
+				if !professor and candidate.courses.include?(course)
+					professor = candidate
+				elsif candidate.courses.include?(course)
+					puts "Multiple Professors Same Course #{course.mnemonic_number} #{row["first_name"]} #{row["last_name"]}"
+				end
 			end
 		end
+
 		unless professor
-			log.puts "\tError: Professor not found: #{row["first_name"]} #{row["last_name"]}"
-			log.puts "\tSkipping.."
+			log.puts "Error: Professor not found: #{row["first_name"]} #{row["last_name"]}"
+			failed += 1
 			next
 		end
 
@@ -137,20 +144,21 @@ elsif dori == 'i'
 			Review.column_names.exclude? key
 		end
 
-		# Add the discovered id's!
-		columns["course_id"] = course.id
-		columns["professor_id"] = professor.id
+		user = User.find_by(:email => row["student_email"])
 
-		# Test to see if parsing works
-		# columns.each do |key, value|
-		# 	log.puts "\t#{key}: #{value}"
-		# end
+		unless user
+			log.puts "Error: No User Found #{row["student_email"]}"
+			failed += 1
+			next
+		end
+
+		# Add the discovered id's!
+		columns[:course_id] = course.id
+		columns[:professor_id] = professor.id
+		columns[:student_id] = user.id
 
 		# Convert columns (CSV::row -> Hash) and CREATE!
 		Review.create(columns.to_hash)
-
-		log.puts "Review created!"
-
 	end
 
 	# Close log file
@@ -159,7 +167,5 @@ elsif dori == 'i'
 
 	# How long did this take?
 	puts "Import Reviews - Total Runtime: #{((Time.now - start_time) / 60).round(2)} minutes"
-
-else
-	puts 'bad input'
+	puts "#{failed} bad reviews"
 end

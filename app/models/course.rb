@@ -31,14 +31,12 @@ class Course < ActiveRecord::Base
     self.sections.select(:units).max.units.to_i
   end
 
-  def self.find_by_mnemonic_number(mnemonic, number)
-    sub = Subdepartment.find_by(:mnemonic => mnemonic)
+  def self.find_by_mnemonic_number(mnemonic_number)
+    mnemonic, number = *(mnemonic_number.split(' '))
+    subdepartment = Subdepartment.find_by(:mnemonic => mnemonic)
     # Watch for calling method on nil class
-    if sub
-      sub.courses.find_by(:course_number => number)
-    else
-      nil
-    end
+
+    subdepartment ? subdepartment.courses.find_by(:course_number => number) : nil
   end
 
 end
