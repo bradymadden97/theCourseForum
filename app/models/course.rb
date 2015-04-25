@@ -31,12 +31,19 @@ class Course < ActiveRecord::Base
     self.sections.select(:units).max.units.to_i
   end
 
-  def self.find_by_mnemonic_number(mnemonic, number)
+  def self.find_by_mnemonic_number(mnemonic_number)
+    mnemonic, number = *mnemonic_number.split(' ')
     subdepartment = Subdepartment.includes(:courses).find_by(:mnemonic => mnemonic)
     if subdepartment
       subdepartment.courses.find_by(:course_number => number)
     else
       nil
+    end
+  end
+
+  def self.find_by_mnemonic_numbers(mnemonic_numbers)
+    mnemonic_numbers.map do |mnemonic_number|
+      self.find_by_mnemonic_number(mnemonic_number)
     end
   end
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150401202146) do
+ActiveRecord::Schema.define(version: 20150424205011) do
 
   create_table "book_requirements", id: false, force: true do |t|
     t.integer "section_id"
@@ -65,6 +65,11 @@ ActiveRecord::Schema.define(version: 20150401202146) do
   end
 
   add_index "courses", ["subdepartment_id"], name: "index_courses_on_subdepartment_id", using: :btree
+
+  create_table "courses_major_requirements_tables", force: true do |t|
+    t.integer "course_id"
+    t.integer "major_requirement_id"
+  end
 
   create_table "courses_users", id: false, force: true do |t|
     t.integer "course_id"
@@ -135,10 +140,19 @@ ActiveRecord::Schema.define(version: 20150401202146) do
     t.datetime "updated_at"
   end
 
+  create_table "major_requirements", force: true do |t|
+    t.integer  "major_id",            null: false
+    t.string   "category",            null: false
+    t.integer  "percentage_required", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "majors", force: true do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",           null: false
+    t.string   "specialization", null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "professor_salary", force: true do |t|
@@ -207,9 +221,17 @@ ActiveRecord::Schema.define(version: 20150401202146) do
   create_table "schedules", force: true do |t|
     t.string   "name"
     t.integer  "user_id"
+    t.boolean  "flagged"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "schedules_sections", id: false, force: true do |t|
+    t.integer "schedule_id", null: false
+    t.integer "section_id",  null: false
+  end
+
+  add_index "schedules_sections", ["schedule_id", "section_id"], name: "index_schedules_sections_on_schedule_id_and_section_id", unique: true, using: :btree
 
   create_table "schools", force: true do |t|
     t.string   "name"

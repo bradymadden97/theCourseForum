@@ -1,0 +1,19 @@
+- content_for :title, "Majors"
+h1 Majors
+.row
+  .col-md-12
+    = select_tag "major-name".to_sym, options_for_select(@majors.map(&:name)), include_blank: true, class: 'form-control'
+
+hr
+
+p id="loading" style="display: none" Loading...
+
+.row
+  .col-md-12 id="major-requirements-list"
+
+p &nbsp
+
+javascript:
+
+  document.getElementById("major-name").selectedIndex = -1;
+      
