@@ -2,7 +2,7 @@ bscs = Major.create(:name => 'Computer Science', :specialization => 'Bachelor of
 core = MajorRequirement.create(
 	:major_id => bscs.id,
 	:category => 'Core',
-	:percentage_required => 100
+	:credits_required => 31
 )
 
 core.courses = Course.find_by_mnemonic_numbers([
@@ -22,7 +22,7 @@ core.courses = Course.find_by_mnemonic_numbers([
 digital_logic = MajorRequirement.create(
 	:major_id => bscs.id,
 	:category => 'Digital Logic Design',
-	:percentage_required => 50
+	:credits_required => 3
 )
 
 digital_logic.courses = Course.find_by_mnemonic_numbers([
@@ -33,7 +33,7 @@ digital_logic.courses = Course.find_by_mnemonic_numbers([
 capstone = MajorRequirement.create(
 	:major_id => bscs.id,
 	:category => 'Capstone',
-	:percentage_required => 50
+	:credits_required => 2
 )
 
 capstone.courses = Course.find_by_mnemonic_numbers([
@@ -44,7 +44,7 @@ capstone.courses = Course.find_by_mnemonic_numbers([
 apma = MajorRequirement.create(
 	:major_id => bscs.id,
 	:category => 'APMA',
-	:percentage_required => 66
+	:credits_required => 6
 )
 
 apma.courses = Course.find_by_mnemonic_numbers([
