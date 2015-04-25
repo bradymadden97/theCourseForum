@@ -1,4 +1,5 @@
 bscs = Major.create(:name => 'Computer Science', :specialization => 'Bachelor of Science')
+
 core = MajorRequirement.create(
 	:major_id => bscs.id,
 	:category => 'Core',
