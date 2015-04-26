@@ -82,39 +82,54 @@ body {
   margin-top: 50px;
   margin-left: auto;
   margin-right: auto;
-}
 
-aside {
-  width: $sidebar-width;
-  overflow: auto;
-  background-color: white;
-  padding-bottom: 20px;
-  padding-top: 20px;
-  float: left;
-  @media only screen and (max-width: 1200px) {
-    display: none;
-  }
-}
-
-section#main {
-  margin-left: $sidebar-width + $sidebar-margin;
-  @media only screen and (max-width: 1200px) {
-    margin-left: 0;
+  aside {
+    width: $sidebar-width;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: white;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    float: left;
+    border: 1px solid #CCCCCC;
+    @media only screen and (max-width: 1200px) {
+      display: none;
+    }
   }
 
-  width: $main-width;
-  
-  #main-container {
-    background-color: #EEE;
-    height: 100%;
-    overflow: auto;
-    padding: 20px 20px;
+  section#main {
+    margin-left: $sidebar-width + $sidebar-margin;
+    border: 1px solid #CCCCCC;
+    @media only screen and (max-width: 1200px) {
+      margin-left: 0;
+    }
 
-    #content-container {
-      box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.4), inset 0px 0px 0px 1px rgba(255, 255, 255, 0.07);
+    width: $main-width;
+
+    #header {
+      padding: 17.5px 0px;
+      margin: 0;
+      width: 100%;
+      border-bottom: 1px solid #CCCCCC;
       background-color: white;
-      padding-bottom: 20px;
-      padding-top: 20px;
+
+      .page-title {
+        margin: 0px;
+      }
+    }
+    
+    #main-container {
+      background-color: #EEE;
+      height: 100%;
+      overflow: auto;
+      padding: 0px 0px;
+
+      #content-container {
+        // box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.4), inset 0px 0px 0px 1px rgba(255, 255, 255, 0.07);
+        background-color: white;
+        padding-bottom: 20px;
+        padding-top: 20px;
+      }
     }
   }
 }
@@ -174,9 +189,4 @@ select {
 
 .text-white {
   color: white;
-}
-
-.page-title {
-  margin-top: 0px;
-  margin-bottom: 31px;
 }

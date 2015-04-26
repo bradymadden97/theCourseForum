@@ -3,7 +3,7 @@
     .row.nav-row.search-row
       .col-xs-12
         .col-wrapper
-          span.glyphicon.glyphicon.glyphicon-search
+          span = image_tag "icons/tcf-search-icon.png"
           input type="text" placeholder="Type to Search" name="query" id="search-query"
     .row.nav-row.submit-row style="display:none;"
       .col-xs-12
@@ -13,27 +13,22 @@
     .col-xs-12
       .col-wrapper
         a href="/reviews/new"
-          i.glyphicon.glyphicon.glyphicon-pencil
+          i = image_tag "icons/tcf-review-icon.png"
           | Write a review
   .row.nav-row
     .col-xs-12
-      .col-wrapper
+      .col-wrapper#bottom-col
         a href="/browse"
-          i.glyphicon.glyphicon-list
+          i = image_tag "icons/tcf-browse-icon.png"
           | Browse All
-  .row.nav-row
-    .col-xs-12
-      .col-wrapper
-        a href="/scheduler"
-          i.glyphicon.glyphicon-calendar
-          | Scheduler
-  .row.nav-row
-    .col-xs-12
-      .col-wrapper
-        a href="/recommendation"
-          i.glyphicon.glyphicon-star
-          | Recommendations
 
+  .row.nav-row#social-links
+    .col-xs-4#facebook
+      = link_to(image_tag("icons/tcf-facebook.png"), "http://www.facebook.com/theCourseForum", :target => '_blank')
+    .col-xs-4#twitter
+      = link_to(image_tag("icons/tcf-twitter.png"), "http://www.twitter.com/theCourseForum", :target => '_blank')
+    .col-xs-4#reddit
+      = link_to(image_tag("icons/tcf-reddit.png"), "http://www.reddit.com/r/theCourseForum", :target => '_blank')
   .row.nav-row#nav-footer
     .col-cs-12
       a href="#{privacy_path}" Privacy
