@@ -108,3 +108,7 @@ gem 'figaro'
 
 # for calendar exports
 gem 'icalendar'
+
+#for gradewheel or any other charting needed
+gem "highcharts-rails", "~> 3.0.0"
+
