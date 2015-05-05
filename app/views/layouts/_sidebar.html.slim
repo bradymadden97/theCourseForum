@@ -23,12 +23,13 @@
           | Browse All
 
   .row.nav-row#social-links
-    .col-xs-4#facebook
-      = link_to(image_tag("icons/tcf-facebook.png"), "http://www.facebook.com/theCourseForum", :target => '_blank')
-    .col-xs-4#twitter
-      = link_to(image_tag("icons/tcf-twitter.png"), "http://www.twitter.com/theCourseForum", :target => '_blank')
-    .col-xs-4#reddit
-      = link_to(image_tag("icons/tcf-reddit.png"), "http://www.reddit.com/r/theCourseForum", :target => '_blank')
+    .col-xs-12.text-center
+      span#facebook
+        = link_to(image_tag("icons/tcf-facebook.png"), "http://www.facebook.com/theCourseForum", :target => '_blank')
+      span#twitter
+        = link_to(image_tag("icons/tcf-twitter.png"), "http://www.twitter.com/theCourseForum", :target => '_blank')
+      span#reddit
+        = link_to(image_tag("icons/tcf-reddit.png"), "http://www.reddit.com/r/theCourseForum", :target => '_blank')
   .row.nav-row#nav-footer
     .col-cs-12
       a href="#{privacy_path}" Privacy
