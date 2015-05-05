@@ -127,7 +127,7 @@ body {
       #content-container {
         // box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.4), inset 0px 0px 0px 1px rgba(255, 255, 255, 0.07);
         background-color: white;
-        padding-bottom: 20px;
+        padding-bottom: $main-padding-bottom;
         padding-top: 20px;
       }
     }
