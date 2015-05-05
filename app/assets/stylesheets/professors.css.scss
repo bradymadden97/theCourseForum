@@ -1,14 +1,15 @@
 @import "variables";
 
 .black-line {
-	border: solid 1px black;
+	border-color: #DDDDDD;
 	margin-top: 100px;
-
 }
+
 .professor-courses {
 	list-style-type: none; 
 	padding: 15px;
 }
+
 .avg-rating {
 	height: 90px;
 	width: 90px;
