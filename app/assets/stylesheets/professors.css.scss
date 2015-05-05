@@ -1,0 +1,20 @@
+@import "variables";
+
+.black-line {
+	border: solid 1px black;
+	margin-top: 100px;
+
+}
+.professor-courses {
+	list-style-type: none; 
+	padding: 15px;
+}
+.avg-rating {
+	height: 90px;
+	width: 90px;
+	background-color: #D75626;
+	color: #FFFFFF;
+	text-align: center;
+	padding-top: 10px
+}
+
