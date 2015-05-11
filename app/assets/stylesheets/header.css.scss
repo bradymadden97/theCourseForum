@@ -18,21 +18,18 @@
     padding: 0;
     width: $sidebar-width;
     text-align: center;
+
     #logo {
       padding: 10px;
     }
   }
-  // .navbar-brand:focus, .navbar-brand:hover {
-  //   background-color: $orange;
-  //   color: white;
-  // }
-}
 
-.navbar-default .navbar-nav > li > a {
-  color: $blue;
-  font-size: $subtitle-font-size;
-}
+  .navbar-nav > li > a {
+    color: $blue;
+    font-size: $navbar-font-size
+  }
 
-#report-bug:hover {
-  cursor: pointer;
+  #report-bug:hover {
+    cursor: pointer;
+  }
 }
