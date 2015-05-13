@@ -4,8 +4,9 @@
 # 	This information is provided with the lou's data.
 # 	Go through sections and identify their respective course with MNEMONIC + NUMBER
 # 	and add the description, if not yet done so.
+# For the future semesters, the descriptions should be updated by new logic.
 
-# Squash SQL outputs into the log - can remove to see raw sql queries made
+# FasterCSV library for ease of parsing, handles commas nested inside quotes too
 require 'csv'
 
 # Squash SQL outputs into the log - can remove to see raw sql queries made
@@ -17,8 +18,8 @@ start_time = Time.now
 log = File.open("#{Rails.root.to_s}/descriptions/add_descriptions_log_#{start_time.strftime("%Y.%m.%d-%H:%M")}.log", 'w')
 
 # Go through every file inside descriptions/lous to load into database
-# Sorted so earlier semesters are done first
-Dir.entries("#{Rails.root.to_s}/descriptions/lous/").sort_by(&:to_s).each do |file|
+# Sorted so later semesters are done first
+Dir.entries("#{Rails.root.to_s}/descriptions/lous/").sort_by(&:to_s).reverse.each do |file|
 	# Skip these directory contents
 	if file[0] == '.'
 		next

@@ -54,4 +54,15 @@ class Course < ActiveRecord::Base
     return false
   end
 
+  def prerequisites
+    if self.description
+      prereqs = self.description.split('Prerequis')[1]
+      if prereqs
+        prereqs[prereqs.index(' ')+1..-1]
+      else
+        nil
+      end
+    end
+  end
+
 end
