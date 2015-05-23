@@ -121,7 +121,8 @@ var ready = function() {
 					response($.map(data, function(item) {
 						return {
 							label: item.mnemonic_number + " " + item.title,
-							value: item.course_id
+							value: item.mnemonic_number,
+							course_id: item.course_id
 						}
 					}));
 				}
@@ -129,12 +130,10 @@ var ready = function() {
 		},
 		minLength: 2,
 		select: function(event, ui) {
-			$('#searchbox').val(ui.item.label);
-			window.location = "/courses/" + ui.item.value;
+			window.location = "/courses/" + ui.item.course_id;
 			return false;
 		}
 	});
-
 
 	var prof_ajax = $.ajax();
 
