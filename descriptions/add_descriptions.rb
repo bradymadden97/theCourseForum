@@ -1,10 +1,11 @@
 # Author: Lawrence Hook
 
 # GOAL - Add course descriptions to courses
-# 	This information is provided with the lou's data.
-# 	Go through sections and identify their respective course with MNEMONIC + NUMBER
-# 	and add the description, if not yet done so.
-# For the future semesters, the descriptions should be updated by new logic.
+
+# mysql> ALTER TABLE courses ADD description text AFTER title;
+# 	command to add description column to database
+
+# In future, logic should be updated to support "updating".
 
 # FasterCSV library for ease of parsing, handles commas nested inside quotes too
 require 'csv'
