@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby '2.0.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.0'
@@ -7,7 +8,7 @@ gem 'rails', '4.0.0'
 gem 'mysql2'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.0'
+gem 'sass-rails'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -95,7 +96,7 @@ gem 'nprogress-rails'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-gem 'bootstrap-sass', '>= 3.0.0'
+gem 'bootstrap-sass'
 gem 'will_paginate', '>=3.0.3'
 
 # Use JQuery UI
@@ -106,8 +107,10 @@ gem 'd3_rails'
 
 gem 'gon'
 gem 'rest-client'
-gem 'rb-readline', '0.5.3', require: 'readline', github: 'luislavena/rb-readline'
 gem 'figaro'
 
 # for calendar exports
 gem 'icalendar'
+
+# for new gradewheel or any other charing needed.
+gem "highcharts-rails", "~> 3.0.0"

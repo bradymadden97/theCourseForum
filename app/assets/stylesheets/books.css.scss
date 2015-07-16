@@ -1,7 +1,8 @@
-#books {
-	float: left;
+.book {
+	cursor: pointer;
 }
 
-.book {
-	list-style-type: none;
+td:hover {
+	text-decoration: underline;
+	cursor: pointer;
 }
