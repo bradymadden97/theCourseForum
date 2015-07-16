@@ -11,7 +11,7 @@
 require 'csv'
 
 # Squash SQL outputs into the log - can remove to see raw sql queries made
-ActiveRecord::Base.logger.level = 1
+# ActiveRecord::Base.logger.level = 1
 
 # For timing purposes
 start_time = Time.now
@@ -19,7 +19,7 @@ start_time = Time.now
 log = File.open("#{Rails.root.to_s}/descriptions/add_descriptions_log_#{start_time.strftime("%Y.%m.%d-%H:%M")}.log", 'w')
 
 # Go through every file inside descriptions/lous to load into database
-# Sorted so later semesters are done first
+# Sorted so more recent semesters are done first
 Dir.entries("#{Rails.root.to_s}/descriptions/lous/").sort_by(&:to_s).reverse.each do |file|
 	# Skip these directory contents
 	if file[0] == '.'
@@ -55,8 +55,7 @@ Dir.entries("#{Rails.root.to_s}/descriptions/lous/").sort_by(&:to_s).reverse.eac
 		end
 
 		unless course.description
-			course.description = row["Description"]
-			course.save
+			course.update(:description => row["Description"])
 		end
 
 	end
