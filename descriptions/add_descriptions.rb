@@ -11,7 +11,7 @@
 require 'csv'
 
 # Squash SQL outputs into the log - can remove to see raw sql queries made
-# ActiveRecord::Base.logger.level = 1
+ActiveRecord::Base.logger.level = 1
 
 # For timing purposes
 start_time = Time.now
