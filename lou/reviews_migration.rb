@@ -1,26 +1,8 @@
 #Author Lawrence Hook
 
-# Use rails runner to execute
-
-#### GOAL ####
-
-# part1 - DUMP
-# 	get columns 	all -- except course_id, professor_id
-# 	get info 		course_mnemonic, course_number and professor_firstname, professor_lastname
-# 	possible lead 	Serialize - ruby package
- 
-# part2 - IMPORT
-# 	ascertain 		course_id, professor_id 	BY the info ^^
-# 	consider 		section_id
-
-#### END ####
 
 # FasterCSV library for ease of parsing, handles commas nested inside quotes too
 require 'csv'
-
-# For 'almost' impenetrable delimiting! --JK didn't do this
-require 'digest/sha1'
-DELIMITER = Digest::SHA1.hexdigest 'DELIMITER'
 
 # Squash SQL outputs into the log - can remove to see raw sql queries made
 ActiveRecord::Base.logger.level = 1

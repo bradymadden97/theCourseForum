@@ -18,6 +18,8 @@
 /lou/duplicates
 /lou/backups
 /lou/*.log
+/books/*.log
+/books/aws_secret
 /tmp
 /config/database.yml
 
