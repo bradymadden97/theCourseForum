@@ -1,6 +1,6 @@
 require 'nokogiri'
 
-# ActiveRecord::Base.logger.level = 1
+ActiveRecord::Base.logger.level = 1
 
 log = File.open("#{Rails.root.to_s}/books/bookstore_#{Time.now.strftime("%Y.%m.%d-%H:%M")}.log", 'w')
 
@@ -9,9 +9,9 @@ initial_time = Time.now
 
 puts 'Wiping book_requirements...'
 
-semester_id = Semester.find_by(:season => 'Fall', :year => 2015)
+semester_id = Semester.find_by(:season => 'Fall', :year => 2015).id
 
-Semester.includes(:sections => :book_requirements).find(semester_id).sections.flat_map(&:book_requirements).map(&:delete)
+ActiveRecord::Base.connection.execute("DELETE br.* FROM book_requirements AS br JOIN sections AS s ON s.id=br.section_id WHERE s.semester_id=#{semester_id}")
 
 headers = {
 	:Referer => "http://www.uvabookstores.com/uvatext/",
