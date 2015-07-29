@@ -65,6 +65,11 @@ class Professor < ActiveRecord::Base
           :section_id => section_professor.section_id
         })
       end
+      # For each review in each duplicate professor
+      professor.reviews.each do |review|
+        # Assign each review with the root professor's id
+        review.update(:professor_id => root.id)
+      end
       # After we clear out section_professors for this professor, we delete it
       professor.destroy
     end
