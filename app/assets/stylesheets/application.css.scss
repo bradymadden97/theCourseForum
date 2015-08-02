@@ -14,6 +14,8 @@
  *= require jquery-ui/slider
  *= require jqcloud
  *= require fullcalendar
+ *= require slick
+ *= require slick-theme
  *= require bootstrap_overrides
  *= require header
  *= require footer
@@ -21,10 +23,10 @@
  *= require welcome
  *= require departments 
  *= require reviews
- *= require courses
  *= require scheduler
+ *= require books
  */
-
+$screen-sm: 850px;
 
 @import "variables";
 @import "bootstrap-sprockets";
@@ -44,9 +46,31 @@ $nprogress-height: 4.5px;
 }
 
 @font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 300;
+  src: asset-url('Lato-Light.ttf') format('woff2');
+}
+
+/* latin */
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: asset-url('Lato-Regular.ttf') format('woff2');
+}
+
+@font-face {
   font-family: 'comic-sans';
   src: asset-url('comic.ttf') format('truetype');
   font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'HelveticaNeue-Medium';
+  src: asset-url('HelveticaNeue-Medium.ttf') format('truetype');
+  font-weight: medium;
   font-style: normal;
 }
 
@@ -57,20 +81,13 @@ $nprogress-height: 4.5px;
   font-style: normal;
 }
 
-@font-face {
-  font-family: "Futura";
-  src: asset-url('FuturaLT.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
 html, body {
   height: 100%;
   width: 100%;
 }
 
 body {
-  font-family: "Futura", sans-serif;
+  font-family: "Lato", sans-serif;
   background-color: $blue;
   overflow: hidden;
   font-size: $regular-font-size;
@@ -79,6 +96,21 @@ body {
 aside {
   width: $sidebar-width !important;
   float: left;
+  @media only screen and (min-width: $screen-sm-min) {
+    display: block!important;
+  }
+  @media only screen and (max-width: $screen-sm) {
+    display: none;
+    background-color: $blue;
+    position: relative;
+    z-index: 4;
+    height: 100%
+  }
+}
+
+#header-navbar {
+  border-bottom: 1px solid #e8e8e8;
+  z-index: 1;
 }
 
 section#main {
@@ -88,6 +120,10 @@ section#main {
   bottom: 0;
   left: 0;
   right: 0;
+
+  @media only screen and (max-width: $screen-sm) {
+    margin-left: 0;
+  }
   
   // http://stackoverflow.com/questions/7198282/how-to-make-div-occupy-remaining-height
   // bottom: 0;
@@ -102,11 +138,41 @@ section#main {
     overflow: auto;
     padding: 40px 50px;
 
+    #header {
+      max-width: $content-max-width;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 0px;
+      padding-right: 0px;
+      margin-bottom: 30px;
+      @include flexbox();
+      @include justify-content(space-between);
+      @include align-items(center);
+
+      #course-name {
+        padding-left: 0px;
+        @include flex(1);
+      }
+
+      #filter .row {
+        float: right;
+      }
+
+      #save-course-button {
+        float: right;
+      }
+    }
+
     #content-container {
-      box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.4), inset 0px 0px 0px 1px rgba(255, 255, 255, 0.07);
+      box-shadow: 0px 1px 2px 0px #B8B8B8;
       background-color: white;
       padding-bottom: 20px;
       padding-top: 20px;
+      max-width: $content-max-width;
+    }
+
+    @media only screen and (max-width: 520px) {
+      padding: 30px 30px;
     }
   }
 }
@@ -125,6 +191,15 @@ section#main {
 select {
   @extend .form-control;
   border-radius: 0px;
+}
+
+#browsing-content {
+  padding-left: 0px;
+  padding-right: 0px;
+
+  #departments {
+    margin-top: -20px;
+  }
 }
 
 #alert, #notice {
@@ -165,5 +240,33 @@ select {
 
 .page-title {
   margin-top: 0px;
-  margin-bottom: 31px;
+  margin-bottom: 0px;
+  font-weight: 300;
 }
+
+@media (max-width: $screen-sm) {
+    .navbar-default .navbar-brand {
+      background-color: #fff;
+    }
+    #logo {
+      margin-left: -30px;
+    }
+}
+
+.navbar-toggle {
+  @media only screen and (min-device-width: $screen-xs){
+    position: absolute;
+    left: 210px;
+  }
+  border: none;
+  height: $navbar-height;;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  .navbar-default &:hover, .navbar-default &:focus{
+    background-color: inherit;
+    .icon-bar {
+      background-color: $blue;
+    }
+  }
+}
+

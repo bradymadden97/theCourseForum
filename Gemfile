@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby '2.0.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.0'
@@ -7,7 +8,7 @@ gem 'rails', '4.0.0'
 gem 'mysql2'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.0'
+gem 'sass-rails'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -52,6 +53,9 @@ gem 'momentjs-rails'
 # Slim for better templating
 gem 'slim-rails'
 
+# Amazon Webservices Gem
+gem 'vacuum'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
@@ -74,14 +78,8 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.1.0'
   # FactoryGirl for fixture replacement
   gem 'factory_girl_rails', '~> 4.5.0'
-  # capybara for web simulation in tests
-  gem 'capybara'
 
   gem 'cucumber-rails', :require => false
-  # capybara-webdkit for testing javascript events
-  # also need 'sudo apt-get install libqt4-dev libqtwebkit-dev'
-  # http://stackoverflow.com/questions/8365764/error-installing-gem-capybara-webkit
-  gem 'capybara-webkit'
   
   gem 'selenium-webdriver'
   # Database Cleaner to clear test databases
@@ -98,19 +96,23 @@ gem 'nprogress-rails'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-gem 'bootstrap-sass', '>= 3.0.0'
+gem 'bootstrap-sass'
 gem 'will_paginate', '>=3.0.3'
 
 # Use JQuery UI
 gem 'jquery-ui-rails', '~> 5.0.0'
+
+gem 'jquery-slick-rails'
 
 gem 'touchpunch-rails'
 gem 'd3_rails'
 
 gem 'gon'
 gem 'rest-client'
-gem 'rb-readline', '0.5.3', require: 'readline', github: 'luislavena/rb-readline'
 gem 'figaro'
 
 # for calendar exports
 gem 'icalendar'
+
+# for new gradewheel or any other charing needed.
+gem "highcharts-rails", "~> 3.0.0"

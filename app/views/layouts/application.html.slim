@@ -14,7 +14,7 @@ html
 
   body
     = render 'layouts/header'
-    - if current_user
+    - if current_user || (controller.controller_name == "books" && controller.action_name == "index")
       aside
         = render 'layouts/sidebar'
       section#main
@@ -22,11 +22,33 @@ html
         .container-fluid#main-container
           - if content_for?(:page_heading)
           .row#header
-            .col-xs-10.5#course-name
+            #course-name
               h1.page-title= yield(:page_heading)
             - if controller.controller_name == "courses" && controller.action_name == "show"
-              .col-xs-1.5#save-course
-                .btn.btn-primary#save-course SAVE COURSE
+              #save-course
+                - if current_user.courses.include? @course
+                  .btn.btn-primary#save-course-button.active data-toggle="button" aria-pressed="true" Unsave
+                - else
+                  .btn.btn-primary#save-course-button data-toggle="button" aria-pressed="false" Save Course
+            - if controller.controller_name == "departments" && controller.action_name == "show"
+              #filter
+                .btn-group data-toggle="buttons"
+                  label.btn.btn-primary.active
+                    input#current autocomplete="off" name="options" type="radio"
+                    | Fall 2015
+                  label.btn.btn-primary
+                    input#all autocomplete="off" name="options" type="radio"
+                    | All
+            - if controller.controller_name == "courses" && controller.action_name == "show_professors"
+              #filter
+                .btn-group data-toggle="buttons"
+                  label.btn.btn-primary.active
+                    input#current.active autocomplete="off" name="options" type="radio"
+                    | Fall 2015
+                  label.btn.btn-primary
+                    input#all autocomplete="off" name="options" type="radio"
+                    | All
+
           .container-fluid#content-container
             = yield
       -# Necessary for rendering scheduler modals correctly      

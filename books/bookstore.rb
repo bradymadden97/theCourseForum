@@ -61,18 +61,6 @@ departments.each do |xml_department|
 			end
 
 			Nokogiri::HTML(RestClient.get("http://uvabookstores.com/uvatext/textbooks_xml.asp?control=section&section=#{section_id}", headers)).css('.book.course-required').each_with_index do |book_info, index|
-				# new_price = nil
-				# new_data = book_info.css(".tr-radio-sku")[0]
-				# unless new_data.css('input').first["disabled"]
-				# 	new_price = new_data.css(".price").text.gsub(/[^\d\.]/, '').to_f
-				# 	new_
-				# end
-				# used_price = nil
-				# used_data = book_info.css(".tr-radio-sku")[1]
-				# unless used_data.css('input').first["disabled"]
-				# 	used_price = used_data.css(".price").text.gsub(/[^\d\.]/, '').to_f
-				# end
-
 				new_price = book_info.css(".book-price-list").text.delete("$").to_f
 				new_price = nil if new_price == 0
 				used_price = book_info.css(".price").css("label").text.delete("$").to_f

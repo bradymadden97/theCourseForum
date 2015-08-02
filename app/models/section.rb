@@ -3,9 +3,9 @@ class Section < ActiveRecord::Base
   belongs_to :course
 
   has_many :section_professors, :dependent => :destroy
-  has_many :book_requirements, :dependent => :destroy
   has_many :grades, :dependent => :destroy
-  has_many :day_times_sections
+  has_many :day_times_sections, :dependent => :destroy
+  has_many :book_requirements, :dependent => :destroy
 
   has_and_belongs_to_many :schedules
 

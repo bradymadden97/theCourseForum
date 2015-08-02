@@ -24,33 +24,27 @@ class DepartmentsController < ApplicationController
   end
 
   # GET /departments/1
-  # GET /departments/1.json
   def show
-    @department = Department.find(params[:id])
-    @subdepartments = @department.subdepartments #Subdepartment.where(:department_id => @department.id)
+    @department = Department.includes(:subdepartments => [:courses => [:overall_stats, :last_taught_semester]]).find(params[:id])
 
-    @subdepartment_ids = @subdepartments.pluck(:id)
-    @courses = Course.where(subdepartment_id: @subdepartment_ids)
-    @course_ids = @courses.pluck(:id)
-    @sections = Section.where(course_id: @course_ids)
-    @courses_with_sections_ids = @sections.pluck(:course_id)
-    @courses_with_sections = @courses.where(id: @courses_with_sections_ids)
-    @subdepartments_with_sections_ids = @courses_with_sections.pluck(:subdepartment_id)
-    @subdepartments_with_sections = @subdepartments.where(id: @subdepartments_with_sections_ids)
+    @subdepartments = @department.subdepartments.sort_by(&:mnemonic)
 
-    @section_ids = @sections.pluck(:id)
-    @professor_ids = SectionProfessor.where(section_id: @section_ids).pluck(:professor_id)
-    @professors = columnize(Professor.where(id: @professor_ids).uniq.sort_by{|p| p.last_name}, 3)
+    @groups = @subdepartments.map do |subdepartment|
+      subdepartment.courses.sort_by(&:course_number).chunk do |course|
+        course.course_number / 1000
+      end.map(&:last)
+    end
 
-    @count = @subdepartments.size
+    @current_semester = Semester.find_by(:year => 2015, :season => 'Fall')
+
+    @current_courses = @department.courses.where(:last_taught_semester => @current_semester)
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @department }
     end
   end
 
-
+ 
   private
     def department_params
       params.require(:department).permit(:name)

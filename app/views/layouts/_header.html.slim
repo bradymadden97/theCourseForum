@@ -1,26 +1,24 @@
-nav.navbar.navbar-default
+nav.navbar.navbar-default#header-navbar
   .container-fluid
     .navbar-header
-      button.navbar-toggle.collapsed data-target="#navbar-header" data-toggle="collapse" type="button" 
+      button.navbar-toggle.collapsed data-toggle="collapse" type="button" 
         span.sr-only Toggle navigation
         span.icon-bar
         span.icon-bar
         span.icon-bar
-      a.navbar-brand.brand href="#{root_path}"
-        img#logo src="/images/logo-blue-large.png"
+      a.navbar-brand.brand href="#{root_path}" class="#{current_user ? 'blue' : 'white'}-brand"
+        img#logo src="/images/logo-white-large.png"
       / h1.text-center theCourseForum
         
     /! Collect the nav links, forms, and other content for toggling
     #navbar-header.collapse.navbar-collapse
-      ul.nav.navbar-nav.navbar-right
+      ul.nav.navbar-nav.navbar-right.hidden-xs
         li
-          a#report-bug REPORT BUG
+          a#report-bug FEEDBACK
         li
-          a href="#{about_path}" ABOUT US
+          a href="#{about_path}" ABOUT
         li
           a href="http://blog.thecourseforum.com" target="_blank" BLOG
-        li
-          a href="#{contact_us_path}" CONTACT US
         - if current_user
           li
             a#user-account data-toggle="dropdown" 
@@ -31,8 +29,8 @@ nav.navbar.navbar-default
                 a href="#{my_reviews_path}" My Reviews
               li 
                 a href="#{edit_user_registration_path}" My Account
-              li 
-                a href="#{user_settings_path}" Settings
+              / li 
+              /   a href="#{user_settings_path}" Settings
               li.divider
               li role="presentation" 
                 a data-method="delete" href="#{destroy_user_session_path}" rel="nofollow"
@@ -42,16 +40,19 @@ nav.navbar.navbar-default
     .modal-dialog
       .modal-content
         .modal-header
-          h4 Let us know what's wrong, or how we can change!!
+          h3 Questions? Bugs? Login Issues? Let us know!
         .modal-body
           form#bug
             .form-group
               label URL
-              input.form-control placeholder=("Enter URL") name="url"
+              input.form-control placeholder="Enter URL" name="url"
               p.help-block
             .form-group
+              label Email (for further contact - leave blank for anonymous)
+              input.form-control placeholder="Your Email" name="email" value=(current_user ? current_user.email : '')
+            .form-group
               label Description (as verbose as possible!)
-              textarea.form-control rows="3" name="description" placeholder=("Thanks for your feedback!")
+              textarea.form-control rows="3" name="description" placeholder="Thanks for your feedback!"
           .modal-footer
             button.btn.btn-default data-dismiss="modal" type="button"  Close
             button.btn.btn-primary#report type="button" Submit

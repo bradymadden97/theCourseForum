@@ -20,20 +20,19 @@
 /lou/*.log
 /books/*.log
 /books/aws_secret
+/books/*.log
 /tmp
 /config/database.yml
-
-# Ignore lock file.
-*.lock
-/config/database.yml
-
-config/initializers/secret_token.rb
+/config/initializers/secret_token.rb
 
 # Ignore application configuration
 /config/application.yml
 
 # Ignore devise secret key
 /config/initializers/devise.rb
+
+# Ignore AWS config keys
+/books/aws_secret
 
 # Ignore generated words.json file
 lib/words.json

@@ -3,8 +3,13 @@
 
 // $ denotes jQuery - $(document) means we select the "document" or HTML page object
 // We attach an anonymous function to be executed when the page is "ready" - all DOM elements are loaded
+
+$(window).resize(function() {
+	$('#calendar').css('width', $('#search-bar').parent().css('width').split('p')[0] - $('#search-bar').css('width').split('p')[0] - 20);
+});
+
 $(document).ready(function() {
-	$('#calendar').css('width', $('#search-bar').parent().css('width').split('p')[0] - $('#search-bar').css('width').split('p')[0] - 40);
+	$('#calendar').css('width', $('#search-bar').parent().css('width').split('p')[0] - $('#search-bar').css('width').split('p')[0] - 20);
 
 	// Utility class to format strings for display
 	var Utils = {
@@ -108,11 +113,26 @@ $(document).ready(function() {
 		calendarCourses = [],
 		savedSchedules = [],
 		// schedules stores an array of potential schedules, which themselves are just an array of section objects
-		schedules = [];
+		schedules = [],
+		courses = {};
 
 	// The div with the id=schedule is the container for the fullCalendar plugin
 	// We initialize the plugin here, passing an object with option params
 	// Documentation for these options are found in fullCalendar docs online
+	var courseJSON = localStorage.getItem('courses');
+	var resultsJSON = localStorage.getItem('results');
+	if (resultsJSON && courseJSON) {
+		var resultsParsed = JSON.parse(resultsJSON);
+		var coursesParsed = JSON.parse(courseJSON);
+		if (resultsParsed && coursesParsed) {
+			searchResults = resultsParsed;
+			courses = coursesParsed;
+			for (var key in courses) {
+				displayResult(courses[key], false);
+			}
+		}
+	}
+
 	$('#schedule').fullCalendar({
 		// Default view for the calendar is agendaWeek, which shows a single week
 		defaultView: 'agendaWeek',
@@ -125,7 +145,7 @@ $(document).ready(function() {
 		// Remove the box for showing potential all day events
 		allDaySlot: false,
 		columnFormat: {
-			agendaWeek: 'dddd'
+			agendaWeek: 'ddd'
 		},
 		titleFormat: {
 			agendaWeek: 'yyyy'
@@ -134,6 +154,14 @@ $(document).ready(function() {
 		contentHeight: 610,
 		// Initialize the calendar with this set of events (should be empty anyway)
 		events: calendarCourses,
+
+
+		eventRender: function(event, element) {
+			$(element).tooltip({
+				title: "SIS ID: " + event.sis_id
+			});
+		},
+
 		// New default date
 		defaultDate: '2014-04-14',
 		eventClick: function(calendarEvent) {
@@ -172,14 +200,31 @@ $(document).ready(function() {
 		$('#clear-courses').slideDown();
 	});
 
+	$('#clear-courses').click(function() {
+		$.ajax('scheduler/courses', {
+			method: 'DELETE'
+		});
+		$('#saved-courses').empty();
+		$('#saved-courses').append('<option>-- Select Course --</option>');
+	});
+
 	$('#class-search').autocomplete({
 		source: function(request, response) {
-			$.ajax('/scheduler/search', {
+			$.ajax({
+				url: '/search/search_subdepartment',
+				dataType: 'json',
+				type: 'GET',
 				data: {
-					term: request.term
+					query: request.term
 				},
 				success: function(data) {
-					response(data.results);
+					response($.map(data, function(item) {
+						return {
+							label: item.mnemonic_number + " " + item.title,
+							value: item.mnemonic_number,
+							course_id: item.course_id
+						}
+					}));
 				}
 			});
 		},
@@ -192,7 +237,7 @@ $(document).ready(function() {
 	});
 
 	// Added search button functionality
-	$('#search-classes').click(function(){
+	$('#search-classes').click(function() {
 		courseSearch($('#class-search').val());
 	});
 
@@ -252,15 +297,15 @@ $(document).ready(function() {
 				return section['section_id'];
 			});
 			// Form the data object
-			var  data ={
-    			sections: JSON.stringify(section_ids)
+			var data = {
+				sections: JSON.stringify(section_ids)
 			};
 
 			// Put the array in the url and redirect with the .ics extension.
 			// The controller then sees .ics as a format and does the appropriate stuff
-			window.location.href = "/scheduler.ics?" + decodeURIComponent( $.param(data) );
+			window.location.href = "/scheduler.ics?" + decodeURIComponent($.param(data));
 		}
-	
+
 	});
 
 	// #save-selection exists in the Course - section selection modal
@@ -269,7 +314,8 @@ $(document).ready(function() {
 		// Initialize placeholder arrays for lectures, discussions, and laboratories
 		var lecture_ids = [],
 			discussion_ids = [],
-			laboratory_ids = [];
+			laboratory_ids = [],
+			seminar_ids = [];
 
 		// For all checked elements under the lectures heading (checkbox is checked)
 		$('.lectures').children(':checked').each(function(index, element) {
@@ -295,6 +341,14 @@ $(document).ready(function() {
 			}
 		});
 
+		// For all checked elements under the lectures heading (checkbox is checked)
+		$('.seminars').children(':checked').each(function(index, element) {
+			// The name of the checkbox (HTML attribute) is the section_id
+			if (element.name != '0') {
+				seminar_ids.push(parseInt(element.name));
+			}
+		});
+
 		// Set the corresponding key and value pairs for searchResults, the internal representation of selected sections
 		searchResults[$('#course-title').attr('course_id')]['lectures'] = lecture_ids;
 
@@ -304,6 +358,10 @@ $(document).ready(function() {
 		// Set the corresponding key and value pairs for searchResults, the internal representation of selected sections
 		searchResults[$('#course-title').attr('course_id')]['laboratories'] = laboratory_ids;
 
+		// Set the corresponding key and value pairs for searchResults, the internal representation of selected sections
+		searchResults[$('#course-title').attr('course_id')]['seminars'] = seminar_ids;
+
+		localStorage.setItem('results', JSON.stringify(searchResults));
 		// Hides the modal (closes it)
 		$('#course-modal').modal('hide');
 	});
@@ -379,7 +437,6 @@ $(document).ready(function() {
 				$('.schedules').empty();
 				$.each(response['results'], function(index, schedule) {
 					$('.schedules').append('<input type="checkbox" ' + false + ' name="' + schedule.id + '"> ' + schedule.name);
-
 					if (index != response['results'].length - 1) {
 						$('.schedules').append("<br/>");
 					}
@@ -387,7 +444,7 @@ $(document).ready(function() {
 
 				savedSchedules = response['results'];
 				if (response['results'].length > 0) {
-					$('#load-schedules-modal').modal();	
+					$('#load-schedules-modal').modal();
 				} else {
 					alert('No saved schedules!');
 				}
@@ -429,6 +486,7 @@ $(document).ready(function() {
 	$('#schedule-slider').slider({
 		step: 1,
 		min: 0,
+		max: 0,
 		value: 0,
 		animate: 'fast',
 
@@ -439,30 +497,28 @@ $(document).ready(function() {
 
 	// Set slider ticks by how many schedules are generated (spaces tick marks based on percentage)
 	function setSliderTicks() {
-    	var $slider =  $('#schedule-slider');
-    	var maxTick =  $slider.slider("option", "max");
-    	var spacing =  100 / (maxTick);
+		var $slider = $('#schedule-slider');
+		var maxTick = $slider.slider("option", "max");
+		var spacing = 100 / (maxTick);
 
-    	$slider.find('.ui-slider-tick-mark').remove();
-    	if(maxTick < 30) {
-    		for (var i = 0; i < maxTick + 1; i++) {
-        		$('<span class="ui-slider-tick-mark"></span>').css('left', (spacing * i) +  '%').appendTo($slider); 
-     		}
-     	}
-     	else {
-     		if((maxTick)/5 < 25) {
-     			for (var i = 0; i < maxTick- 5 + 1; i+=5) {
-        				$('<span class="ui-slider-tick-mark"></span>').css('left', (spacing * i) +  '%').appendTo($slider); 
-     			}
-     			$('<span class="ui-slider-tick-mark"></span>').css('left', (spacing * maxTick) +  '%').appendTo($slider); 
-     		}
-     		else {
-     			for (var i = 0; i < maxTick- 10 + 1; i+=10) {
-        				$('<span class="ui-slider-tick-mark"></span>').css('left', (spacing * i) +  '%').appendTo($slider); 
-     			}
-     			$('<span class="ui-slider-tick-mark"></span>').css('left', (spacing * maxTick) +  '%').appendTo($slider); 
-     		}
-     	}
+		$slider.find('.ui-slider-tick-mark').remove();
+		if (maxTick < 30) {
+			for (var i = 0; i < maxTick + 1; i++) {
+				$('<span class="ui-slider-tick-mark"></span>').css('left', (spacing * i) + '%').appendTo($slider);
+			}
+		} else {
+			if ((maxTick) / 5 < 25) {
+				for (var i = 0; i < maxTick - 5 + 1; i += 5) {
+					$('<span class="ui-slider-tick-mark"></span>').css('left', (spacing * i) + '%').appendTo($slider);
+				}
+				$('<span class="ui-slider-tick-mark"></span>').css('left', (spacing * maxTick) + '%').appendTo($slider);
+			} else {
+				for (var i = 0; i < maxTick - 10 + 1; i += 10) {
+					$('<span class="ui-slider-tick-mark"></span>').css('left', (spacing * i) + '%').appendTo($slider);
+				}
+				$('<span class="ui-slider-tick-mark"></span>').css('left', (spacing * maxTick) + '%').appendTo($slider);
+			}
+		}
 	}
 
 	// Asks server for course information + sections based on search string
@@ -477,7 +533,7 @@ $(document).ready(function() {
 			// Split the course search string (i.e. CS 2150) into two portions, mnemonic and course_number
 			course = course.split(' ');
 			// If the user enters search string w/o a space, it accomodates for it.
-			if (course.length == 1){
+			if (course.length == 1) {
 				course = course[0].match(/([A-Za-z]+)([0-9]+)/);
 				course = new Array(course[1], course[2]);
 			}
@@ -494,15 +550,20 @@ $(document).ready(function() {
 					if (!searchResults[response.id]) {
 						// Initialize this course in searchResults
 						// See above for sample searchResults representation
+						courses[response.id] = response;
 						searchResults[response.id] = {
 							'selected': true,
 							'units': response.units,
 							'lectures': [],
 							'discussions': [],
-							'laboratories': []
+							'seminars': [],
+							'laboratories': [],
 						};
 						// Calls utility function for showing the course (HTML)
-						displayResult(response);
+						displayResult(response, true);
+
+						localStorage.setItem('courses', JSON.stringify(courses));
+						localStorage.setItem('results', JSON.stringify(searchResults));
 					}
 				},
 				error: function(response) {
@@ -519,6 +580,7 @@ $(document).ready(function() {
 	function searchSchedules(extras) {
 		var sections = [],
 			params = extras ? extras : {};
+
 		$.each(searchResults, function(course_id, data) {
 			if (data['selected']) {
 				if (data['lectures'].length > 0) {
@@ -529,6 +591,9 @@ $(document).ready(function() {
 				}
 				if (data['laboratories'].length > 0) {
 					sections.push(data['laboratories'])
+				}
+				if (data['seminars'].length > 0) {
+					sections.push(data['seminars'])
 				}
 			}
 		});
@@ -563,7 +628,7 @@ $(document).ready(function() {
 		$('#credits').text(total + " credits");
 	}
 
-	function displayResult(result) {
+	function displayResult(result, enableModal) {
 		var resultBox = $('.course-result.hidden').clone().removeClass('hidden'),
 			content = resultBox.children('#content'),
 			checkbox = resultBox.children('#checkbox').children(':checkbox');
@@ -576,6 +641,9 @@ $(document).ready(function() {
 
 		content.children('.remove').click(function() {
 			delete searchResults[result.id];
+			delete courses[result.id]
+			localStorage.setItem('results', JSON.stringify(searchResults))
+			localStorage.setItem('courses', JSON.stringify(courses))
 			updateCreditCount();
 			$(this).parent().parent().remove();
 		});
@@ -587,6 +655,7 @@ $(document).ready(function() {
 			$('.lectures').empty();
 			$('.discussions').empty();
 			$('.laboratories').empty();
+			$('.seminars').empty();
 
 			//Updated way of restoring checks to checkboxes
 			//matched against array from above
@@ -683,27 +752,53 @@ $(document).ready(function() {
 			} else {
 				$("#laboratory-header").hide();
 			}
+			if (result.seminars.length > 0) {
+				$("#seminar-header").show();
+				$('.seminars').append('<input type="checkbox" name="0" class="select-seminars"> ');
+				$('.seminars').append('Select all <br/>');
+				$('.select-seminars').click(function() {
+					$(this).parent().children('input[type=checkbox]').each(function() {
+						$(this).prop('checked', $('.select-seminars').prop('checked'));
+					});
+				});
+				for (var i = 0; i < result.seminars.length; i++) {
+					isChecked = "";
+					if (sectionSelected(result.seminars[i].section_id, result.id, 'seminars')) {
+						isChecked = "checked";
+					}
+					$('.seminars').append('<input type="checkbox" ' + isChecked + ' name="' + result.seminars[i].section_id + '"> ');
+
+					// if (searchResults[result.id]['seminars'] && searchResults[result.id]['seminars'].indexOf(result.seminars[i].section_id) != -1) {
+					// 	$('.seminars').append('<input type="checkbox" checked name="' + result.seminars[i].section_id + '"> ');
+					// } else {
+					// 	$('.seminars').append('<input type="checkbox" name="' + result.seminars[i].section_id + '"> ');
+					// }
+					$('.seminars').append(Utils.formatTimeStrings(result.seminars[i]));
+					$('.seminars').append(", " + result.seminars[i].professor);
+					if (i != result.seminars.length - 1) {
+						$('.seminars').append("<br/>");
+					}
+				}
+			} else {
+				$("#seminar-header").hide();
+			}
 			$('#course-modal').modal();
 		});
-
 		content.children('.course-mnemonic').text(result.course_mnemonic);
 		content.children('.course-title').text(result.title);
 
 		checkbox.attr('name', result.id);
 		checkbox.attr('checked', true);
-
 		checkbox.change(function() {
 			searchResults[parseInt(result.id)]['selected'] = $(this).prop('checked');
-
 			updateCreditCount();
 		});
 		checkbox.change();
 		$('#results-box').append(resultBox);
-		checkbox.parent().css('height', content.parent().height());
-		checkbox.parent().css('width', content.parent().width() - 170);
-		checkbox.css('margin-left', checkbox.parent().width() / 2 - 5);
-		checkbox.css('margin-top', checkbox.parent().height() / 2 - 5);
-		content.click();
+		checkbox.css('margin-top', checkbox.parent().height() / 2 + 5);
+		if (enableModal) {
+			content.click();
+		}
 	}
 
 	function addClass(course) {

@@ -14,15 +14,10 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require jquery.ui.touch-punch
+//= require jquery.slick
 //= require turbolinks
 //= require bootstrap
 //= require d3
-// require new_wheel
-//= require grades
-//= require header
-//= require contact_us
-//= require sign_up
-//= require reviews
 //= require moment
 //= require fullcalendar
 //= require jqcloud
@@ -30,9 +25,45 @@
 //= require nprogress
 //= require nprogress-turbolinks
 //= require nprogress-ajax
+//= require highcharts
+//= require highcharts/highcharts-more
+// require new_wheel
+//= require header
+//= require courses
+//= require departments
+//= require contact_us
+//= require sign_up
+//= require reviews
 
 var ready = function() {
-	
+	var toggleSpeed = 125;
+
+	// Attatches navbar-toggle button to sidebar
+	$('.navbar-toggle').click(function() {
+		$('aside').toggle('slide', {
+			direction: 'left'
+		}, toggleSpeed);
+	});
+
+	// expands user-account options in sidebar on click
+	$("a#user-account").click(function() {
+		$(".col-secondary").toggle(toggleSpeed);
+	});
+
+	$(document).mousedown(function(e) {
+		// if click outside of sidebar, and window length is less than 850px, retract sidebar.
+		if (!$("aside").is(e.target) && $("aside").has(e.target).length === 0 && $(window).width() < 850 && !$(".navbar-toggle").is(e.target) && $(".navbar-toggle").has(e.target).length === 0) {
+			$("aside").hide('slide', toggleSpeed);
+		}
+	});
+
+	// retracts sidebar if esc key is pressed
+	$(document).keydown(function(e) {
+		if (e.which === 27 && $(window).width() < 850) {
+			$("aside").hide('slide', toggleSpeed);
+		}
+	});
+
 	$("#close-notice, #close-alert").click(function() {
 		$(this).parent().slideUp();
 	});
@@ -40,7 +71,7 @@ var ready = function() {
 	$("#search-query").focus(function() {
 		if ($("#search-query").val() == "") {
 			$(".nav-row").each(function() {
-				if( !($(this).hasClass("search-row")) ) {
+				if (!($(this).hasClass("search-row"))) {
 					$(this).slideUp();
 				}
 			});
@@ -56,26 +87,20 @@ var ready = function() {
 			});
 
 			$(".submit-row").slideUp();
-		}		
+		}
 	});
-
-	
 
 	$("#word-cloud-switch").bootstrapSwitch({
 		size: 'small',
 		onColor: 'primary',
-		onSwitchChange: function(event, state)
-		{
-			if (state)
-			{
+		onSwitchChange: function(event, state) {
+			if (state) {
 				$.ajax({
 					url: '/word_cloud_on/',
 					type: 'POST'
 				});
 				$("#doge-switch").bootstrapSwitch('disabled', false);
-			}
-			else
-			{
+			} else {
 				$.ajax({
 					url: '/word_cloud_off/',
 					type: 'POST'
@@ -90,17 +115,13 @@ var ready = function() {
 		size: 'small',
 		onColor: 'primary',
 		onText: 'wow',
-		onSwitchChange: function(event, state)
-		{
-			if (state)
-			{
+		onSwitchChange: function(event, state) {
+			if (state) {
 				$.ajax({
 					url: '/doge_on/',
 					type: 'POST'
 				});
-			}
-			else
-			{
+			} else {
 				$.ajax({
 					url: '/doge_off/',
 					type: 'POST'
@@ -116,51 +137,40 @@ var ready = function() {
 		$('#' + target).toggle();
 	});
 
-	$('#search-form').autocomplete({
-	source: function( request, response ) {
-		$.ajax({
-			url: '/search/search',
-			dataType: 'json',
-			type: 'GET',
-			data: {
-				query: request.term
+	$('#search-query').autocomplete({
+		source: function(request, response) {
+			$.ajax({
+				url: '/search/search_subdepartment',
+				dataType: 'json',
+				type: 'GET',
+				data: {
+					query: request.term
+				},
+				success: function(data) {
+					response($.map(data, function(item) {
+						return {
+							label: item.mnemonic_number + " " + item.title,
+							value: item.mnemonic_number,
+							course_id: item.course_id
+						}
+					}));
+				}
+			});
 		},
-		success: function( data ) {
-			response( $.map(data.slice(0,9), function( item ) {
-			return {
-				label: item.subdepartment_code + " " + item.course_number + "-" + item.last_name,
-				value: "c=" + item.course_id + "&p=" + item.professor_id
-			}
-			}));
+		minLength: 2,
+		select: function(event, ui) {
+			window.location = "/courses/" + ui.item.course_id;
+			return false;
 		}
-		});
-	},
-	minLength: 2,
-	focus: function(event, ui) {
-		$('#searchbox').val(ui.item.label);
-		return false;
-	},
-	select: function(event, ui) {
-		$('#searchbox').val(ui.item.label);
-		window.location = "/course_professors?" + ui.item.value;
-		return false;
-	},
-	open: function() {
-		$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
-		$(this).autocomplete('widget').css('z-index', 5000);
-	},
-	close: function() {
-		$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
-	}
 	});
 
 
 	var prof_ajax = $.ajax();
 
-	$("#prof_name").bind("change", function(){
+	$("#prof_name").bind("change", function() {
 		$("#prof_list").empty();
 		var value = $(this).find(":selected").val();
-		if (value == ""){
+		if (value == "") {
 			return;
 		}
 		prof_ajax.abort();
@@ -169,35 +179,45 @@ var ready = function() {
 			dataType: 'json',
 			type: 'GET',
 			success: function(data) {
-				$.each(data, function(){
-					if(this.last_name[0] == value) {
+				$.each(data, function() {
+					if (this.last_name[0] == value) {
 						$('#prof_list').append($("<a/>", {
 							href: "/professors/" + this.id,
 							text: this.last_name + ", " + this.first_name
 						}));
-						$('#prof_list').append($("<br/>", {						
-						}));
+						$('#prof_list').append($("<br/>", {}));
 					}
-				});			
+				});
 			}
 		});
 	});
 
 	jQuery.ajaxSetup({
-	  beforeSend: function() {
-	    $('#loading').fadeIn();
-	    $("#second_letter").show();
+		beforeSend: function() {
+			$('#loading').fadeIn();
+			$("#second_letter").show();
 
-	  },
-	  complete: function(){
-	    $('#loading').hide();
-	  },
-	  success: function() {}
+		},
+		complete: function() {
+			$('#loading').hide();
+		},
+		success: function() {}
 	});
 
-	
+
+	var input = [],
+		konami = "38,38,40,40,37,39,37,39,66,65";
+
+	//The following function sets a timer that checks for user input. You can change the variation in how long the user has to input by changing the number in ‘setTimeout.’ In this case, it’s set for 500 milliseconds or ½ second.
+	$(document).keyup(function(e) {
+		input.push(e.keyCode);
+		if (input.toString().indexOf(konami) >= 0) {
+			$(document).unbind('keydown', arguments.callee);
+			alert('What did Alan the plate say to the other plate? Dinners on me.');
+			input = [];
+		}
+	});
 
 };
-
 $(document).ready(ready);
 $(document).on('page:load', ready);

@@ -1,5 +1,11 @@
 @import "variables";
 
+@media only screen and (max-device-width: 480px){
+    #scheduler {
+      display: none;
+    }
+}
+
 #nav-footer {
   left: auto;
   right: auto;
@@ -37,6 +43,7 @@
   color: white;
   list-style-type: none;
   margin-top: 8px;
+  font-weight: 300;
 
   .nav-row {
     font-size: $sidebar-font-size;
@@ -45,9 +52,26 @@
 
 
     .col-wrapper {
-      padding-top: 20.5px;
-      padding-bottom: 20.5px;
+      padding-top: 18px;
+      padding-bottom: 18px;
       border-bottom: 1px solid rgba(255,255,255,0.5);
+
+      .beta:hover {
+        background-color: white;
+      }
+      .beta {
+        color: black;
+        font-size: 10px;
+        text-align: center;
+        position: relative;
+        float: right;
+        margin-right: 25%;
+        margin-top: 6px;
+        margin-left: auto;
+        background-color: $orange;
+        border-radius: 3px;
+        padding: 0px 5px;
+      }
 
       a {
         margin-left: $sidebar-left-margin;
@@ -61,6 +85,12 @@
       a:hover {
         color: rgba(255,255,255,1.0);
       }
+
+      .col-secondary{
+        display: none;
+        padding-top: 10px;
+        margin-left: $sidebar-left-tabbed;  
+      }
     }
   }
 
@@ -71,6 +101,5 @@
         padding-right: $sidebar-icon-padding;
       }      
     }
-  }
-  
+  }  
 }

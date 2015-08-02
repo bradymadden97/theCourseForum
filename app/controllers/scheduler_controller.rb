@@ -58,20 +58,21 @@ class SchedulerController < ApplicationController
       course = Course.find_by(:subdepartment_id => subdept.id, :course_number => params[:course_number]) if subdept
       # return an error if no such course was found
       render :nothing => true, :status => 404 and return unless course
-      
-      # semester = Semester.now
-      semester = Semester.find_by(season: "Fall", year: 2015)
-      # Breaks up the course's sections by type, convertubg them to javascript sections,
+
+      semester = Semester.find_by(:year => 2015, :season => 'Fall')
+      # Breaks up the course's sections by type, converting them to javascript sections,
       # and wraps the result in json
       render :json => course.as_json.merge({
         #sets the course mnemonic from the search parameters
         :course_mnemonic => "#{params[:mnemonic].upcase} #{params[:course_number]}",
         #gets the sections of the course that are for the current semester and are lectures
-        :lectures => rsections_to_jssections(course.sections.where(:semester_id => semester.id, :section_type => 'Lecture')),
+        :lectures => rsections_to_jssections(course.sections.where(:semester_id => semester.id, :section_type => 'Lecture').includes(:day_times, :locations, :professors)),
         #gets the sections of the course that are for the current semester and are discussions
-        :discussions => rsections_to_jssections(course.sections.where(:semester_id => semester.id, :section_type => 'Discussion')),
+        :discussions => rsections_to_jssections(course.sections.where(:semester_id => semester.id, :section_type => 'Discussion').includes(:day_times, :locations, :professors)),
         #gets the sections of the course that are for the current semester and are labs
-        :laboratories => rsections_to_jssections(course.sections.where(:semester_id => semester.id, :section_type => 'Laboratory')),
+        :laboratories => rsections_to_jssections(course.sections.where(:semester_id => semester.id, :section_type => 'Laboratory').includes(:day_times, :locations, :professors)),
+        #gets the sections of the course that are for the current semester and are labs
+        :seminars => rsections_to_jssections(course.sections.where(:semester_id => semester.id, :section_type => 'Seminar').includes(:day_times, :locations, :professors)),
         # Returns units of course
         :units => course.units
       }) and return
@@ -80,14 +81,20 @@ class SchedulerController < ApplicationController
 
   # Given a mnemonic and course number, add the matching course to the current user's courses (not used)
   def save_course
-    subdept = Subdepartment.find_by(:mnemonic => params[:mnemonic])
-    course = Course.find_by(:subdepartment_id => subdept.id, :course_number => params[:course_number]) if subdept
-    current_user.courses << course unless current_user.courses.include? course
+    course = Course.find_by_mnemonic_number("#{params[:mnemonic]} #{params[:course_number]}")
+    current_user.courses << course if course and !current_user.courses.include?(course)
 
     render :nothing => true
   end
 
-  # Clears the current users's saved courses (not used)
+  def unsave_course
+    course = Course.find_by_mnemonic_number("#{params[:mnemonic]} #{params[:course_number]}")
+    current_user.courses.delete(course) if course and current_user.courses.include?(course)
+
+    render :nothing => true
+  end
+
+  # Clears the current users's saved courses
   def clear_courses
     current_user.courses = []
 
@@ -220,7 +227,7 @@ class SchedulerController < ApplicationController
       start_times[0] == "" ? nil : {
         :section_id => section.id,
         :title => "#{section.course.subdepartment.mnemonic} #{section.course.course_number}",
-        :location => section.locations.empty? ? 'NA' : section.locations.first.location,
+        :location => section.locations.length==0 ? 'NA' : section.locations.first.location,
         :days => days,
         :start_times => start_times,
         :end_times => end_times,

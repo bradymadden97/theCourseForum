@@ -11,52 +11,56 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150401202146) do
+ActiveRecord::Schema.define(version: 20150714174932) do
 
   create_table "book_requirements", id: false, force: true do |t|
-    t.integer "section_id"
-    t.integer "book_id"
-    t.text    "requirement_status"
+    t.integer "section_id", null: false
+    t.integer "book_id",    null: false
+    t.string  "status",     null: false
   end
+
+  add_index "book_requirements", ["book_id", "section_id"], name: "index_book_requirements_on_book_id_and_section_id", unique: true, using: :btree
 
   create_table "books", force: true do |t|
-    t.text    "title"
-    t.text    "author"
-    t.integer "ISBN",                limit: 8
-    t.text    "binding"
-    t.boolean "new_availability"
-    t.boolean "used_availability"
-    t.boolean "rental_availability"
-    t.text    "new_price"
-    t.text    "new_rental_price"
-    t.text    "used_price"
-    t.text    "used_rental_price"
-    t.text    "signed_request"
-    t.text    "ASIN"
-    t.text    "details_page"
-    t.text    "small_image_URL"
-    t.text    "medium_image_URL"
-    t.integer "amazon_new_price"
-    t.text    "affiliate_link"
+    t.string  "title"
+    t.string  "author"
+    t.string  "publisher"
+    t.string  "edition"
+    t.string  "binding"
+    t.string  "isbn"
+    t.float   "bookstore_new_price"
+    t.float   "bookstore_used_price"
+    t.text    "asin"
+    t.text    "small_image_link"
+    t.text    "medium_image_link"
+    t.text    "large_image_link"
+    t.float   "amazon_official_new_price"
+    t.float   "amazon_official_used_price"
+    t.float   "amazon_merchant_new_price"
+    t.float   "amazon_merchant_used_price"
+    t.integer "amazon_new_total"
+    t.integer "amazon_used_total"
+    t.text    "amazon_affiliate_link"
   end
 
-  add_index "books", ["id"], name: "id_UNIQUE", unique: true, using: :btree
+  add_index "books", ["isbn"], name: "index_books_on_isbn", unique: true, using: :btree
 
   create_table "bugs", force: true do |t|
     t.string   "url"
     t.text     "description"
+    t.string   "email"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id"
   end
 
   create_table "courses", force: true do |t|
     t.string   "title"
-    t.decimal  "course_number",    precision: 4, scale: 0, default: 0
+    t.decimal  "course_number",           precision: 4, scale: 0, default: 0
     t.integer  "subdepartment_id"
-    t.datetime "created_at",                                           null: false
-    t.datetime "updated_at",                                           null: false
+    t.datetime "created_at",                                                  null: false
+    t.datetime "updated_at",                                                  null: false
     t.boolean  "title_changed"
+    t.integer  "last_taught_semester_id"
   end
 
   add_index "courses", ["subdepartment_id"], name: "index_courses_on_subdepartment_id", using: :btree

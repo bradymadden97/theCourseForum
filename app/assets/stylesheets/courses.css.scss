@@ -1,104 +1,591 @@
 @import "variables";
 
+h1 {
+  font-weight: 300;
+}
+
 #courses-main {
-  border-left: 1px solid black;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+#course-page, .review-pane {
+  margin-left: auto;
+  margin-right: auto;
+  // max-width: 926px;
+}
+
+.stats-number {
+  padding-left: 0px;
+  padding-top: 12px;
+  text-align: center;
+}
+
+.rating-number {
+  text-align: center;
+  width: 80px;
+  float: left;
+}
+
+.review-stats {
+  font-weight: 300;
+  @include flex(1 90%);
+  @include flexbox();
+  flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+}
+
+.book-image, .no-book-image {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0px 0px 2px #000;
+}
+
+.no-book-image {
+  background-color: #eee;
+}
+
+img {
+  vertical-align: middle;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#content-container {
+  background-color: #eee !important;
+  box-shadow: none !important;
+  padding-top: 0px !important;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.prev,
+.slick-next
+{
+    font-size: 0;
+    line-height: 0;
+
+    position: absolute;
+    top: 50%;
+
+    display: block;
+
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    padding: 0;
+
+    cursor: pointer;
+
+    color: #222;
+    border: none;
+    outline: none;
+    background: transparent;
 }
 
 #courses-sidebar {
-  // 590px foudn to be the max height of #courses-main
+  // 590px found to be the max height of #courses-main
   max-height: 590px;
   overflow-y: auto;
+  border-right: 1px solid black;
+}
+
+.course-stats {
+  padding-left: 0px;
+  padding-right: 5px;
+  @include flex(1 49%);
+  min-width: 49%;
+}
+
+.rating {
+  font-size: 5.0rem;
+  font-family: 'HelveticaNeue-Medium';
+  color: rgb(215, 86, 38);
+  text-align: center;
+  height: 50px;
+}
+
+.ratings-stats, .workload-stats {
+  height:192.5px;
+  background: #FFFFFF;
+  box-shadow: 0px 1px 2px 0px #B8B8B8;
+  padding-right: 5px;
+  margin-bottom: 5px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.course-breakdown {
+  @include flexbox();
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+
+}
+
+.orange-title {
+  margin-top: 15px;
+}
+
+.review-pane {
+  margin-top: 10px;
+  background: #FFFFFF;
+  box-shadow: 0px 1px 2px 0px #B8B8B8;
+}
+
+.course-grades {
+  // margin-left:5px;
+  height: 390px;
+  padding-left: 0px;
+  padding-right: 0px;
+  background-color: white;
+  box-shadow: 0px 1px 2px 0px #B8B8B8;
+  @include flex(1 49%);
+  min-width: 49%;
+  font-weight: 300;
+}
+
+#review-container {
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
 #save-course .btn.btn-primary {
-  width: 150px;
+  // width: 150px;
   height: 40px;
-  margin-left: 40px;
-  float: center;
-  font-size: 20px;
-  box-shadow: 0 0 4px rgba(0,0,0,.75);
+  // float: center;
+  font-size: $save-course-font-size;
+  // margin-right: 30px;
+}
+
+// .row {
+//   margin-left: 0px;
+//   margin-right: 0px;
+// }
+
+.comment-header {
+  margin-top: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #bbb;
 }
 
 .rating-title {
   color: $blue;
+  text-align:center;
+}
+
+.rating-header-row, .number-of-comments, .comment-row, .description-row, .no-margin-row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.comment-row {
+  @include flexbox();
+}
+
+.sortby-title {
+  padding-top: 18px;
 }
 
 .title-row {
-  border-bottom: solid 1px $blue;
+  margin-top: 0px;
+  height: 190px;
+  margin-right: -5px;
+  margin-left: -5px;
+  margin-bottom: 30px;
 }
 
 .title {
   color: #E25424;
+  margin-top: 10px;
+  font-weight: bold;
+  margin-bottom: 0px;
+
+}
+
+p {
+  font-size: $comment-font-size;
 }
 
 .author {
-  margin-left: 30px;
+  margin-top:5px;
   color: #E25424;
+  border-bottom: 1px #bbb solid
 }
 
-.p.requirement-cost-condition {
-  margin-left: 30px;
+.amazon {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  img {
+    border: 1px #bbb solid;
+    transition: background-color 0.2s ease;
+  }
+  img:hover {
+    background-color: #eee;
+  }
+}
+
+.requirement-cost-condition {
   color: $blue;
+  font-size: $regular-font-size;
+  font-weight: bold;
+  color: #000000;
+  line-height: 23px;
+  margin-bottom: 0px
+}
+
+.bookstore {
+  margin-top: 6px;
+  margin-bottom: 5px;
+  height: 40px;
+  text-align: center;
+}
+
+.condition {
+  font-size: $small-font-size;
+  margin-bottom: 2px;
+  margin-left: 16px;
 }
 
 .textbooks-row {
   border-bottom: 1px dotted black;
   padding-top: 8px;
 }
+.recommended-textbooks-row{
+  border-bottom: 1px dotted black;
+  padding-top: 8px;
+  opacity: 0.5
+}
+
+.optional-textbooks-row{
+  border-bottom: 1px dotted black;
+  padding-top: 8px;
+  opacity: 0.5
+}
+
+.other-textbooks-row{
+  border-bottom: 1px dotted black;
+  padding-top: 8px;
+  opacity: 0.5
+}
 
 .stat-row {
-  border-bottom: 1px dotted $blue;
-  height: 40px;
-  padding-top: 8px;
+  height: 48px;
 }
 
 .single-review {
   padding: 10px 0;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #dedede;
+  transition: background-color 0.2s ease;
+}
+
+.single-review:hover {
+  background-color: #F1F6FB;
+}
+
+.book-image-container {
+  margin-left: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.book-description {
+  margin-left: 10px;
+  width: calc(100% - 160px);
+  margin-right: 10px;
+}
+
+.upvote, .downvote {
+  font-size:12px;
+  text-align: center;
+  width: 50px;
+  height: 50px;
+  padding: 0px 0px;
+  display: block;
+  margin: auto;
+  opacity: 0.4;
+
+}
+
+.vote-active {
+  opacity: 1.0;
+}
+
+.downvote {
+  -webkit-transform: rotate(180deg);     /* Chrome and other webkit browsers */
+  -moz-transform: rotate(180deg);        /* FF */
+  -o-transform: rotate(180deg);          /* Opera */
+  -ms-transform: rotate(180deg);         /* IE9 */
+  transform: rotate(180deg);             /* W3C compliant browsers */
+
+  /* IE8 and below */
+  filter: progid:DXImageTransform.Microsoft.Matrix(M11=-1, M12=0, M21=0, M22=-1, DX=0, DY=0, SizingMethod='auto expand');
+}
+
+.overall-col {
+  padding-right: 5px;
+  padding-left: 5px;
+  margin-top: 5px;
+  height:180px;
+  border-right: #bbb 1px solid;
+  @include flexbox();
+  flex-flow: column;
+  -webkit-flex-flow: column;
+  justify-content: center;
+  -webkit-justify-content: center;
+  align-items: center;
+  -webkit-align-items: center;
+}
+
+.item {
+  margin-left: 2.5px;
+  margin-right: 2.5px;
+  //border: 1px solid #979797;
+  background-color: white;
+  box-shadow: 0px 1px 2px 0px #B8B8B8;
+  // @include flexbox();
+  display: -webkit-box !important;
+  display: -moz-box !important;
+  display: -ms-flexbox !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  justify-content: flex-start;
+  -webkit-justify-content: flex-start;
+}
+
+.book-prices {
+  @include flexbox();
+  flex-flow: column;
+  -webkit-flex-flow: column;
+  // justify-content: center;
+  // -webkit-justify-content: center;
+  height: calc(100% - 60px);
+}
+
+.icon {
+  font-size: $tiny-font-size;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 5px;
 }
 
 .rating-icon {
-  margin-right: 4px;
+  padding-left: 4px;
+  float: left;
 }
 
-
-/* http://codepen.io/CreativeJuiz/pen/BiHzp */
-/* http://webdesign.tutsplus.com/tutorials/quick-tip-easy-css3-checkboxes-and-radio-buttons--webdesign-8953 */
-
-/*
-
-.professor-checkbox {
-  display: none;
+.icon-and-text {
+  float:left;
+  overflow: hidden;
+  // margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 13px;
 }
 
-.professor-checkbox + label {
-  cursor: pointer;
+.icon-text {
+  text-align: center;
+  font-size: $tiny-font-size;
 }
 
-.professor-checkbox + label span {
-  display:inline-block;
+.stats-col {
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 2px;
+  @include flexbox();
+  flex-flow: column;
+  -webkit-flex-flow: column;
+}
 
-  width: 16px; 
-  height: 16px;
-  border: 1px solid #aaa;
-  background: #f8f8f8;
-  border-radius: 0px;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,.3);
+.stats-row {
+  margin: 0 10px;
+  @include flexbox();
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+}
+
+.upvotes {
+  text-align: center;
+  font-size: $description-font-size;
+}
+
+.review-overall {
+  font-size: $comment-overall-rating-font-size;
+  color: rgb(215, 86, 38);
+  float: left;
+  margin-top: 10px;
+  margin-right: 10px;
+  width: 40px;
+}
+
+.comment {
+  font-size: $comment-font-size;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.comment-container {
+  border-left: 1px solid #bbb;
+  min-height: 100%;
+  display: inline-block;
+  // float: right;
+  width: calc(100% - 84px);
+  padding-right: 20px;
+  min-height: 117px;
+  position: relative;
+  padding-left: 20px;
+  margin: 0px;
+  @include flexbox();
+  flex-flow: column;
+  -webkit-flex-flow: column;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+
+  .stats-row {
+    margin-left: 2px;
+    margin-right: 2px;
+    width: 100%;
+  }
+
+}
+
+.time {
+  float:right;
+  font-size: 1.2rem;
+  text-align: right;
+  -webkit-align-self: flex-end;
+  align-self: flex-end;
+  font-weight: 300;
+  @include flex(2 30%);
+}
+
+.skillbar {
+  margin-top: 14px;
   vertical-align: middle;
-  cursor: pointer;
-
-  margin-bottom: 4px;
-  margin-right: 4px;
+  position:relative;
+  display:block;
+  margin-bottom:15px;
+  width:100%;
+  background:#eee;
+  height:13px;
+  -webkit-transition:0.4s linear;
+  -moz-transition:0.4s linear;
+  -ms-transition:0.4s linear;
+  -o-transition:0.4s linear;
+  transition:0.4s linear;
+  -webkit-transition-property:width, background-color;
+  -moz-transition-property:width, background-color;
+  -ms-transition-property:width, background-color;
+  -o-transition-property:width, background-color;
+  transition-property:width, background-color;
 }
 
-.professor-checkbox:checked + label span:after {
-  position: absolute;
-  top: 2px;
-  content: '✔';
-  font-size: 20px;
+.skillbar-bar {
+  vertical-align: middle;
+  background: $light-blue;
+  height:13px;
+  width:0px;
+}
+
+.courses-review-type-switcher {
+  max-width: 160px;
+}
+
+// .no-grades {
+//   img {
+//     height: 100%;
+//     width: 100%;
+//   }
+//   // height: 100%;
+// }
+
+@media (max-width: 520px) {
+  .rating {
+    font-size: 3.0rem;
+  }
+  .time {
+    font-size: 0.8rem;
+  }
+  .rating-icon {
+    font-size: 1.0rem;
+    img {
+      height: 10px;
+      width: 10px;
+    }
+  }
+  .review-overall {
+    margin-right: 2px;
+    font-size: 1.4rem;
+    width: auto;
+  }
+
+  .btn img {
+    height: 25px;
+    width: 25px;
+  }
+  .rating-number {
+    width: 42px;
+  }
+  .comment-container {
+    padding-left: 10px;
+    padding-right: 6px;
+  }
+
+  .book-image, .no-book-image {
+    img {
+      height: 146px;
+      width: 108px;
+      box-shadow: 0px 0px 2px #000;
+    }
+  }
+  .title {
+    font-size: 1.4rem;
+  }
+  .review-author {
+    font-size: 1.2rem;
+  }
+  .amazon a img {
+    height: 30px;
+    width: 60px;
+  }
+  .book-description {
+    width: calc(100% - 140px);
+  }
+  .requirement-cost-condition, .bookstore {
+    font-size: 1.0rem;
+  }
+  .amazon-info .col-xs-3, .bookstore-info .col-xs-3 {
+    padding-left: 0px;
+  }
+
+}
+
+@media (max-width: 920px) {
+  .comment {
+    font-size: $smaller-comment-font-size;
+  }
+  .course-grades, .course-stats {
+    min-width: 100%;
+    @include flex(1 100%);
+    margin-right: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+
+.slick-prev:before, .slick-next:before {
   color: $blue;
-  transition: all .2s;
-  line-height: 100%;
 }
 
-*/
+.slick-dots {
+  bottom: -36px;
+}
+
+.btn.active {
+  opacity: 1.0;
+}
