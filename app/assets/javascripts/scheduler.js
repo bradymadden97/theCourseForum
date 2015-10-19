@@ -11,6 +11,8 @@ $(window).resize(function() {
 $(document).ready(function() {
 	$('#calendar').css('width', $('#search-bar').parent().css('width').split('p')[0] - $('#search-bar').css('width').split('p')[0] - 20);
 
+	$('[data-toggle="tooltip"]').tooltip(); 
+
 	// Utility class to format strings for display
 	var Utils = {
 		// Converts date into a day of the week, using our base week reference of April - XX - 2015
@@ -319,11 +321,12 @@ $(document).ready(function() {
 			seminar_ids = [];
 
 		// For all checked elements under the lectures heading (checkbox is checked)
-		$('.lectures').children(':checked').each(function(index, element) {
+		$('.lectures').children('.checked').each(function(index, element) {
 			// The name of the checkbox (HTML attribute) is the section_id
 			if (element.name != '0') {
-				lecture_ids.push(parseInt(element.name));
+				lecture_ids.push(parseInt(element.id));
 			}
+			debugger;
 		});
 
 		// For all checked elements under the discussions heading (checkbox is checked)
@@ -503,6 +506,17 @@ $(document).ready(function() {
 		}
 	});
 
+
+	$('.section-card').click(function() {
+		debugger;
+		var checked = $(this).hasClass("isChecked");
+		if(!checked) {
+			$(this).addClass("checked")
+		} else {
+			$(this).removeClass("checked")
+		}		
+	})
+
 	// Set slider ticks by how many schedules are generated (spaces tick marks based on percentage)
 	function setSliderTicks() {
 		var $slider = $('#schedule-slider');
@@ -669,8 +683,8 @@ $(document).ready(function() {
 				$('.lectures').append('<input type="checkbox" name="0" class="select-lectures"> ');
 				$('.lectures').append('Select all <br/>');
 				$('.select-lectures').click(function() {
-					$(this).parent().children('input[type=checkbox]').each(function() {
-						$(this).prop('checked', $('.select-lectures').prop('checked'));
+					$(this).parent().children('.section-card').each(function() {
+						$(this).toggleClass('checked', $('.select-lectures').prop('checked'));
 					});
 				});
 				for (var i = 0; i < result.lectures.length; i++) {
@@ -678,23 +692,38 @@ $(document).ready(function() {
 					if (sectionSelected(result.lectures[i].section_id, result.id, 'lectures')) {
 						isChecked = "checked";
 					}
-					$('.lectures').append('<input type="checkbox" ' + isChecked + ' name="' + result.lectures[i].section_id + '"> ');
-
+					rating = result.lectures[i].stat.rating ? result.lectures[i].stat.rating.toFixed(2) : "--";
+					difficulty = result.lectures[i].stat.difficulty ? result.lectures[i].stat.difficulty.toFixed(2) : "--";				
+					gpa = result.lectures[i].stat.gpa ? result.lectures[i].stat.gpa.toFixed(2) : "--";
+					tooltip = '"Rating: ' +  rating + "&#xa; Diffculty " + difficulty + "&#xa; GPA " + gpa + '"';
+					$('.lectures').append('<div tooltip=' + tooltip + ' class="well well-sm section-card ' + isChecked 
+											+ '" id="' + result.lectures[i].section_id + '">' 
+											+ Utils.formatTimeStrings(result.lectures[i]) + '<br/>' + result.lectures[i].professor + '</div>');
+					// $('.lectures').append('<a href="#" data-toggle="tooltip" data-placement="right" title="stats">' + result.lectures[i].professor + '</a>')
+					// $('.lectures').append('<div class="well well-sm section-card-info">' + '<br/>' + result.lectures[i].professor + '</div>');
 					// if (searchResults[result.id]['lectures'] && searchResults[result.id]['lectures'].indexOf(result.lectures[i].section_id) != -1) {
 					// 	$('.lectures').append('<input type="checkbox" checked name="' + result.lectures[i].section_id + '"> ');
 					// } else {
 					// 	$('.lectures').append('<input type="checkbox" name="' + result.lectures[i].section_id + '"> ');
 					// }
 
-					$('.lectures').append(Utils.formatTimeStrings(result.lectures[i]));
-					$('.lectures').append(", " + result.lectures[i].professor);
+					// $('.lectures').append(Utils.formatTimeStrings(result.lectures[i]));
+					// $('.lectures').append(", " + result.lectures[i].professor);
 					if (i != result.lectures.length - 1) {
-						$('.lectures').append("<br/>");
+						// $('.lectures').append("<br/>");
 					}
 				}
 			} else {
 				$("#lecture-header").hide();
 			}
+			$('.section-card').click(function() {				
+				var checked = $(this).hasClass("checked");
+				if(!checked) {
+					$(this).addClass("checked")
+				} else {
+					$(this).removeClass("checked")
+				}		
+			})
 			if (result.discussions.length > 0) {
 				$("#discussion-header").show();
 				$('.discussions').append('<input type="checkbox" name="0" class="select-discussions"> ');
@@ -852,5 +881,7 @@ $(document).ready(function() {
 	function sectionSelected(section_id, course_id, type) {
 		return searchResults[course_id][type].indexOf(section_id) != -1;
 	}
+
+
 
 });

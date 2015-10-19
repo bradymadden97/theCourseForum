@@ -204,3 +204,51 @@ body.modal-open {
 	border: 1px solid LightGray;
 	border-radius: 5px;
 }
+
+
+.section-card {
+	/*background-color: LightGray;*/
+	border-radius: 5px;
+	width: 50%;
+}
+
+.section-card.checked {
+	background-color: LightGreen;
+}
+
+.section-card-info {
+	display: none;
+	width: 50%;
+}
+
+.section-card:hover + .section-card-info {
+    display: block;
+}
+
+
+[tooltip]:before {
+    /* needed - do not touch */
+    content: attr(tooltip);
+    position: absolute;
+    opacity: 0;
+    
+    /* customizable */
+    /*transition: width 0.35s ease;*/
+    padding: 10px;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 2px 2px 1px silver;  
+    white-space: pre-wrap;  
+    display: block;
+}
+
+[tooltip]:hover:before {
+    /* needed - do not touch */
+    opacity: 1;
+    
+    /* customizable */
+    background: #d9551e;
+    margin-top: -20px;
+    margin-left: 50%;    
+    white-space: pre-wrap;
+}

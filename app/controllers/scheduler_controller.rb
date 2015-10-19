@@ -48,6 +48,7 @@ class SchedulerController < ApplicationController
   # Called via ajax request when enter is pressed in search
   # Returns the sections that match the search
   def search_course
+    pr "searching course"
     # return an error if the search was able to be split into mnemonic and course number
     unless params[:mnemonic] and params[:course_number]
       render :nothing => true, :status => 404 and return
@@ -55,7 +56,7 @@ class SchedulerController < ApplicationController
       # Find the subdepartment by the given mnemonic
       subdept = Subdepartment.find_by(:mnemonic => params[:mnemonic])
       # Find the course by that subdepartment id and the given course number
-      course = Course.find_by(:subdepartment_id => subdept.id, :course_number => params[:course_number]) if subdept
+      course = Course.includes(:stats => :professor, :sections => [:professors, :semester]).find_by(:subdepartment_id => subdept.id, :course_number => params[:course_number]) if subdept
       # return an error if no such course was found
       render :nothing => true, :status => 404 and return unless course
 
@@ -63,16 +64,17 @@ class SchedulerController < ApplicationController
       # Breaks up the course's sections by type, converting them to javascript sections,
       # and wraps the result in json
       render :json => course.as_json.merge({
+        :stats => course.stats,
         #sets the course mnemonic from the search parameters
         :course_mnemonic => "#{params[:mnemonic].upcase} #{params[:course_number]}",
         #gets the sections of the course that are for the current semester and are lectures
-        :lectures => rsections_to_jssections(course.sections.where(:semester_id => semester.id, :section_type => 'Lecture').includes(:day_times, :locations, :professors)),
+        :lectures => rsections_to_jssections(course.sections.where(:semester_id => semester.id, :section_type => 'Lecture').includes(:day_times, :locations, :professors), course.stats),
         #gets the sections of the course that are for the current semester and are discussions
-        :discussions => rsections_to_jssections(course.sections.where(:semester_id => semester.id, :section_type => 'Discussion').includes(:day_times, :locations, :professors)),
+        :discussions => rsections_to_jssections(course.sections.where(:semester_id => semester.id, :section_type => 'Discussion').includes(:day_times, :locations, :professors), course.stats),
         #gets the sections of the course that are for the current semester and are labs
-        :laboratories => rsections_to_jssections(course.sections.where(:semester_id => semester.id, :section_type => 'Laboratory').includes(:day_times, :locations, :professors)),
+        :laboratories => rsections_to_jssections(course.sections.where(:semester_id => semester.id, :section_type => 'Laboratory').includes(:day_times, :locations, :professors), course.stats),
         #gets the sections of the course that are for the current semester and are labs
-        :seminars => rsections_to_jssections(course.sections.where(:semester_id => semester.id, :section_type => 'Seminar').includes(:day_times, :locations, :professors)),
+        :seminars => rsections_to_jssections(course.sections.where(:semester_id => semester.id, :section_type => 'Seminar').includes(:day_times, :locations, :professors), course.stats),
         # Returns units of course
         :units => course.units
       }) and return
@@ -200,7 +202,7 @@ class SchedulerController < ApplicationController
   private
 
   # Converts rails sections to javascript sections
-  def rsections_to_jssections(sections)
+  def rsections_to_jssections(sections, stats)
     # for each of the sections,
     # replace it with an object with its corresponding fields
     sections.map do |section|
@@ -238,7 +240,8 @@ class SchedulerController < ApplicationController
         :events => [],
         :allDay => false,
         :professor => section.professors.first.full_name,
-        :sis_id => section.sis_class_number
+        :sis_id => section.sis_class_number,
+        :stat => stats.select { |stat| stat.professor_id == section.professors.first.id}.first 
       }
     end.compact
   end
