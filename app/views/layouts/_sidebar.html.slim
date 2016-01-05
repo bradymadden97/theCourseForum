@@ -9,12 +9,25 @@
       .col-xs-12
         .col-wrapper
           = submit_tag "Search", :class => "btn btn-primary"
-  .row.nav-row
+  .row.nav-row#reviews
     .col-xs-12
       .col-wrapper
-        a href="/reviews/new"
+        a#writereview role="button"
           i.glyphicon.glyphicon.glyphicon-pencil
           | Write a review
+  .expandable-container
+    .row.nav-row#sub-row
+      .col-xs-12
+        .col-wrapper
+          a href="/reviews/new"
+            i.glyphicon.glyphicon.glyphicon-play
+            | Single Review
+    .row.nav-row#sub-row
+      .col-xs-12
+        .col-wrapper#multiple
+          a href="/reviews/new-multiple"
+            i.glyphicon.glyphicon.glyphicon-play
+            | Multiple Reviews
   .row.nav-row
     .col-xs-12
       .col-wrapper
