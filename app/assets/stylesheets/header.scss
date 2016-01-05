@@ -179,7 +179,12 @@ $button-width: 22px;
     transition: none !important;
 }
 
-#announcements > div { 
+.login-announcements {
+  display: none;
+}
+
+.home-announcements > div { 
+    display: none;
     max-height: $navbar-height;
     max-width: 50%; 
     position: absolute;
@@ -190,13 +195,13 @@ $button-width: 22px;
     margin-right: 10px;
 }
 
-#announcements > div p {
+.home-announcements > div p {
   float: left;
   font-size: 18px;
   font-weight: 100;
 }
 
-#announcements > div a {
+.home-announcements > div a {
   float: right;
   margin-left: 10px;
   margin-right: 10px;

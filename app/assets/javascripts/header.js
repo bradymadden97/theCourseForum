@@ -17,16 +17,30 @@ var ready = function() {
 	});
 
 	//toggles between each div (announcement) in the nav bar header
-	$("#announcements > div:gt(0)").hide();
+	var allBoxes = $("div.home-announcements").children("div");
+    transitionBox(null, allBoxes.first());
+}
 
-	setInterval(function() { 
-	  $('#announcements > div:first')
-	    .fadeOut(1500)
-	    .next()
-	    .fadeIn(1500)
-	    .end()
-	    .appendTo('#announcements');
-	},  5000);
+function transitionBox(from, to) {
+    function next() {
+        var nextTo;
+        if (to.is(":last-child")) {
+            nextTo = to.closest("div.home-announcements").children("div").first();
+        } else {
+            nextTo = to.next();
+        }
+        to.fadeIn(1500, function () {
+            setTimeout(function () {
+                transitionBox(to, nextTo);
+            }, 3000);
+        });
+    }
+
+    if (from) {
+        from.fadeOut(1500, next);
+    } else {
+        next();
+    }
 }
 
 $(document).ready(ready);

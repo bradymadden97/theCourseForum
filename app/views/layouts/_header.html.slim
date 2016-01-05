@@ -1,3 +1,6 @@
+= javascript_include_tag 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js' 
+= javascript_include_tag 'jquery.anyslider.js' 
+
 nav.navbar.navbar-default#header-navbar
   .container-fluid
     .navbar-header
@@ -11,17 +14,17 @@ nav.navbar.navbar-default#header-navbar
     /! Collect the nav links, forms, and other content for toggling
     #navbar-header.collapse.navbar-collapse
       //announcements
-      div.nav.navbar-nav.navbar-left.hidden-md id="announcements" 
+      div.nav.navbar-nav.navbar-left.hidden-md class="#{current_user ? 'home' : 'login'}-announcements" 
         div overflow="auto"
           p Welcome to theCourseForum. 
         div overflow="auto"
           p The semester is over, write some quick reviews
           a Write Reviews
         div overflow="auto"
-          p Check out the faces behind tCF in the new About Page!
+          p Check out the faces behind tCF in the new About page!
         div overflow="auto"
           p There is now a new book exchange feature!
-          a Learn More
+          a target="_blank" href="http://blog.thecourseforum.com/" Learn More 
       ul.nav.navbar-nav.navbar-right.hidden-xs
         li
           a#report-bug FEEDBACK
