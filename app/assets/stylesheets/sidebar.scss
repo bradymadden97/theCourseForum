@@ -103,15 +103,21 @@
     height: 100%;
     color: rgba(255,255,255,0.5);
 
-    .col-wrapper#multiple {
-      border-bottom: 1px solid rgba(255,255,255,0.5);
-      padding-bottom: 14px;
+    #single {
+      padding-top: 14px !important;
+      padding-bottom: 0px !important;
     }
 
-    .col-wrapper {
-      padding-top: 14px;
-      padding-bottom: none;
-      border-bottom: none;
+    #multiple {
+      border-bottom: 1px solid rgba(255,255,255,0.5) !important;
+      padding-top: 14px !important;
+      padding-bottom: 14px !important;
+    }
+
+    .col-wrapper { 
+      padding-top: none !important;
+      padding-bottom: none !important;
+      border-bottom: none !important;
       //border-bottom: 1px solid rgba(255,255,255,0.5);
 
       a {

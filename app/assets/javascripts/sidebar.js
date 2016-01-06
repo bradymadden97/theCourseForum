@@ -1,4 +1,3 @@
-
 var ready = function() {
 
   var toggleSpeed = 200;
@@ -15,6 +14,7 @@ var ready = function() {
     }
   };
 
+  //write review expands options
   $("#writereview").click(function() {
     $('.expandable-container').slideToggle('5000');
   });
