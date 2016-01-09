@@ -88,7 +88,7 @@ html, body {
 
 body {
   font-family: "Lato", sans-serif;
-  background-color: $blue;
+  // background-color: $light-gray;
   overflow: scroll;
   // overflow: hidden;
   font-size: $regular-font-size;
@@ -97,9 +97,17 @@ body {
 aside {
   width: $sidebar-width !important;
   float: left;
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin-top: $navbar-height;
+  height: 100%;
+  background: $blue;
+
   @media only screen and (min-width: $screen-sm-min) {
     display: block!important;
   }
+
   @media only screen and (max-width: $screen-sm) {
     display: none;
     background-color: $blue;
@@ -111,16 +119,17 @@ aside {
 
 #header-navbar {
   border-bottom: 1px solid #e8e8e8;
+  border-top: 1px solid #e8e8e8;
   z-index: 1;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
 }
 
 section#main {
   margin-left: $sidebar-width;
-  position: fixed;
-  top: $navbar-height;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  margin-top: $navbar-height;
 
   @media only screen and (max-width: $screen-sm) {
     margin-left: 0;
@@ -186,10 +195,11 @@ section#main {
 
 #terms, #privacy {
   color:white;
+
   a {
     color:white;
   }
-  }
+}
 
 select {
   @extend .form-control;
