@@ -28,6 +28,7 @@ class DepartmentsController < ApplicationController
     @department = Department.includes(:subdepartments => [:courses => [:overall_stats, :last_taught_semester]]).find(params[:id])
 
     add_breadcrumb 'Departments', departments_url
+    add_breadcrumb @department.name
     @subdepartments = @department.subdepartments.sort_by(&:mnemonic)
 
     @groups = @subdepartments.map do |subdepartment|
