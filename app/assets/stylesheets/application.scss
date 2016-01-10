@@ -100,21 +100,34 @@ aside {
   position: fixed;
   top: 0;
   left: 0;
+  opacity: 0;
+  transform: scale(0);
   margin-top: $navbar-height;
   height: 100%;
+  z-index: 1999999999;
   background: $blue;
+  will-change: transform;
+  transition: opacity 0.3s ease, transform 0.0s ease;
+  box-shadow: rgba(0, 0, 0, 0.0980392) 5px 10px 15px 5px
 
-  @media only screen and (min-width: $screen-sm-min) {
-    display: block!important;
-  }
 
-  @media only screen and (max-width: $screen-sm) {
-    display: none;
-    background-color: $blue;
-    position: relative;
-    z-index: 4;
-    height: 100%
-  }
+
+  // @media only screen and (min-width: $screen-sm-min) {
+  //   display: block!important;
+  // }
+
+  // @media only screen and (max-width: $screen-sm) {
+  //   display: none;
+  //   background-color: $blue;
+  //   position: relative;
+  //   z-index: 4;
+  //   height: 100%
+  // }
+}
+
+aside.drawer-open {
+  transform: scale(1);
+  opacity: 1;
 }
 
 #header-navbar {
@@ -128,19 +141,13 @@ aside {
 }
 
 section#main {
-  margin-left: $sidebar-width;
+  // margin-left: $sidebar-width;
   margin-top: $navbar-height;
+  height: 100%;
 
   @media only screen and (max-width: $screen-sm) {
     margin-left: 0;
   }
-  
-  // http://stackoverflow.com/questions/7198282/how-to-make-div-occupy-remaining-height
-  // bottom: 0;
-  // top: $navbar-height;
-  // right: 0;
-  // left: 0;
-  // position: absolute;
 
   #main-container {
     background-color: #EEE;

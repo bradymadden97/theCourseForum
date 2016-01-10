@@ -15,10 +15,8 @@ var ready = function() {
 	};
 	// Attatches button to sidebar
 	$('.lines-button').click(function() {
-		$('aside').toggle('slide', {
-			direction: 'left'
-		}, toggleSpeed);
-		toggleButton(this);
+		$('aside').toggleClass('drawer-open');
+		// toggleButton(this);
 	});
 
 	// this function is used in order to prevent the middle line
@@ -40,25 +38,25 @@ var ready = function() {
 		$(".col-secondary").toggle(toggleSpeed);
 	});
 
-	$(document).mousedown(function(e) {
-		// if click outside of sidebar, and window length is less than 850px, retract sidebar.
-		if (!$("aside").is(e.target) && $("aside").has(e.target).length === 0 && $(window).width() < 850 && !$(".lines-button").is(e.target) && $(".lines-button").has(e.target).length === 0) {
-			$("aside").hide('slide', toggleSpeed);
-			if (open) {
-				toggleButton($('.lines-button')[0]);
-			}
-		}
-	});
+	// $(document).mousedown(function(e) {
+	// 	// if click outside of sidebar, and window length is less than 850px, retract sidebar.
+	// 	if (!$("aside").is(e.target) && $("aside").has(e.target).length === 0 && $(window).width() < 850 && !$(".lines-button").is(e.target) && $(".lines-button").has(e.target).length === 0) {
+	// 		$("aside").hide('slide', toggleSpeed);
+	// 		if (open) {
+	// 			toggleButton($('.lines-button')[0]);
+	// 		}
+	// 	}
+	// });
 
-	// retracts sidebar if esc key is pressed
-	$(document).keydown(function(e) {
-		if (e.which === 27 && $(window).width() < 850) {
-			$("aside").hide('slide', toggleSpeed);
-			if (open) {
-				toggleButton($('.lines-button')[0]);
-			}
-		}
-	});
+	// // retracts sidebar if esc key is pressed
+	// $(document).keydown(function(e) {
+	// 	if (e.which === 27 && $(window).width() < 850) {
+	// 		$("aside").hide('slide', toggleSpeed);
+	// 		if (open) {
+	// 			toggleButton($('.lines-button')[0]);
+	// 		}
+	// 	}
+	// });
 
 	$("#search-query").focus(function() {
 		if ($("#search-query").val() == "") {
