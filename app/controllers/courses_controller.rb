@@ -78,6 +78,10 @@ class CoursesController < ApplicationController
 
   def show_professors
     @course = Course.includes(:stats => :professor, :sections => [:professors, :semester]).find(params[:id])
+    @subdepartment = @course.subdepartment
+    add_breadcrumb 'Departments', departments_url
+    add_breadcrumb @subdepartment.name, request.referer # this is definitely not right
+    add_breadcrumb @course.title, root_url + request.fullpath
     @professors = @course.professors.uniq.sort_by(&:last_name)
 
     @professors_semester = {}

@@ -95,15 +95,17 @@ body {
 }
 
 aside {
-  width: $sidebar-width !important;
+  width: $sidebar-width;
   float: left;
   position: fixed;
   top: 0;
-  left: 0;
+  bottom: 0;
   opacity: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
   transform: scale(0);
   margin-top: $navbar-height;
-  height: 100%;
+  // height: 100%;
   z-index: 1999999999;
   background: $blue;
   will-change: transform;

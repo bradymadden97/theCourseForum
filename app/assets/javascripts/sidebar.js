@@ -38,15 +38,15 @@ var ready = function() {
 		$(".col-secondary").toggle(toggleSpeed);
 	});
 
-	// $(document).mousedown(function(e) {
-	// 	// if click outside of sidebar, and window length is less than 850px, retract sidebar.
-	// 	if (!$("aside").is(e.target) && $("aside").has(e.target).length === 0 && $(window).width() < 850 && !$(".lines-button").is(e.target) && $(".lines-button").has(e.target).length === 0) {
-	// 		$("aside").hide('slide', toggleSpeed);
-	// 		if (open) {
-	// 			toggleButton($('.lines-button')[0]);
-	// 		}
-	// 	}
-	// });
+	$(document).mousedown(function(e) {
+		// if click outside of sidebar, and window length is less than 850px, retract sidebar.
+		if (!$('aside').is(e.target) && $('aside').has(e.target).length === 0 && !$('.lines-button').is(e.target) && $('.lines-button').has(e.target).length === 0 && $('aside').hasClass('drawer-open')) {
+			$('aside').toggleClass('drawer-open');
+			// if (open) {
+			// 	toggleButton($('.lines-button')[0]);
+			// }
+		}
+	});
 
 	// // retracts sidebar if esc key is pressed
 	// $(document).keydown(function(e) {
