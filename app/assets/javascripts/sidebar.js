@@ -13,10 +13,11 @@ var ready = function() {
 			open = false;
 		}
 	};
+
 	// Attatches button to sidebar
 	$('.lines-button').click(function() {
 		$('aside').toggleClass('drawer-open');
-		// toggleButton(this);
+		toggleButton(this);
 	});
 
 	// this function is used in order to prevent the middle line
@@ -42,9 +43,9 @@ var ready = function() {
 		// if click outside of sidebar, and window length is less than 850px, retract sidebar.
 		if (!$('aside').is(e.target) && $('aside').has(e.target).length === 0 && !$('.lines-button').is(e.target) && $('.lines-button').has(e.target).length === 0 && $('aside').hasClass('drawer-open')) {
 			$('aside').toggleClass('drawer-open');
-			// if (open) {
-			// 	toggleButton($('.lines-button')[0]);
-			// }
+			if (open) {
+				toggleButton($('.lines-button')[0]);
+			}
 		}
 	});
 
