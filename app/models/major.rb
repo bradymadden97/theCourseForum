@@ -5,6 +5,6 @@ class Major < ActiveRecord::Base
   validates_presence_of :name
 
   def full_name
-    "#{name} - #{specialization}"
+    "#{degree} - #{name}"
   end
 end

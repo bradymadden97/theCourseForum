@@ -1,4 +1,10 @@
-bscs = Major.create(:name => 'Computer Science', :specialization => 'Bachelor of Science')
+bscs = Major.create(
+	:name => 'Computer Science', 
+	:degree => 'B.S.',
+	:credits_required => 127
+)
+
+# Required Courses
 
 core = MajorRequirement.create(
 	:major_id => bscs.id,
@@ -53,3 +59,7 @@ apma.courses = Course.find_by_mnemonic_numbers([
 	'APMA 3080',
 	'APMA 3120'
 ])
+
+
+# TODO: Courses fulfilled through Electives
+# Credits Required = 127 - (core + dld + apma + capstone)

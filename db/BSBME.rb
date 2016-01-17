@@ -1,4 +1,10 @@
-bsbme = Major.create(:name => 'Biomedical Engineering', :specialization => 'Bachelor of Science')
+bsbme = Major.create(
+	:name => 'Biomedical Engineering', 
+	:degree => 'B.S.',
+	:credits_required => 126
+)
+
+# Required Courses
 
 core = MajorRequirement.create(
 	:major_id => bsbme.id,
@@ -40,3 +46,5 @@ bme.courses = Course.find_by_mnemonic_numbers([
 	'BME 4995',
 	'BME 4993'
 ])
+
+# TODO: Courses fulfilled through Electives
