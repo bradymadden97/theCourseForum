@@ -12,7 +12,7 @@ core = MajorRequirement.create(
 	:credits_required => 38
 )
 
-core.courses = Course.find_by_mnemonic_numbers([
+core.courses = Course.find_by_mnemonic_number([
 	'BME 2000',
 	'BME 2101',
 	'BME 2102',
@@ -33,7 +33,7 @@ bme = MajorRequirement.create(
 	:credits_required => 9
 )
 
-bme.courses = Course.find_by_mnemonic_numbers([
+bme.courses = Course.find_by_mnemonic_number([
 	'BME 4414',
 	'BME 4641',
 	'BME 4890',

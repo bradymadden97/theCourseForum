@@ -11,7 +11,7 @@ core = MajorRequirement.create(
   :credits_required => 31
 )
 
-core.courses = Course.find_by_mnemonic_numbers([
+core.courses = Course.find_by_mnemonic_number([
   'CS 1110',
   'CS 2110',
   'CS 2102',
@@ -31,7 +31,7 @@ digital_logic = MajorRequirement.create(
   :credits_required => 3
 )
 
-digital_logic.courses = Course.find_by_mnemonic_numbers([
+digital_logic.courses = Course.find_by_mnemonic_number([
   'CS 2330',
   'ECE 2330'
 ])
@@ -42,7 +42,7 @@ capstone = MajorRequirement.create(
   :credits_required => 2
 )
 
-capstone.courses = Course.find_by_mnemonic_numbers([
+capstone.courses = Course.find_by_mnemonic_number([
   'CS 4971',
   'CS 4980'
 ])
@@ -53,7 +53,7 @@ apma = MajorRequirement.create(
   :credits_required => 6
 )
 
-apma.courses = Course.find_by_mnemonic_numbers([
+apma.courses = Course.find_by_mnemonic_number([
   'APMA 2130',
   'APMA 3080',
   'APMA 3120'

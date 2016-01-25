@@ -14,7 +14,7 @@ core = MajorRequirement.create(
 	:credits_required => 49
 )
 
-core.courses = Course.find_by_mnemonic_numbers([
+core.courses = Course.find_by_mnemonic_number([
 	'MAE 2010',
 	'MAE 2300',
 	'MAE 2310',
