@@ -1,0 +1,37 @@
+@import "variables";
+
+.catch-phrase {
+  margin-top: 5px;
+}
+
+#panel-login {
+  width: 100%;
+  margin-left: 0px;
+}
+
+#password {
+  padding-right: 0;
+}
+
+#remember-me-box {
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+#remember-me-label {
+  color: #777;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+#sign-up-title {
+  margin-top: 0;
+  margin-bottom: 5px;
+  color: $orange;
+}
+
+.user-sign-up {
+  margin-top: 5px;
+  color: white;
+  padding-top: 20px;
+}

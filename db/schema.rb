@@ -11,43 +11,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150425173535) do
+ActiveRecord::Schema.define(version: 20150714174932) do
 
   create_table "book_requirements", id: false, force: true do |t|
-    t.integer "section_id"
-    t.integer "book_id"
-    t.text    "requirement_status"
+    t.integer "section_id", null: false
+    t.integer "book_id",    null: false
+    t.string  "status",     null: false
   end
+
+  add_index "book_requirements", ["book_id", "section_id"], name: "index_book_requirements_on_book_id_and_section_id", unique: true, using: :btree
 
   create_table "books", force: true do |t|
-    t.text    "title"
-    t.text    "author"
-    t.integer "ISBN",                limit: 8
-    t.text    "binding"
-    t.boolean "new_availability"
-    t.boolean "used_availability"
-    t.boolean "rental_availability"
-    t.text    "new_price"
-    t.text    "new_rental_price"
-    t.text    "used_price"
-    t.text    "used_rental_price"
-    t.text    "signed_request"
-    t.text    "ASIN"
-    t.text    "details_page"
-    t.text    "small_image_URL"
-    t.text    "medium_image_URL"
-    t.integer "amazon_new_price"
-    t.text    "affiliate_link"
+    t.string  "title"
+    t.string  "author"
+    t.string  "publisher"
+    t.string  "edition"
+    t.string  "binding"
+    t.string  "isbn"
+    t.float   "bookstore_new_price"
+    t.float   "bookstore_used_price"
+    t.text    "asin"
+    t.text    "small_image_link"
+    t.text    "medium_image_link"
+    t.text    "large_image_link"
+    t.float   "amazon_official_new_price"
+    t.float   "amazon_official_used_price"
+    t.float   "amazon_merchant_new_price"
+    t.float   "amazon_merchant_used_price"
+    t.integer "amazon_new_total"
+    t.integer "amazon_used_total"
+    t.text    "amazon_affiliate_link"
   end
 
-  add_index "books", ["id"], name: "id_UNIQUE", unique: true, using: :btree
+  add_index "books", ["isbn"], name: "index_books_on_isbn", unique: true, using: :btree
 
   create_table "bugs", force: true do |t|
     t.string   "url"
     t.text     "description"
+    t.string   "email"
+    t.boolean  "archived"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id"
   end
 
   create_table "calendar_sections", force: true do |t|
@@ -57,11 +61,13 @@ ActiveRecord::Schema.define(version: 20150425173535) do
 
   create_table "courses", force: true do |t|
     t.string   "title"
-    t.decimal  "course_number",    precision: 4, scale: 0, default: 0
+    t.text     "description"
+    t.decimal  "course_number",           precision: 4, scale: 0, default: 0
     t.integer  "subdepartment_id"
-    t.datetime "created_at",                                           null: false
-    t.datetime "updated_at",                                           null: false
+    t.datetime "created_at",                                                  null: false
+    t.datetime "updated_at",                                                  null: false
     t.boolean  "title_changed"
+    t.integer  "last_taught_semester_id"
   end
 
   add_index "courses", ["subdepartment_id"], name: "index_courses_on_subdepartment_id", using: :btree
@@ -86,7 +92,7 @@ ActiveRecord::Schema.define(version: 20150425173535) do
     t.datetime "updated_at"
   end
 
-  create_table "day_times_sections", id: false, force: true do |t|
+  create_table "day_times_sections", force: true do |t|
     t.integer "day_time_id"
     t.integer "section_id"
     t.integer "location_id"
@@ -260,13 +266,6 @@ ActiveRecord::Schema.define(version: 20150425173535) do
     t.integer  "semester_id"
   end
 
-  create_table "sections_users", id: false, force: true do |t|
-    t.integer "section_id"
-    t.integer "user_id"
-  end
-
-  add_index "sections_users", ["user_id", "section_id"], name: "index_sections_users_on_user_id_and_section_id", unique: true, using: :btree
-
   create_table "semesters", force: true do |t|
     t.integer  "number"
     t.string   "season"
@@ -285,6 +284,18 @@ ActiveRecord::Schema.define(version: 20150425173535) do
   end
 
   add_index "settings", ["target_type", "target_id", "var"], name: "index_settings_on_target_type_and_target_id_and_var", unique: true, using: :btree
+
+  create_table "stats", force: true do |t|
+    t.integer "course_id"
+    t.integer "professor_id"
+    t.float   "rating"
+    t.float   "difficulty"
+    t.float   "gpa"
+  end
+
+  add_index "stats", ["course_id", "professor_id"], name: "index_stats_on_course_id_and_professor_id", unique: true, using: :btree
+  add_index "stats", ["course_id"], name: "index_stats_on_course_id", using: :btree
+  add_index "stats", ["professor_id"], name: "index_stats_on_professor_id", using: :btree
 
   create_table "student_majors", force: true do |t|
     t.integer  "student_id"

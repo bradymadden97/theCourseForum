@@ -2,6 +2,9 @@ class SchedulerController < ApplicationController
 
   require 'icalendar/tzinfo'
 
+  def error
+  end
+
 	def manual
     # calls export_ics if .ics is appended to the url (otherwise no special action)
     respond_to do |format|
@@ -35,12 +38,40 @@ class SchedulerController < ApplicationController
   end
 
   def search
-    courses = Course.where('title LIKE ?', "%#{params[:term]}%")
-    courses += Section.where('topic LIKE ?', "%#{params[:term]}%").map(&:course).uniq
+    @query = params[:query].strip.split(' ')
+    courses = []
+    params[:type] ||= 'current'
+    if @query.length != 1 and !!/\A\d+\z/.match(@query[1])
+      if params[:type] == 'current'
+        courses += Course.includes(:subdepartment).current.where('subdepartments.mnemonic LIKE ? AND course_number LIKE ?', "%#{@query[0]}%", "%#{@query[1]}%").references(:subdepartment)
+      else
+        courses += Course.includes(:subdepartment).where('subdepartments.mnemonic LIKE ? AND course_number LIKE ?', "%#{@query[0]}%", "%#{@query[1]}%").references(:subdepartment)
+      end
+    end
+    
+    if !!/\A\d+\z/.match(@query[0])
+      if params[:type] == 'current'
+        courses += Course.includes(:subdepartment).current.where('course_number LIKE ?', "%#{@query[0]}%")
+      else
+        courses += Course.includes(:subdepartment).where('course_number LIKE ?', "%#{@query[0]}%")
+      end
+    end
+
+    if params[:type] == 'current'
+      courses += Course.includes(:subdepartment).current.where('title LIKE ?', "%#{@query[0]}%")
+      courses += Section.includes(:course => :subdepartment).where('topic LIKE ? AND semester_id = ?', "%#{@query[0]}%", 27).map(&:course).uniq
+    else
+      courses += Course.includes(:subdepartment).where('title LIKE ?', "%#{@query[0]}%")
+      courses += Section.includes(:course => :subdepartment).where('topic LIKE ?', "%#{@query[0]}%").map(&:course).uniq
+    end
+
     render :json => {
       :success => true,
-      :results => courses.map do |course|
-        "#{course.subdepartment.mnemonic} #{course.course_number} - #{course.title}"
+      :results => courses.uniq.map do |course|
+        {
+          :label => "#{course.mnemonic_number} - #{course.title}",
+          :course_id => course.id
+        }
       end
     }
   end
@@ -52,25 +83,51 @@ class SchedulerController < ApplicationController
     unless params[:mnemonic] and params[:course_number]
       render :nothing => true, :status => 404 and return
     else
-      # Find the subdepartment by the given mnemonic
-      subdept = Subdepartment.find_by(:mnemonic => params[:mnemonic])
-      # Find the course by that subdepartment id and the given course number
-      course = Course.find_by(:subdepartment_id => subdept.id, :course_number => params[:course_number]) if subdept
+
+      # course = Subdepartment.includes(:courses => {:sections => [:day_times, :locations]}).find_by(:mnemonic => params[:mnemonic]).courses.find_by(:course_number => params[:course_number])
+      course = Course.includes(:professors, :sections => [:day_times, :locations]).find_by(:subdepartment => Subdepartment.find_by(:mnemonic => params[:mnemonic]), :course_number => params[:course_number])
+
       # return an error if no such course was found
       render :nothing => true, :status => 404 and return unless course
 
-      semester = Semester.find_by(:year => 2015, :season => 'Fall')
-      # Breaks up the course's sections by type, convertubg them to javascript sections,
+      semester = Semester.find_by(:year => 2016, :season => 'Spring')
+      # Breaks up the course's sections by type, converting them to javascript sections,
       # and wraps the result in json
       render :json => course.as_json.merge({
         #sets the course mnemonic from the search parameters
         :course_mnemonic => "#{params[:mnemonic].upcase} #{params[:course_number]}",
         #gets the sections of the course that are for the current semester and are lectures
-        :lectures => rsections_to_jssections(course.sections.where(:semester_id => semester.id, :section_type => 'Lecture').includes(:day_times, :locations, :professors)),
+        :lectures => rsections_to_jssections(course.sections.select do |section|
+          section.semester_id == semester.id && section.section_type == "Lecture"
+        end).map do |jssection|
+          jssection.merge(
+            :title => course.mnemonic_number
+          )
+        end,
         #gets the sections of the course that are for the current semester and are discussions
-        :discussions => rsections_to_jssections(course.sections.where(:semester_id => semester.id, :section_type => 'Discussion').includes(:day_times, :locations, :professors)),
+        :discussions => rsections_to_jssections(course.sections.select do |section|
+          section.semester_id == semester.id && section.section_type == "Discussion"
+        end).map do |jssection|
+          jssection.merge(
+            :title => course.mnemonic_number
+          )
+        end,
         #gets the sections of the course that are for the current semester and are labs
-        :laboratories => rsections_to_jssections(course.sections.where(:semester_id => semester.id, :section_type => 'Laboratory').includes(:day_times, :locations, :professors)),
+        :laboratories => rsections_to_jssections(course.sections.select do |section|
+          section.semester_id == semester.id && section.section_type == "Laboratory"
+        end).map do |jssection|
+          jssection.merge(
+            :title => course.mnemonic_number
+          )
+        end,
+        #gets the sections of the course that are for the current semester and are labs
+        :seminars => rsections_to_jssections(course.sections.select do |section|
+          section.semester_id == semester.id && section.section_type == "Seminar"
+        end).map do |jssection|
+          jssection.merge(
+            :title => course.mnemonic_number
+          )
+        end,
         # Returns units of course
         :units => course.units
       }) and return
@@ -79,14 +136,20 @@ class SchedulerController < ApplicationController
 
   # Given a mnemonic and course number, add the matching course to the current user's courses (not used)
   def save_course
-    subdept = Subdepartment.find_by(:mnemonic => params[:mnemonic])
-    course = Course.find_by(:subdepartment_id => subdept.id, :course_number => params[:course_number]) if subdept
-    current_user.courses << course unless current_user.courses.include? course
+    course = Course.find_by_mnemonic_number("#{params[:mnemonic]} #{params[:course_number]}")
+    current_user.courses << course if course and !current_user.courses.include?(course)
 
     render :nothing => true
   end
 
-  # Clears the current users's saved courses (not used)
+  def unsave_course
+    course = Course.find_by_mnemonic_number("#{params[:mnemonic]} #{params[:course_number]}")
+    current_user.courses.delete(course) if course and current_user.courses.include?(course)
+
+    render :nothing => true
+  end
+
+  # Clears the current users's saved courses
   def clear_courses
     current_user.courses = []
 
@@ -102,7 +165,9 @@ class SchedulerController < ApplicationController
 
   def show_schedules
     render :json => {:success => true, :results => current_user.schedules.map { |schedule|
-      schedule.as_json.merge(:sections => rsections_to_jssections(schedule.sections))
+      schedule.as_json.merge(
+        :sections => rsections_to_jssections(schedule.sections)
+      )
     }}
   end
 
@@ -113,10 +178,7 @@ class SchedulerController < ApplicationController
     if params[:course_sections]
       # for each type of section in the array
       course_sections = JSON.parse(params[:course_sections]).map do |course|
-        # use its id to find the corresponding model object and replace it with that
-        course.map do |section_id|
-          Section.find(section_id)
-        end
+        Section.includes(:day_times, :locations, :professors).find(course)
       end 
     end
 
@@ -144,15 +206,18 @@ class SchedulerController < ApplicationController
           schedule << section
         end
       end
-      sections.count == schedule.count ? rsections_to_jssections(schedule) : nil
+      sections.count == schedule.count ? rsections_to_jssections(schedule).each_with_index.map { |jssection, i|
+        jssection.merge(
+          :title => schedule[i].course.mnemonic_number
+        )
+      } : nil
     end.compact
-
-    valid_schedules.map!.with_index do |schedule, index|
+    valid_schedules = valid_schedules.each_with_index.map { |schedule, index|
       {
         name: "Schedule \##{index + 1}",
         sections: schedule
       }
-    end
+    }
     render :json => valid_schedules and return
   end
 
@@ -218,8 +283,7 @@ class SchedulerController < ApplicationController
       # Make this info, as well as other various fields, part of a json object
       start_times[0] == "" ? nil : {
         :section_id => section.id,
-        :title => "#{section.course.subdepartment.mnemonic} #{section.course.course_number}",
-        :location => section.locations.empty? ? 'NA' : section.locations.first.location,
+        :location => section.locations.length==0 ? 'NA' : section.locations.first.location,
         :days => days,
         :start_times => start_times,
         :end_times => end_times,
@@ -304,7 +368,7 @@ class SchedulerController < ApplicationController
       events = [] #array to hold all the days in a section (MWF are 3 separate events that repeat weekly)
       tzid = "America/New_York" # time zone
 
-      firstMondayOfClasses = 24 # classes start tuesday August 25, 2015 
+      firstMondayOfClasses = 25 # classes start tuesday August 25, 2015
       # loop through each day of the section
      
 
@@ -329,8 +393,8 @@ class SchedulerController < ApplicationController
         endingMinutes = endTimeString.slice(endTimeString.size-2, 2)
 
         # Construct DateTime objects using the above values (and hardcoded august)
-        event_start = DateTime.new(2015, 8, eventDate, startingHour.to_i, startingMinutes.to_i, 1) #seconds have to be something otherwise it doesn't add? (weird af)
-        event_end = DateTime.new(2015, 8, eventDate, endingHour.to_i, endingMinutes.to_i, 1)
+        event_start = DateTime.new(2016, 1, eventDate, startingHour.to_i, startingMinutes.to_i, 1) #seconds have to be something otherwise it doesn't add? (weird af)
+        event_end = DateTime.new(2016, 1, eventDate, endingHour.to_i, endingMinutes.to_i, 1)
 
         # assign this to event's start and end fields along with the timezone
         event.dtstart = Icalendar::Values::DateTime.new event_start, 'tzid' => tzid
@@ -340,7 +404,7 @@ class SchedulerController < ApplicationController
         event.summary = "#{section.course.subdepartment.mnemonic} #{section.course.course_number}"
         event.description = "#{section.course.subdepartment.mnemonic} #{section.course.course_number}"
         event.location = section.locations.first.location
-        event.rrule = "FREQ=WEEKLY;UNTIL=20151208T000000Z" #repeats once a week until hardcoded course end date (could do COUNT= if num occurences is known)
+        event.rrule = "FREQ=WEEKLY;UNTIL=20160503T000000Z" #repeats once a week until hardcoded course end date (could do COUNT= if num occurences is known)
 
         #other unused fields
         #event.klass
@@ -356,9 +420,5 @@ class SchedulerController < ApplicationController
       
       return events
   end
-
- 
-  
-
 
 end  

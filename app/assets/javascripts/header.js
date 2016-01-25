@@ -1,42 +1,46 @@
 var ready = function() {
 
-	$('#report-bug').click(function() {
-		$('#report-bug-modal').modal();
-		$('input[name="url"]').val(window.location);
-	});
+    function transitionBox(from, to) {
+        function next() {
+            var nextTo;
+            if (to.is(":last-child")) {
+                nextTo = to.closest("div.home-announcements").children("div").first();
+            } else {
+                nextTo = to.next();
+            }
+            to.fadeIn(1500, function() {
+                setTimeout(function() {
+                    transitionBox(to, nextTo);
+                }, 3000);
+            });
+        }
+        if (from) {
+            from.fadeOut(1500, next);
+        } else {
+            next();
+        }
+    }
 
-	$('#report').click(function() {
-		$.ajax('/bugs', {
-			method: "POST",
-			data: $('#bug').serialize(),
-			success: function(response) {
-				alert("Thanks for your feedback!");
-			}
-		});
-		$('#report-bug-modal').modal('hide');
-	});
-}
+    $('#report-bug').click(function() {
+        $('#report-bug-modal').modal();
+        $('input[name="url"]').val(window.location);
+    });
 
-$(document).ready(ready);
-$(document).on('page:load', ready);
+    $('#report').click(function() {
+        $.ajax('/bugs', {
+            method: "POST",
+            data: $('#bug').serialize(),
+            success: function(response) {
+                $('textarea[name="description"]').val('');
+                alert("Thanks for your feedback!");
+            }
+        });
+        $('#report-bug-modal').modal('hide');
+    });
 
-var ready = function() {
+    var allBoxes = $("div.home-announcements").children("div");
 
-	$('#better-contact').click(function() {
-		$('#contact-us-new-modal').modal();
-		$('input[name="url"]').val(window.location);
-	});
-
-	$('#report').click(function() {
-		$.ajax('/bugs', {
-			method: "POST",
-			data: $('#bug').serialize(),
-			success: function(response) {
-				alert("Thanks for your feedback!");
-			}
-		});
-		$('#contact-us-new-modal').modal('hide');
-	});
+    transitionBox(null, allBoxes.first());
 }
 
 $(document).ready(ready);

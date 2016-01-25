@@ -1,0 +1,217 @@
+@import "variables";
+
+$screen-xs: 480px;
+
+.navbar {
+  border: 0;
+  border-radius: 0px;
+  margin-bottom: 0;
+}
+
+.navbar-default .navbar-brand {
+  padding: 0;
+  width: $sidebar-width;
+  //background-color: $orange;
+  color: white;
+  text-align: center;
+
+  h1 {
+    margin-top: ($navbar-height - 39px) / 2;
+    margin-bottom: ($navbar-height - 39px) / 2;
+  }
+}
+
+.white-brand {
+  background-color: #fff;
+}
+
+.blue-brand {
+  background-color: #F1F6FB;
+}
+
+.blue-brand:hover {
+  background-color: #DFE2F5 !important;
+}
+
+#logo {
+  max-height: $navbar-height;
+  max-width: 80%;
+  padding: 5px;
+}
+
+.navbar-default .navbar-nav > li > a {
+  color: $blue;
+  font-size: $subtitle-font-size;
+  font-weight: 300;
+}
+
+#report-bug:hover {
+  cursor: pointer;
+}
+
+@media (max-width:$screen-sm) {
+  .navbar-default .navbar-brand{
+    background-color: #fff;
+    &:hover {
+      background-color: #fff;
+    }
+  }
+}
+
+@media (max-width: $screen-sm) {
+    .navbar-default .navbar-brand {
+      background-color: #fff;
+    }
+    #logo {
+      margin-left: -30px;
+    }
+}
+
+// code below handles transition navbar button transition from hamburger to x
+$transition-dur: .2s;
+// same as native bootstrap button-width
+$button-width: 22px;
+
+// line element. Mixin so that it can be reused
+@mixin line {
+    display: inline-block;
+    width: $button-width;
+    height: 2px;
+    background-color: $gray;
+    border-radius: 2px; 
+    transition: $transition-dur;
+}
+
+.lines {
+    @include line;
+    position: relative; 
+
+  // inserts top and bottom lines via css. Are not actually in DOM
+    &:before, &:after {
+        @include line;
+        position: absolute;
+        left:0;
+        content: '';
+    }
+    &:before { 
+        top: -6px; 
+    }
+    &:after { 
+        top: 6px; 
+    }
+}
+
+.lines-button{
+    // place lines button on left if not mobile
+    @media only screen and (min-device-width: $screen-xs){
+        position: absolute;
+        left: 210px;
+    }
+
+    // place lines-button on right if mobile
+    @media only screen and (max-device-width:$screen-xs){
+        float: right !important;
+        position:relative;
+        margin-right: 15px;
+    }
+
+    // set height to length of navbar and width 
+    // to bootstrap default
+    border: none;
+    height: $navbar-height;
+    width: 42px;
+    padding-bottom: 9px;
+    background-color: transparent;
+    &:focus{
+        outline: 0;
+    }
+
+    // change lines to blue on hover
+    &:hover{
+        .lines:before, .lines:after, .lines{
+            background-color: $blue;
+        }
+    }
+}
+
+.lines-button {
+    .lines{
+        transition: background $transition-dur 0s ease;
+
+        // set transition origin and duration
+        &:before, &:after{
+          // transition origin set to center
+            -webkit-transform-origin: 50% 50%;
+                transform-origin: 50% 50%;
+
+            transition: top $transition-dur $transition-dur ease, -webkit-transform $transition-dur ease;
+            transition: top $transition-dur $transition-dur ease, transform $transition-dur ease;
+        }
+  }
+}
+
+.lines-button.closed{
+  .lines {
+        transition: background $transition-dur 0s ease;
+        background: transparent;
+
+    &:before, &:after{
+        transition: top $transition-dur ease, -webkit-transform $transition-dur $transition-dur ease; //delay the formation of the x till the minus is formed  
+        transition: top $transition-dur ease, transform $transition-dur $transition-dur ease; //delay the formation of the x till the minus is formed  
+        top:0;
+        width: $button-width;
+    }
+
+    // rotate before and after to create the x
+    &:before{
+        -webkit-transform: rotate3d(0,0,1,45deg); 
+        transform: rotate3d(0,0,1,45deg); 
+    }
+    &:after{
+        -webkit-transform: rotate3d(0,0,1,-45deg); 
+        transform: rotate3d(0,0,1,-45deg); 
+    }
+  }
+}
+
+// for use with javascript. Eliminates color-change lag on hover
+.notransition {
+    transition: none !important;
+}
+
+.login-announcements {
+  display: none;
+}
+
+.home-announcements > div { 
+    display: none;
+    max-height: $navbar-height;
+    max-width: 50%; 
+    position: absolute;
+    top: 60%;
+    transform: translateY(-50%);
+    text-align: center;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.home-announcements > div p {
+  float: left;
+  font-size: 18px;
+  font-weight: 100;
+}
+
+.home-announcements > div a {
+  float: right;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 3px;
+  font-size: 14px;
+  font-weight: 100;
+  width: 120px;
+  height: 23px;
+  background: $light-blue;
+  color: white;
+  hover: white;
+  border-radius: 7px;
+}

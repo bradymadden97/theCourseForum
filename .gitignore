@@ -13,14 +13,9 @@
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
+/books/*.log
 /tmp
 /config/database.yml
-
-# Ignore lock file.
-*.lock
-/config/database.yml
-
-config/initializers/secret_token.rb
 
 # Ignore application configuration
 /config/application.yml
@@ -28,6 +23,14 @@ config/initializers/secret_token.rb
 # Ignore devise secret key
 /config/initializers/devise.rb
 
+# Ignore AWS config keys
+/books/aws_secret
+
 # Ignore generated words.json file
 lib/words.json
 
+# Ignore compiled assets
+/public/assets
+
+# Ignore bundle
+/vendor/bundle

@@ -1,0 +1,30 @@
+= javascript_include_tag "books"
+
+- content_for :page_heading, "Course Book Listing"
+
+#mnemonics-form.form-group.has-feedback
+  label.control-label for="mnemonics"  Course Mnemonics
+  #mnemonics = search_field_tag "course-mnemonics", nil, :class => 'form-control', :"aria-describedby" => "mnemonic-status", :placeholder => 'Enter courses separated by comma, ex. ECON 2010, AAS 4570'
+  #glyph.span.glyphicon.form-control-feedback aria-hidden="true"
+
+table.table.table-hover.table-striped
+  thead
+    tr
+      th Course
+      th Title
+      th Author
+      th UVA Used
+      th UVA New
+      th Amazon Official (new)
+      th Amazon Merchant (used)
+      th Amazon Merchant (new)
+  tbody#books
+    tr.book.hidden data-toggle='popover'
+      td#course
+      td#title
+      td#author
+      td#bookstore-used-price.warning
+      td#bookstore-new-price.warning
+      td#amazon-official-new-price.warning
+      td#amazon-merchant-used-price.warning
+      td#amazon-merchant-new-price.warning

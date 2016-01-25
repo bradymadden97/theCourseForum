@@ -20,7 +20,9 @@ TheCourseForum::Application.routes.draw do
 
   resources :professors, :only => [:index, :show]
 
-  resources :courses, :only => [:show]
+  get '/courses/reviews' => 'courses#reviews'
+  
+  resources :courses, :only => [:show, :index, :show_professors]
 
   resources :majors, :only => [:index, :show]
 
@@ -30,24 +32,36 @@ TheCourseForum::Application.routes.draw do
   get '/scheduler/generate_schedules' => 'scheduler#generate_schedules'
   get '/scheduler/schedules' => 'scheduler#show_schedules'
   post '/scheduler/course' => 'scheduler#save_course'
+  post '/scheduler/unsave_course' => 'scheduler#unsave_course'
   post '/scheduler/schedules' => 'scheduler#save_schedule'
   delete '/scheduler/schedules' => 'scheduler#destroy'
   get '/scheduler/schedules' => 'scheduler#index'
   get '/scheduler/course' => 'scheduler#course'
   delete '/scheduler/courses' => 'scheduler#clear_courses'
 
+
   resources :bugs
 
   resources :departments, :only => [:show, :index]
 
   resources :subdepartments, :only => [:show]
+
+  resources :books, :only => [:index]
+  get '/books/courses' => 'books#courses'
+
+  resources :books, :only => [] do
+    collection do
+      get :search_subdepartment
+    end
+  end
  
   resources :search, :only => [] do
     collection do
       get :search
-      get :search_subdepartment
     end
   end
+
+  get '/courses/:id/professors', :to => 'courses#show_professors'
 
   get '/recommendation/', to: 'recs#courselist'
   get '/browse', :to => 'departments#index', :as => "browse"
@@ -63,18 +77,18 @@ TheCourseForum::Application.routes.draw do
   get '/terms_of_use', :to => 'home#terms', :as => "terms"
 
   # route for user settings
-  get '/users/settings', :to => "users#settings", :as => "user_settings"
+  # get '/users/settings', :to => "users#settings", :as => "user_settings"
 
-  post '/word_cloud_on', :to => "users#word_cloud_on"
-  post '/word_cloud_off', :to => "users#word_cloud_off"
-  post '/doge_on', :to => "users#doge_on"
-  post '/doge_off', :to => "users#doge_off"
+  # post '/word_cloud_on', :to => "users#word_cloud_on"
+  # post '/word_cloud_off', :to => "users#word_cloud_off"
+  # post '/doge_on', :to => "users#doge_on"
+  # post '/doge_off', :to => "users#doge_off"
 
 
   #routes for voting
   post '/vote_up/:review_id', :to => 'reviews#vote_up'
   post '/vote_down/:review_id', :to => 'reviews#vote_down'
-
+  post '/unvote/:review_id', :to => 'reviews#unvote'
 
   authenticated :user do
     root :to => redirect("/browse"), :as => :authenticated_root
@@ -133,4 +147,5 @@ TheCourseForum::Application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+  # get "*path" => redirect("/")
 end

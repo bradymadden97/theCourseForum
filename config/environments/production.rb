@@ -27,7 +27,7 @@ TheCourseForum::Application.configure do
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
+  config.assets.compile = true
   config.assets.precompile += ['es5-shim.min.js']
 
   # Generate digests for assets URLs.
@@ -90,7 +90,7 @@ TheCourseForum::Application.configure do
       :domain => "gmail.com",
       :authentication => :login,
       :user_name => ENV["EMAIL_USERNAME"],
-      :password => ENV["EMAIL_PASSWORD"],
+      :password => ENV["EMAIL_PASSWORD"]
   }
   
 end

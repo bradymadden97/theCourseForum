@@ -3,7 +3,7 @@
     #error-explaination
       h2
         = pluralize(@review.errors.count, "error")
-        = "prohibited this review from being saved:"
+        = " prohibited this review from being saved:"
       ul
         - @review.errors.full_messages.each do |msg|
           li
@@ -11,33 +11,35 @@
   .row
     .col-xs-12
       .orange-title What class are you reviewing?
+      
+  br
 
   - if @subdept_id
     .row
       .col-md-12
         .row
           .col-md-4 align="center" id="departments" 
-            = f.label 'Department (prefix):'
+            / = f.label 'Department (prefix):'
             = select_tag :subdept_select, options_for_select(@subdepartments.map{|s| [s.name + " (#{s.mnemonic})", s.id]}, @subdept_id), :include_blank => true, :class => "form-control"
           .col-md-4 align="center" id="courses" 
-            = f.label 'Course:'
+            / = f.label 'Course:'
             = select_tag :course_select, options_for_select(@courses.map{|c| [@mnemonic + " #{c.course_number}", c.id]}, @course_id), :include_blank => true
           .col-md-4 align="center" id="professors" 
-            = f.label 'Professor:'
+            / = f.label 'Professor:'
             = select_tag :prof_select, options_for_select(@professors.map{|p| ["#{p.last_name}, #{p.first_name}", p.id]}, @prof_id), :include_blank => true
   - else
     .row
       .col-md-12
         .row
           .col-md-4 align="center" id="departments" 
-            = f.label 'Department (prefix):'
+            / = f.label 'Department (prefix):'
             = select_tag :subdept_select, options_for_select(@subdepartments.map{|s| [s.name + " (#{s.mnemonic})", s.id]}), prompt: "Department (prefix)", class: "form-control"
           .col-md-4 align="center" id="courses" 
-            = f.label 'Course:'
+            / = f.label 'Course:'
             select name="course_select" id="course_select" class="form-control" disabled="true"
               option Course
           .col-md-4 align="center" id="professors" 
-            = f.label 'Professor:'
+            / = f.label 'Professor:'
             select name="prof_select" id="prof_select" class="form-control" disabled="true"
               option Professor
             
@@ -163,28 +165,28 @@
           span
             |  Reading:
         .col-xs-8
-          = f.number_field :amount_reading, :id => "readingfield", :value => (@review.amount_reading > 0 ? @review.amount_reading.to_i : ""), :min => 0, class: "form-control"
+          = f.number_field :amount_reading, :id => "readingfield", :value => ( (@review.amount_reading? and @review.amount_reading > 0) ? @review.amount_reading.to_i : 0), :min => 0, class: "form-control"
       .row.average-stat
         .col-xs-4
           span.glyphicon.glyphicon-edit
           span
             |  Writing:
         .col-xs-8
-          = f.number_field :amount_writing, :id => "writingfield", :value => (@review.amount_writing > 0 ? @review.amount_writing.to_i : ""), :min => 0, class: "form-control"
+          = f.number_field :amount_writing, :id => "writingfield", :value => ( (@review.amount_writing? and @review.amount_writing > 0) ? @review.amount_writing.to_i : 0), :min => 0, class: "form-control"
       .row.average-stat
         .col-xs-4
           span.glyphicon.glyphicon-user
           span
             |  Groupwork:
         .col-xs-8
-          = f.number_field :amount_group, :id => "groupfield", :value => (@review.amount_group > 0 ? @review.amount_group.to_i : ""), :min => 0, class: "form-control"
+          = f.number_field :amount_group, :id => "groupfield", :value => ( (@review.amount_group? and @review.amount_group > 0) ? @review.amount_group.to_i : 0), :min => 0, class: "form-control"
       .row.average-stat
         .col-xs-4
           span.glyphicon.glyphicon-file
           span
             |  Homework:
         .col-xs-8
-          = f.number_field :amount_homework, :id => "homeworkfield", :value => (@review.amount_homework > 0 ? @review.amount_homework.to_i : ""), :min => 0, class: "form-control"
+          = f.number_field :amount_homework, :id => "homeworkfield", :value => ( (@review.amount_homework? and @review.amount_homework > 0) ? @review.amount_homework.to_i : 0), :min => 0, class: "form-control"
 
   hr
 

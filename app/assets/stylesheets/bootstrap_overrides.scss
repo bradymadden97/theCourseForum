@@ -1,0 +1,47 @@
+@import "variables";
+
+h1, .h1, h2, .h2, h3, .h3 {
+  margin-top: 0;
+}
+
+.btn {
+  border-radius: 0;
+  border: 0;
+}
+
+.form-control {
+  border-radius: 0;
+}
+
+.panel {
+  border-radius: 0;
+  border: 0;
+  box-shadow: 0px 1px 2px 0px #B8B8B8;
+}
+
+.nav-tabs > li > a {
+  border-radius: 0;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+  border-top: 4px solid $orange;
+}
+
+.navbar-nav > li > .dropdown-menu {
+  border-radius: 0;
+}
+
+.navbar-brand > img {
+  display: inline;
+}
+
+// vertically aligns headers in modals
+.modal-header > h3, h4 {
+  margin-bottom: 0px;
+}
+
+// horizontally aligns panels in modals
+.modal-body > .panel-group > .panel {
+  margin-right: 20px;
+  margin-left: 20px;
+}

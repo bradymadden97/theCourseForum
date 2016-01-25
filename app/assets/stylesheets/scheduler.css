@@ -15,12 +15,14 @@ body.modal-open {
 #search-bar {
 	float: right;
 	min-width: 200px;
+	max-width: 300px;
 }
 
 #schedule-slider {
 	margin-top: 12px;
 	margin-bottom: 8px;
 	margin-right: 10px;
+	margin-left: 25px;
 	background-image:url(icons/sliderback.png);
 	outline:none; 
 	border-bottom:none;
@@ -36,10 +38,14 @@ body.modal-open {
 	overflow-x: hidden;
 }
 
-#schedule-name {
-	margin-top: 8px;	
+#gpa-num {
+	margin-top: 8px;
 	margin-bottom: 8px;
 	text-align: center;
+}
+
+#gpa-col {
+	padding-left: 0px;
 }
 
 #credits {
@@ -73,11 +79,6 @@ body.modal-open {
 	width: 100%;
 }
 
-#class-search {
-	width: 100%;
-	margin-bottom: 4px;
-}
-
 #results-title {
 	margin-top: 8px;
 }
@@ -85,7 +86,7 @@ body.modal-open {
 #results-box {
 	border-radius: 6px;
 	border: 0px solid gray;
-	min-height: 400px;
+	min-height: 200px;
 	background-color: #F5F5F5;
 }
 
@@ -94,6 +95,7 @@ body.modal-open {
 	letter-spacing: 0px;
 	word-spacing: 0px;
 	margin-bottom: 5px;
+	margin-right: 3px;
 	clear: left;
 }
 
@@ -103,16 +105,12 @@ body.modal-open {
 	border-color: #c34c1b;
 	padding: 4px;
 	cursor: pointer;
-	width: 170px;
+	width: 90%;
 	display: inline-block;
 }
 
 .course-result #checkbox {
 	float: right;
-}
-
-.course-result #checkbox input[type='checkbox'] {
-	margin: 0;
 }
 
 #generate-options {
@@ -168,27 +166,41 @@ body.modal-open {
 }
 
 .ui-effects-transfer {
-    border: 1px dotted black;
+	border: 1px dotted black;
 }
 
 .ui-slider-tick-mark{
-    display:inline-block;
-    width:2px;
-    background:#00137F;
-    height:16px;
-    position:absolute;
-    top:-2px;
+	display:inline-block;
+	width:2px;
+	background:#00137F;
+	height:16px;
+	position:absolute;
+	top:-2px;
 }
 
 @-webkit-keyframes colours {
-    0% {background-color: #15214B;}
-    50% {background-color: #D75626;}
-    100% {background-color: #15214B;}
+	0% {background-color: #15214B;}
+	50% {background-color: #D75626;}
+	100% {background-color: #15214B;}
 }
 
-.loading {
-	-webkit-animation-duration: 1s;
-    -webkit-animation-iteration-count: infinite;
-    -webkit-animation-name: colours;
-    -webkit-animation-timing-function: ease;
-}​
+#course-title {
+	text-align: center;
+}
+
+#scheduler-buttons > button {
+	border: 1px solid LightGray;
+	background-color: #eeeeee;
+	border-radius: 5px;
+	margin-right: 5px;
+}
+
+
+#scheduler-buttons > button:hover {
+	background-color: LightGray;
+}
+
+#how-to {
+	border: 1px solid LightGray;
+	border-radius: 5px;
+}
