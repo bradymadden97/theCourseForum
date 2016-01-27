@@ -1,13 +1,3 @@
-# Script used to select all classes
-#
-# f = File.new(full_path_to_all_courses, 'w')
-# Course.all.each do |c|
-#   if (c.subdepartment && c.course_number)     Kept getting errors for missing subdepartments for some courses
-#     f << "#{c.mnemonic_number},"
-#     f << "\n"
-#   end
-# end
-
 AAS 1010,
 AAS 1020,
 AAS 2559,

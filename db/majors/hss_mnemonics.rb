@@ -1,6 +1,3 @@
-# Source: http://www.seas.virginia.edu/undergrad/orientation/pdfs/electives_single.pdf
-
-
 AAS,
 AMEL,
 AMST,
