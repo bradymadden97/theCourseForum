@@ -1,6 +1,9 @@
+require 'hss_electives'
+# require unrestricted
+
 bscs = Major.create(
   :name => 'Computer Science', 
-  :degree => 'B.S.'
+  :specialization => 'B.S.'
 )
 
 # Required Courses
@@ -59,6 +62,9 @@ apma.courses = Course.find_by_mnemonic_number([
   'APMA 3120'
 ])
 
+# Elective Courses
 
-# TODO: Courses fulfilled through Electives
-# Credits Required = 127 - (core + dld + apma + capstone)
+hss.major_id = bscs.id
+hss.credits_required = 15
+
+# TODO: Unrestricted Electives

@@ -1,6 +1,6 @@
 bsbme = Major.create(
   :name => 'Biomedical Engineering', 
-  :degree => 'B.S.'
+  :specialization => 'B.S.'
 )
 
 # Required Courses

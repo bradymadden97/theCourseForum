@@ -3,7 +3,7 @@
 
 bsae = Major.create(
 	:name => 'Aerospace Engineering'
-	:degree => 'B.S.'
+	:specialization => 'B.S.'
 )
 
 # Required Courses
