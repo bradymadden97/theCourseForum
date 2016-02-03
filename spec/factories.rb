@@ -1,13 +1,9 @@
 FactoryGirl.define do  factory :curation do
     description "MyText"
-required false
-student nil
+    required false
+    student nil
   end
-  factory :curation do
-    desc "MyText"
-required false
-student nil
-  end
+
 
 
   factory :user do

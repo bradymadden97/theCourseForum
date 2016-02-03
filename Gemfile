@@ -83,7 +83,7 @@ group :development, :test do
   # rspec testing framework
   gem 'rspec-rails', '~> 3.1.0'
   # FactoryGirl for fixture replacement
-  gem 'factory_girl_rails', '~> 4.5.0', :require => false
+  gem 'factory_girl_rails', '~> 4.5.0'
 
   gem 'cucumber-rails', :require => false
   
