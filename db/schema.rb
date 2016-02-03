@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150714174932) do
+ActiveRecord::Schema.define(version: 20160203141709) do
 
   create_table "book_requirements", force: :cascade do |t|
     t.integer "section_id", limit: 4,   null: false
@@ -85,6 +85,16 @@ ActiveRecord::Schema.define(version: 20150714174932) do
   end
 
   add_index "courses_users", ["user_id", "course_id"], name: "index_courses_users_on_user_id_and_course_id", unique: true, using: :btree
+
+  create_table "curations", force: :cascade do |t|
+    t.text     "description", limit: 65535
+    t.boolean  "required"
+    t.integer  "student_id",  limit: 4
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "curations", ["student_id"], name: "index_curations_on_student_id", using: :btree
 
   create_table "day_times", force: :cascade do |t|
     t.string   "day",        limit: 255
@@ -336,6 +346,7 @@ ActiveRecord::Schema.define(version: 20150714174932) do
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  limit: 255
+    t.string   "cellphone",              limit: 255
     t.string   "old_password",           limit: 255
     t.integer  "student_id",             limit: 4
     t.integer  "professor_id",           limit: 4
@@ -379,4 +390,5 @@ ActiveRecord::Schema.define(version: 20150714174932) do
   add_index "votes", ["voter_id", "voter_type", "voteable_id", "voteable_type"], name: "fk_one_vote_per_user_per_entity", unique: true, using: :btree
   add_index "votes", ["voter_id", "voter_type"], name: "index_votes_on_voter_id_and_voter_type", using: :btree
 
+  add_foreign_key "curations", "students"
 end

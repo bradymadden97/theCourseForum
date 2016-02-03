@@ -5,5 +5,7 @@ class Student < ActiveRecord::Base
 
   has_many :majors, :through => :student_majors
 
+  has_many :curations
+
   validates :grad_year, presence: true
 end

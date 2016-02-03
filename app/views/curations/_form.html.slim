@@ -1,0 +1,17 @@
+= form_for @curation do |f|
+	
+	.row
+		.col-md-3.col-md-offset-1
+			= f.label 'Tell us more about the course:'
+			br
+			span Try to focus more on course content and utility rather than the individual professor.
+		.col-md-6
+			= f.text_area :description, class: "form-control"		
+	.row
+		.col-md-2.col-md-offset-10
+			= f.submit 'Add another!', :class => "btn btn-primary "
+
+br
+br
+a.btn.btn-primary href="/curations" Done 
+
