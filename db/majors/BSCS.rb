@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require './hss_electives'
 require './unrestricted_electives'
-# require general_engr
+require './general_engr'
 
 bscs = Major.create(
   :name => 'Computer Science', 
@@ -72,4 +72,5 @@ hss.credits_required = 15
 unrestricted.major_id = bscs.id
 unrestricted.credits_required = 15
 
-# TODO: General Engineering courses
+general_engr.major_id = bscs.id
+general_engr.credits_required = 24
