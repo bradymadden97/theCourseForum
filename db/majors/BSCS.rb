@@ -2,6 +2,8 @@
 require './hss_electives'
 require './unrestricted_electives'
 require './general_engr'
+require './science_elective'
+require './sts'
 
 bscs = Major.create(
   :name => 'Computer Science', 
@@ -74,3 +76,6 @@ unrestricted.credits_required = 15
 
 general_engr.major_id = bscs.id
 general_engr.credits_required = 24
+
+science_elective.major_id = bscs.id
+science_elective.credits_required = 3
