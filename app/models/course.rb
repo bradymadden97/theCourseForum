@@ -20,10 +20,12 @@ class Course < ActiveRecord::Base
   has_many :professors, :through => :sections
   has_many :departments, through: :subdepartment
   has_many :grades, :through => :sections
+  has_many :curations
 
   validates_presence_of :title, :course_number, :subdepartment
 
   after_create :create_overall_stats
+
 
   def self.current
     semester_id = Semester.find_by(:year => 2016, :season => 'Spring').id

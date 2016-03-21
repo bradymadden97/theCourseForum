@@ -4,6 +4,8 @@ class CreateCurations < ActiveRecord::Migration
       t.text :description
       t.boolean :required
       t.references :student, index: true, foreign_key: true
+      t.references :major, index: true, foreign_key: true
+      t.references :course, index: true, foreign_key: true
 
       t.timestamps null: false
     end

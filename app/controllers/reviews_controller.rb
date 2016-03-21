@@ -37,11 +37,6 @@ class ReviewsController < ApplicationController
       @professors = Course.find(@course_id).professors_list
       @mnemonic = @subdepartment.mnemonic
     end
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @review }
-    end
   end
 
   # GET /reviews/1/edit

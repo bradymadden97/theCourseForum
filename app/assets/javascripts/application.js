@@ -34,6 +34,7 @@
 //= require contact_us
 //= require sign_up
 //= require reviews
+//= require curations
 //= require textbook_transactions
 //= require sidebar
 

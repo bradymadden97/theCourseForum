@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160203141709) do
+ActiveRecord::Schema.define(version: 20160321031920) do
 
   create_table "book_requirements", force: :cascade do |t|
     t.integer "section_id", limit: 4,   null: false
@@ -90,10 +90,14 @@ ActiveRecord::Schema.define(version: 20160203141709) do
     t.text     "description", limit: 65535
     t.boolean  "required"
     t.integer  "student_id",  limit: 4
+    t.integer  "major_id",    limit: 4
+    t.integer  "course_id",   limit: 4
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
   end
 
+  add_index "curations", ["course_id"], name: "index_curations_on_course_id", using: :btree
+  add_index "curations", ["major_id"], name: "index_curations_on_major_id", using: :btree
   add_index "curations", ["student_id"], name: "index_curations_on_student_id", using: :btree
 
   create_table "day_times", force: :cascade do |t|
@@ -390,5 +394,7 @@ ActiveRecord::Schema.define(version: 20160203141709) do
   add_index "votes", ["voter_id", "voter_type", "voteable_id", "voteable_type"], name: "fk_one_vote_per_user_per_entity", unique: true, using: :btree
   add_index "votes", ["voter_id", "voter_type"], name: "index_votes_on_voter_id_and_voter_type", using: :btree
 
+  add_foreign_key "curations", "courses"
+  add_foreign_key "curations", "majors"
   add_foreign_key "curations", "students"
 end

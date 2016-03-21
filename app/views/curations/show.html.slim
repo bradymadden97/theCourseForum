@@ -1,3 +1,6 @@
 - @curations.each do |curation|
 	.div
-		=curation.description		
+		- course = Course.find(curation.course_id)
+		= Subdepartment.find(course.subdepartment_id).name
+		= course.course_number
+		= curation.description		

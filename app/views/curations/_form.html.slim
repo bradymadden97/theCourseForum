@@ -1,12 +1,46 @@
 = form_for @curation do |f|
-	
+	.row
+		.col-md-3.col-md-offset-1
+			= f.label 'Major'
+		.col-md-6
+			= select_tag :major_select, options_for_select(@majors.map{|s| [s.name, s.id]}), prompt: "Major", class: "form-control"
+	br
+	.row
+		.col-md-3.col-md-offset-1
+			= f.label 'Course curating'
+    	- if @subdept_id
+          .col-md-6 align="center" id="departments" 
+            / = f.label 'Department (prefix):'
+            = select_tag :subdept_select, options_for_select(@subdepartments.map{|s| [s.name + " (#{s.mnemonic})", s.id]}, @subdept_id), :include_blank => true, :class => "form-control"
+          .col-md-4 align="center" id="courses" 
+            / = f.label 'Course:'
+            = select_tag :course_select, options_for_select(@courses.map{|c| [@mnemonic + " #{c.course_number}", c.id]}, @course_id), :include_blank => true
+        - else
+          .col-md-4 align="center" id="departments" 
+            / = f.label 'Department (prefix):'
+            = select_tag :subdept_select, options_for_select(@subdepartments.map{|s| [s.name + " (#{s.mnemonic})", s.id]}), prompt: "Department (prefix)", class: "form-control"
+          .col-md-4 align="center" id="courses" 
+            / = f.label 'Course:'
+            select name="course_select" id="course_select" class="form-control" disabled="true"
+              option Course
+    br
 	.row
 		.col-md-3.col-md-offset-1
 			= f.label 'Tell us more about the course:'
 			br
 			span Try to focus more on course content and utility rather than the individual professor.
 		.col-md-6
-			= f.text_area :description, class: "form-control"		
+			= f.text_area :description, class: "form-control"
+	br
+	.row
+		.col-md-3.col-md-offset-1
+			= f.label :required
+			br
+			span Tell us if the course is required.
+		.col-md-6
+			= f.check_box :required
+	br
+
 	.row
 		.col-md-2.col-md-offset-10
 			= f.submit 'Add another!', :class => "btn btn-primary "
