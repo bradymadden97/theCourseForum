@@ -165,17 +165,23 @@ $(document).ready(function() {
 		// New default date
 		defaultDate: '2014-04-14',
 		eventClick: function(calendarEvent) {
-			$.ajax('scheduler/course', {
-				data: {
-					section_id: calendarEvent.section_id
-				},
-				success: function(response) {
-					window.open('courses/' + response.course_id + '?p=' + response.professor_id, '_blank')
-				},
-				failure: function(response) {
-					alert('Could not load corresponding course!');
-				}
-			});
+			// $.ajax('scheduler/course', {
+			// 	data: {
+			// 		section_id: calendarEvent.section_id
+			// 	},
+			// 	success: function(response) {
+			// 		window.open('courses/' + response.course_id + '?p=' + response.professor_id, '_blank')
+			// 	},
+			// 	failure: function(response) {
+			// 		alert('Could not load corresponding course!');
+			// 	}
+			// });
+
+			//console.log(calendarEvent.sis_id);
+			$('#search-query').val(calendarEvent.sis_id);
+		    $('#search-query').select();
+		    document.execCommand('copy');
+		    $('#search-query').val("");
 		}
 	});
 
@@ -191,12 +197,12 @@ $(document).ready(function() {
 
 	$('#class-search').focus(function() {
 		$('#saved-courses').slideUp();
-		$('#saved-courses-header').slideUp();	
+		$('#saved-courses-header').slideUp();
 		$('#clear-courses').slideUp();
 	});
 
 	$('#class-search').blur(function() {
-		$('#saved-courses-header').slideDown();	
+		$('#saved-courses-header').slideDown();
 		$('#saved-courses').slideDown();
 		$('#clear-courses').slideDown();
 	});
