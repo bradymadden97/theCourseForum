@@ -8,9 +8,24 @@
         - @review.errors.full_messages.each do |msg|
           li
             = msg
+
+  .row
+    ul.nav.nav-tabs role="tablist"
+      li
+        a#report-bug href="#class" data-toggle="tab" CLASS
+      li
+        a#report-bug href='#ratings' data-toggle="tab"RATINGS
+      li
+        a#report-bug href='#review' data-toggle="tab"REVIEW
+
+     
+      
+
   .row
     .col-xs-12
       .orange-title What class are you reviewing?
+
+
       
   br
 
