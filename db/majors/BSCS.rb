@@ -1,9 +1,10 @@
 #!/usr/bin/env ruby
-require './hss_electives'
-require './unrestricted_electives'
-require './general_engr'
-require './science_elective'
-require './sts'
+require_relative "./hss_electives"
+require_relative "./unrestricted_electives"
+require_relative "./general_engr"
+require_relative "./science_elective"
+require_relative "./sts15_45_4600"
+require_relative "./sts2xxx_3xxx"
 
 bscs = Major.create(
   :name => 'Computer Science', 
@@ -68,14 +69,27 @@ apma.courses = Course.find_by_mnemonic_number([
 
 # Elective Courses
 
+hss = MajorRequirement.find_by(:category => "HSS Elective")
 hss.major_id = bscs.id
 hss.credits_required = 15
 
+unrestricted = MajorRequirement.find_by(:category => "Unrestricted Elective")
 unrestricted.major_id = bscs.id
 unrestricted.credits_required = 15
 
+general_engr = MajorRequirement.find_by(:category => "SEAS Required Courses")
 general_engr.major_id = bscs.id
 general_engr.credits_required = 24
 
+science_elective = MajorRequirement.find_by(:category => "Science Elective")
 science_elective.major_id = bscs.id
 science_elective.credits_required = 3
+
+sts15_45_4600 = MajorRequirement.find_by(:category => "STS 1500, 4500, 4600")
+sts15_45_4600.major_id = bscs.id
+sts15_45_4600.credits_required = 9
+
+sts2xxx_3xxx = MajorRequirement.find_by(:category => "STS 2xxx and 3xxx")
+sts2xxx_3xxx.major_id = bscs.id
+sts2xxx_3xxx.credits_required = 3
+
