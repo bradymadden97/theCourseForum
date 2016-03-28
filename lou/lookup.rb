@@ -4,6 +4,8 @@
 # Before you run LDAP analysis, you probably want to backup the current state of the database before you perform LDAP lookups, so you can easily reset to that state
 # mysql -u root thecourseforum_development < ldap1158.sql
 
+require 'nokogiri'
+
 # Squash SQL outputs into the log - can remove to see raw sql queries made
 ActiveRecord::Base.logger.level = 1
 

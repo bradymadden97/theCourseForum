@@ -39,6 +39,9 @@ Dir.entries("#{Rails.root.to_s}/lou/data/csv/").sort_by(&:to_s).each do |file|
 	# Open log for each CSV
 	log = File.open("#{Rails.root.to_s}/lou/log/lou#{number}_#{csv_time.strftime("%Y.%m.%d-%H:%M")}.log", 'w')
 
+	# Monitor logging in real-time w/ tail -f
+	log.sync = true
+
 	# Initalize array of professors we want to lookup later using LDAP
 	ldap_professors = []
 
