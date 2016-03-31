@@ -88,6 +88,11 @@ ready = function() {
 
 		});
 
+		$('#addrev').click(function() {
+			var reviewbox = $('#reviewobject')
+			$('#reviewobject').clone().insertAfter(reviewbox);
+		});
+
 		var prof_radios = $("input[id*=review_professor_rating]");
 		var selected_prof = $("input[id*=review_professor_rating]:checked");
 		if (selected_prof.length > 0) {
