@@ -166,6 +166,7 @@ $(document).ready(function() {
 			});
 		},
 
+
 		// New default date
 		defaultDate: '2014-04-14',
 		eventClick: function(calendarEvent) {
@@ -181,11 +182,22 @@ $(document).ready(function() {
 			// 	}
 			// });
 
-			//console.log(calendarEvent.sis_id);
+			//var final_msg = "SIS ID has been copied to clipboard";
+		    //$('#final_msg').fadeIn().delay(5000).fadeOut();
+
+			//console.log(calendarEvent);
 			$('#search-query').val(calendarEvent.sis_id);
 		    $('#search-query').select();
 		    document.execCommand('copy');
 		    $('#search-query').val("");
+
+		    //var temp = calendarEvent.title;
+		    //calendarEvent.title = "SIS ID copied to clipboard";
+		    //$('#schedule').fullCalendar('updateEvent', calendarEvent);
+
+
+
+
 		}
 	});
 
@@ -823,7 +835,7 @@ $(document).ready(function() {
 					end: dateString + ' ' + course.end_times[i],
 				};
 				event.__proto__ = course;
-				event.title = course.title + ' — ' + course.professor.split(' ')[course.professor.split(' ').length - 1] + '\n' + course.location;
+				event.title = course.title + ' — ' + course.professor.split(' ')[course.professor.split(' ').length - 1];// + '\n' + course.location;
 				course.events.push(event);
 				calendarCourses.push(event);
 			}
