@@ -12,25 +12,10 @@
 	.row
 		.col-md-3.col-md-offset-1
 			= f.label 'Course curating'
-    	- if @subdept_id
-          .col-md-6 align="center" id="departments" 
-            / = f.label 'Department (prefix):'
-            = select_tag :subdept_select, options_for_select(@subdepartments.map{|s| [s.name + " (#{s.mnemonic})", s.id]}, @subdept_id), :include_blank => true, :class => "form-control"
-          .col-md-4 align="center" id="courses" 
-            / = f.label 'Course:'
-            = select_tag :course_select, options_for_select(@courses.map{|c| [@mnemonic + " #{c.course_number}", c.id]}, @course_id), :include_blank => true
-        - else
-        	.col-md-4 align="center" id="departments" 
-            	/ = f.label 'Department (prefix):'
-            	= select_tag :subdept_select, options_for_select(@subdepartments.map{|s| [s.name + " (#{s.mnemonic})", s.id]}), prompt: "Department (prefix)", class: "form-control"
-        	.col-md-4 align="center" id="courses" 
-            	/ = f.label 'Course:'
-            	select name="course_select" id="course_select" class="form-control" disabled="true"
-              		option Course
-        	.col-md-4 align="center" id="saved-courses" 
-	            / = f.label 'Course:'
-            	= select_tag :saved_course_select, options_for_select(current_user.courses.map{|c| [c.mnemonic_number, c.id]}, @course_id), :include_blank => true
-    br
+		.col-md-6
+			= form_tag '/scheduler/search', method: "get", id: "search-form"
+			input type="text" placeholder="Type to Search" name="query" id="search-query"
+
 	.row
 		.col-md-3.col-md-offset-1
 			= f.label 'Tell us more about the course:'
