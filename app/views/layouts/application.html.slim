@@ -19,6 +19,10 @@ html
         = render 'layouts/sidebar'
       section#main
         = render 'layouts/notice'
+        - if controller.controller_name == "courses" || (controller.controller_name == "departments" && controller.action_name == "show")
+          .breadcrumb-header
+            ol.breadcrumb
+              = render_breadcrumbs :tag => :li, :separator => "" 
         .container-fluid#main-container
           - if content_for?(:page_heading)
           .row#header
@@ -51,7 +55,7 @@ html
                 .btn-group data-toggle="buttons"
                   label.btn.btn-primary.active
                     input#current autocomplete="off" name="options" type="radio"
-                    | Spring 2016
+                    | Fall 2016
                   label.btn.btn-primary
                     input#all autocomplete="off" name="options" type="radio"
                     | All
@@ -60,7 +64,7 @@ html
                 .btn-group data-toggle="buttons"
                   label.btn.btn-primary.active
                     input#current.active autocomplete="off" name="options" type="radio"
-                    | Spring 2016
+                    | Fall 2016
                   label.btn.btn-primary
                     input#all autocomplete="off" name="options" type="radio"
                     | All

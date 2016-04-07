@@ -27,6 +27,9 @@ class DepartmentsController < ApplicationController
   def show
     @department = Department.includes(:subdepartments => [:courses => [:overall_stats, :last_taught_semester]]).find(params[:id])
 
+    add_breadcrumb 'Departments', departments_url
+    add_breadcrumb @department.name
+    
     @subdepartments = @department.subdepartments.sort_by(&:mnemonic)
 
     @groups = @subdepartments.map do |subdepartment|
@@ -35,7 +38,7 @@ class DepartmentsController < ApplicationController
       end.map(&:last)
     end
 
-    @current_semester = Semester.find_by(:year => 2016, :season => 'Spring')
+    @current_semester = Semester.current
 
     @current_courses = @department.courses.where(:last_taught_semester => @current_semester)
 
