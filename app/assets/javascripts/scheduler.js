@@ -158,7 +158,11 @@ $(document).ready(function() {
 
 		eventRender: function(event, element) {
 			$(element).tooltip({
-				title: "SIS ID: " + event.sis_id
+				
+				title: event.start.format('h:mm a') + " - " + event.end.format('h:mm a') + "\n" + event.title + "\n" + event.sis_id//event.course_mnemonic + " - " + event.sis_id + "\n" + event.professor + "\n" + event.location
+				//title: "Hello" + event.start + "hello"
+				//title: "SIS ID: " + event.sis_id
+				
 			});
 		},
 
