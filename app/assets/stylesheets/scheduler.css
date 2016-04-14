@@ -204,3 +204,41 @@ body.modal-open {
 	border: 1px solid LightGray;
 	border-radius: 5px;
 }
+
+#scheduler-buttons > .btn-primary {
+	background-color: #d75626;
+    padding: 5px 5px 5px 5px !important;
+    border: 1px solid #c14d22;
+    margin: 5px 5px 5px 5px;
+    width: 100%;
+}
+
+.input-group-addon {
+	background-color: #d75626;
+	border: 0;
+	color: white;
+}
+
+#add-course {
+	background-color: #d9551e;
+	border-color: #c34c1b;	
+	color: white;
+}
+
+.card-item {	
+	background-color: #d9551e;
+	border-color: #c34c1b;
+	width:150px;
+	height:75px;
+	color:white;	
+	text-align: center;
+	font-size: 24px;
+	margin: 10px 10px 10px 10px;
+	cursor: pointer;
+	
+}
+
+#browse-body {
+	display: flex;
+	flex-wrap: wrap;
+}

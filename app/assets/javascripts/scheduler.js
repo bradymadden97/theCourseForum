@@ -215,6 +215,36 @@ $(document).ready(function() {
 		$('#saved-courses').append('<option>-- Select Course --</option>');
 	});
 
+	$('#add-course').click(function() {
+		$("#add-course-modal").modal();
+
+		$.ajax({
+			url: '/departments.json',			
+			success: function(data) {
+				departments = data;
+				Object.keys(data).forEach(function(category) {
+					var newCard = $('#card-template').clone().removeClass('hidden').removeAttr('id');
+					newCard.text(category);					
+					$('#browse-body').append(newCard);
+				});
+				$('.card-item').click(function(event) {
+					event.preventDefault();					
+					$('#browse-body').empty();
+					departments[$(this).text()][0].forEach(function(subdept) {						
+						var newCard = $('#card-template').clone().removeClass('hidden');						
+						newCard.text(subdept.name);											
+						$('#browse-body').append(newCard);
+					});
+					
+				});
+				
+			}
+			
+		});
+	});
+
+	
+
 	$('#class-search').autocomplete({
 		minLength: 2,
 		source: function(request, response) {
@@ -609,7 +639,7 @@ $(document).ready(function() {
 		// params.add(JSON.stringify(sections));
 		$.ajax('scheduler/generate_schedules', {
 			data: params,
-			success: function(response) {
+			success: function(response) {				
 				schedules = response;
 				if (schedules.length > 0) {
 					$('#schedule-slider').slider('option', 'max', schedules.length - 1);
