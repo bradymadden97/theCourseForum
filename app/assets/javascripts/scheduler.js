@@ -160,11 +160,7 @@ $(document).ready(function() {
 
 		eventRender: function(event, element) {
 			$(element).tooltip({
-				
-				title: event.start.format('h:mm a') + " - " + event.end.format('h:mm a') + "\n" + event.title + "\n" + event.sis_id//event.course_mnemonic + " - " + event.sis_id + "\n" + event.professor + "\n" + event.location
-				//title: "Hello" + event.start + "hello"
-				//title: "SIS ID: " + event.sis_id
-				
+				title: event.start.format('h:mm a') + " - " + event.end.format('h:mm a') + "\n" + "SIS ID: " + event.sis_id//event.course_mnemonic + " - " + event.sis_id + "\n" + event.professor + "\n" + event.location "\n" + event.title + 				
 			});
 		},
 
@@ -190,15 +186,15 @@ $(document).ready(function() {
 		    document.execCommand('copy');
 		    $('#search-query').val("");
 
+		    $(this).find('.fc-title').text("SIS ID Copied to Clipboard :)"); 
+		    $(this).addClass("sis_id_copied");
+		}, 
 
-
-		    //var temp = calendarEvent.title;
-		    //calendarEvent.title = "SIS ID copied to clipboard";
-		    //$('#schedule').fullCalendar('updateEvent', calendarEvent);
-
-
-
-
+		//This functino changes text back to Title in instance of SIS ID Copied to Clipboard
+		eventMouseout: function(calendarEvent) {
+			if($(this).hasClass("sis_id_copied")){
+			  $('#schedule').fullCalendar('updateEvent', calendarEvent);	
+			}
 		}
 	});
 

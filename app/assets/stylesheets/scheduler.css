@@ -204,3 +204,8 @@ body.modal-open {
 	border: 1px solid LightGray;
 	border-radius: 5px;
 }
+
+.tooltip {
+	white-space: pre-line !important;
+	width: 110% !important;
+}
