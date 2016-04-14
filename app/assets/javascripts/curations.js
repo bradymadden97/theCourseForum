@@ -36,6 +36,29 @@ ready = function() {
 			});
 
 		});
+
+	$('#search-query1').autocomplete({
+		source: function(request, response) {
+			$.ajax({
+				url: '/scheduler/search',
+				dataType: 'json',
+				type: 'GET',
+				data: {
+					query: request.term,
+					type: 'all'
+				},
+				success: function(data) {
+					response($.map(data.results, function(item) {
+						return {
+							label: item.label,
+							course_id: item.course_id
+						}
+					}));
+				}
+			});
+		}
+	});
+
 }
 
 $(document).ready(ready);

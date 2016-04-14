@@ -1,8 +1,6 @@
 - content_for :page_heading, "My Curation List"
 = form_for @curation do |f|
-	.row
-		.col-md-3.col-md-offset-1
-			= f.label(:hello, "New Curation Hello").html_safe
+
 	.row
 		.col-md-3.col-md-offset-1
 			= f.label 'Major'
@@ -14,7 +12,7 @@
 			= f.label 'Course curating'
 		.col-md-6
 			= form_tag '/scheduler/search', method: "get", id: "search-form"
-			input type="text" placeholder="Type to Search" name="query" id="search-query"
+			input type="text" placeholder="Type to Search" name="query" id="search-query1"
 
 	.row
 		.col-md-3.col-md-offset-1
@@ -33,11 +31,6 @@
 			= f.check_box :required
 	br
 
-	.row
-		.col-md-2.col-md-offset-10
-			= f.submit 'Add another!', :class => "btn btn-primary "
-
-br
-br
+	
 a.btn.btn-primary href="/curations" Done 
 
