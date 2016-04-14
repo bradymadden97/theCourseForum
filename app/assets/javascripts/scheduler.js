@@ -134,6 +134,8 @@ $(document).ready(function() {
 	}
 
 	$('#schedule').fullCalendar({
+		//Makes the time not appear on a class
+		displayEventTime: false,
 		// Default view for the calendar is agendaWeek, which shows a single week
 		defaultView: 'agendaWeek',
 		// No weekends for this view
@@ -182,14 +184,13 @@ $(document).ready(function() {
 			// 	}
 			// });
 
-			//var final_msg = "SIS ID has been copied to clipboard";
-		    //$('#final_msg').fadeIn().delay(5000).fadeOut();
-
 			//console.log(calendarEvent);
 			$('#search-query').val(calendarEvent.sis_id);
 		    $('#search-query').select();
 		    document.execCommand('copy');
 		    $('#search-query').val("");
+
+
 
 		    //var temp = calendarEvent.title;
 		    //calendarEvent.title = "SIS ID copied to clipboard";
