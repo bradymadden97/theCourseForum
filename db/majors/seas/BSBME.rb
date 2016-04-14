@@ -47,3 +47,4 @@ bme.courses = Course.find_by_mnemonic_number([
 ])
 
 # TODO: Courses fulfilled through Electives
+# Ayman was here
