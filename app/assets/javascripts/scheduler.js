@@ -134,6 +134,8 @@ $(document).ready(function() {
 	}
 
 	$('#schedule').fullCalendar({
+		//Makes the time not appear on a class
+		displayEventTime: false,
 		// Default view for the calendar is agendaWeek, which shows a single week
 		defaultView: 'agendaWeek',
 		// No weekends for this view
@@ -158,9 +160,14 @@ $(document).ready(function() {
 
 		eventRender: function(event, element) {
 			$(element).tooltip({
-				title: "SIS ID: " + event.sis_id
+				
+				title: event.start.format('h:mm a') + " - " + event.end.format('h:mm a') + "\n" + event.title + "\n" + event.sis_id//event.course_mnemonic + " - " + event.sis_id + "\n" + event.professor + "\n" + event.location
+				//title: "Hello" + event.start + "hello"
+				//title: "SIS ID: " + event.sis_id
+				
 			});
 		},
+
 
 		// New default date
 		defaultDate: '2014-04-14',
@@ -177,11 +184,21 @@ $(document).ready(function() {
 			// 	}
 			// });
 
-			//console.log(calendarEvent.sis_id);
+			//console.log(calendarEvent);
 			$('#search-query').val(calendarEvent.sis_id);
 		    $('#search-query').select();
 		    document.execCommand('copy');
 		    $('#search-query').val("");
+
+
+
+		    //var temp = calendarEvent.title;
+		    //calendarEvent.title = "SIS ID copied to clipboard";
+		    //$('#schedule').fullCalendar('updateEvent', calendarEvent);
+
+
+
+
 		}
 	});
 
@@ -849,7 +866,7 @@ $(document).ready(function() {
 					end: dateString + ' ' + course.end_times[i],
 				};
 				event.__proto__ = course;
-				event.title = course.title + ' — ' + course.professor.split(' ')[course.professor.split(' ').length - 1] + '\n' + course.location;
+				event.title = course.title + ' — ' + course.professor.split(' ')[course.professor.split(' ').length - 1];// + '\n' + course.location;
 				course.events.push(event);
 				calendarCourses.push(event);
 			}
