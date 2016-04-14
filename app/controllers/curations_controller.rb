@@ -17,7 +17,9 @@ class CurationsController < ApplicationController
 	end
 
 	def create
-		# @curation = current_user.student.curations.build(curation_params)	
+		@curation = current_user.student.curations.build(curation_params)	
+		@myquery = params["query"]
+		puts "Heyy"
 		@curation = Curation.new(curation_params)
 		@curation.course_id = params[:course_select]
 		@curation.major_id = params[:major_select]
