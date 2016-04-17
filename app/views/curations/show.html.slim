@@ -1,8 +1,8 @@
 - @curations.each do |curation|
 	.row
-		- course = Course.find(10)
+		- course = Course.find(curation.course_id)
 		.col-md-3.col-md-offset-1
 			= Subdepartment.find(course.subdepartment_id).mnemonic
 			= course.course_number
 		.col-md-6
-			= curation.description		
+			= curation.description
