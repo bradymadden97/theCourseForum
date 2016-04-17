@@ -10,10 +10,10 @@
 	.row
 		.col-md-3.col-md-offset-1
 			= f.label 'Course curating'
+			br
 		.col-md-6
-			
-			input type="text" placeholder="Type to Search" name="query" id="search-query1"
-
+			input type="text" placeholder="Type to Search" name="query" id="search-query1" class="form-control"
+	br
 	.row
 		.col-md-3.col-md-offset-1
 			= f.label 'Tell us more about the course:'
@@ -25,17 +25,10 @@
 	.row
 		.col-md-3.col-md-offset-1
 			= f.label :required
-			br
-			span Tell us if the course is required.
 		.col-md-6
 			= f.check_box :required
 	br
-
 	.row
-		.col-md-2.col-md-offset-10
-			= f.submit 'Add another!', :class => "btn btn-primary "
-
-br
-br
-a.btn.btn-primary href="/curations" Done 
+		.col-md-3.col-md-offset-1
+			= f.submit 'Add another!', :class => "btn btn-primary btn-lg"
 
