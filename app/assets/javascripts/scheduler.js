@@ -229,6 +229,7 @@ $(document).ready(function() {
 	});
 
 	$('#add-course').click(function() {
+		$('#browse-body').empty();
 		$("#add-course-modal").modal();
 
 		$.ajax({
@@ -244,7 +245,8 @@ $(document).ready(function() {
 					event.preventDefault();					
 					$('#browse-body').empty();
 					departments[$(this).text()][0].forEach(function(subdept) {						
-						var newCard = $('#card-template').clone().removeClass('hidden');						
+						var newCard = $('#card-template').clone().removeClass('hidden').removeAttr('id');						
+						newCard.attr('id', subdept.id);
 						newCard.text(subdept.name);											
 						$('#browse-body').append(newCard);
 					});
