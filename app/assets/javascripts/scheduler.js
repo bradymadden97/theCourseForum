@@ -134,6 +134,8 @@ $(document).ready(function() {
 	}
 
 	$('#schedule').fullCalendar({
+		//Makes the time not appear on a class
+		displayEventTime: false,
 		// Default view for the calendar is agendaWeek, which shows a single week
 		defaultView: 'agendaWeek',
 		// No weekends for this view
@@ -158,9 +160,10 @@ $(document).ready(function() {
 
 		eventRender: function(event, element) {
 			$(element).tooltip({
-				title: "SIS ID: " + event.sis_id
+				title: event.start.format('h:mm a') + " - " + event.end.format('h:mm a') + "\n" + "SIS ID: " + event.sis_id//event.course_mnemonic + " - " + event.sis_id + "\n" + event.professor + "\n" + event.location "\n" + event.title + 				
 			});
 		},
+
 
 		// New default date
 		defaultDate: '2014-04-14',
@@ -177,11 +180,21 @@ $(document).ready(function() {
 			// 	}
 			// });
 
-			//console.log(calendarEvent.sis_id);
+			//console.log(calendarEvent);
 			$('#search-query').val(calendarEvent.sis_id);
 		    $('#search-query').select();
 		    document.execCommand('copy');
 		    $('#search-query').val("");
+
+		    $(this).find('.fc-title').text("SIS ID Copied to Clipboard :)"); 
+		    $(this).addClass("sis_id_copied");
+		}, 
+
+		//This functino changes text back to Title in instance of SIS ID Copied to Clipboard
+		eventMouseout: function(calendarEvent) {
+			if($(this).hasClass("sis_id_copied")){
+			  $('#schedule').fullCalendar('updateEvent', calendarEvent);	
+			}
 		}
 	});
 
@@ -214,6 +227,36 @@ $(document).ready(function() {
 		$('#saved-courses').empty();
 		$('#saved-courses').append('<option>-- Select Course --</option>');
 	});
+
+	$('#add-course').click(function() {
+		$("#add-course-modal").modal();
+
+		$.ajax({
+			url: '/departments.json',			
+			success: function(data) {
+				departments = data;
+				Object.keys(data).forEach(function(category) {
+					var newCard = $('#card-template').clone().removeClass('hidden').removeAttr('id');
+					newCard.text(category);					
+					$('#browse-body').append(newCard);
+				});
+				$('.card-item').click(function(event) {
+					event.preventDefault();					
+					$('#browse-body').empty();
+					departments[$(this).text()][0].forEach(function(subdept) {						
+						var newCard = $('#card-template').clone().removeClass('hidden');						
+						newCard.text(subdept.name);											
+						$('#browse-body').append(newCard);
+					});
+					
+				});
+				
+			}
+			
+		});
+	});
+
+	
 
 	$('#class-search').autocomplete({
 		minLength: 2,
@@ -609,7 +652,7 @@ $(document).ready(function() {
 		// params.add(JSON.stringify(sections));
 		$.ajax('scheduler/generate_schedules', {
 			data: params,
-			success: function(response) {
+			success: function(response) {				
 				schedules = response;
 				if (schedules.length > 0) {
 					$('#schedule-slider').slider('option', 'max', schedules.length - 1);
@@ -819,7 +862,7 @@ $(document).ready(function() {
 					end: dateString + ' ' + course.end_times[i],
 				};
 				event.__proto__ = course;
-				event.title = course.title + ' — ' + course.professor.split(' ')[course.professor.split(' ').length - 1] + '\n' + course.location;
+				event.title = course.title + ' — ' + course.professor.split(' ')[course.professor.split(' ').length - 1];// + '\n' + course.location;
 				course.events.push(event);
 				calendarCourses.push(event);
 			}
