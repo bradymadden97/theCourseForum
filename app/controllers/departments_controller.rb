@@ -19,7 +19,7 @@ class DepartmentsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: {'art': @artDeps, 'engr': @engrDeps, 'other': @otherSchools } }
+      format.json { render json: {'art': @artDeps.flatten(1), 'engr': @engrDeps.flatten(1), 'other': @otherSchools.flatten(1) } }
     end
   end
 

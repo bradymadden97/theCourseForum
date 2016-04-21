@@ -236,6 +236,7 @@ $(document).ready(function() {
 			url: '/departments.json',			
 			success: function(data) {
 				departments = data;
+				console.log(data);
 				Object.keys(data).forEach(function(category) {
 					var newCard = $('#card-template').clone().removeClass('hidden').removeAttr('id');
 					newCard.text(category);					
@@ -244,7 +245,7 @@ $(document).ready(function() {
 				$('.card-item').click(function(event) {
 					event.preventDefault();					
 					$('#browse-body').empty();
-					departments[$(this).text()][0].forEach(function(subdept) {						
+					departments[$(this).text()].forEach(function(subdept) {						
 						var newCard = $('#card-template').clone().removeClass('hidden').removeAttr('id');						
 						newCard.attr('id', subdept.id);
 						newCard.text(subdept.name);											
