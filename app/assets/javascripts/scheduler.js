@@ -248,12 +248,36 @@ $(document).ready(function() {
 					departments[$(this).text()].forEach(function(subdept) {						
 						var newCard = $('#card-template').clone().removeClass('hidden').removeAttr('id');						
 						newCard.attr('id', subdept.id);
+						//Adding class to card to differentiate clicks
+						newCard.addClass("is-subdept");
 						newCard.text(subdept.name);											
 						$('#browse-body').append(newCard);
 					});
+					$('.is-subdept').click(function(event) {
+					event.preventDefault();
+					$('#browse-body').empty();
+					$.ajax({
+						url:'/departments/' + $(this).attr('id') + '.json',
+						// data: {
+						// 	id: $(this).attr('id')
+						// // },
+						// dataType: 'json',
+						success: function(data) {
+							console.log(data);
+							subdept = data;
+							Object.keys(data).forEach(function(course) {
+							var newCard = $('#card-template').clone().removeClass('hidden').removeAttr('id');						
+							newCard.attr('id', course.id);
+							newCard.text(course.name);											
+							$('#browse-body').append(newCard);
+					});
+						}
+					});
+				
+				});
 					
 				});
-				
+							
 			}
 			
 		});
