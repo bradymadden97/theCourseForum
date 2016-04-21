@@ -8,6 +8,7 @@ body.modal-open {
 	display: none;
 }
 
+
 #calendar {
 	float: left;
 }
@@ -176,6 +177,10 @@ body.modal-open {
 	height:16px;
 	position:absolute;
 	top:-2px;
+}
+
+.fc-v-event {
+	cursor: copy;
 }
 
 @-webkit-keyframes colours {
