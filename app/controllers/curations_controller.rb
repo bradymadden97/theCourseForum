@@ -12,14 +12,14 @@ class CurationsController < ApplicationController
 	def new
 		@curation = current_user.student.curations.build()
 		@subdepartments = Subdepartment.all.order(:name)
-		# @curation = Curation.new
+		@curation = Curation.new
 		@majors = Major.all.order(:name)	
 	end
 
 	def create
 		@curation = current_user.student.curations.build(curation_params)
 		@curation = Curation.new(curation_params)
-		@curation.course_id = params[:course_select].id;
+		# @curation.course_id = params[:course_select].id;
 		@curation.major_id = params[:major_select]
 		@curation.student_id = current_user.id
 		if @curation.save

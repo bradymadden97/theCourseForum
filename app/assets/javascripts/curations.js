@@ -24,12 +24,12 @@ ready = function() {
 					$("#courses").fadeIn("fast");
 					data = data.sort(course_compare);
 					$.each(data, function() {
+						console.log("HI")
 						$('#course_select').append($("<option/>", {
 							value: this.id,
 							text: this.subdepartment.mnemonic + " " + this.course_number
 						}));
 					});
-
 					course_select.selectedIndex = -1;
 
 				}
