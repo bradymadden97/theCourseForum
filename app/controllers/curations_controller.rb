@@ -1,6 +1,6 @@
 class CurationsController < ApplicationController
 
-  before_action :is_correct_user, :only => [:edit, :update, :destroy]
+  before_action :is_correct_user, :only => [:create]
 
   # GET /curations
   def index
@@ -17,13 +17,27 @@ class CurationsController < ApplicationController
     @curation = current_user.student.curations.build()
     @subdepartments = Subdepartment.all.order(:name)
     @curation = Curation.new
-    @majors = Major.all.order(:name)  
+    @majors = Major.all.order(:name)
+
+    if @course_id
+      @subdepartment = Subdepartment.find(Course.find(@course_id).subdepartment_id)
+      @subdept_id = @subdepartment.id
+      @courses = Course.where(:subdepartment_id => @subdept_id)
+      @mnemonic = @subdepartment.mnemonic
+    end
   end
 
   def create
+    c = Curation.find_by(:student_id => current_user.id, :course_id => params[:course_select], :major_id => params[:major_select])
+    if r != nil
+      flash[:notice] = "You have already written a curation on this class for this major."
+      redirect_to curations_path
+      return
+    end
+
     @curation = current_user.student.curations.build(curation_params)
     @curation = Curation.new(curation_params)
-    # @curation.course_id = params[:course_select].id;
+    @curation.course_id = params[:course_select].id;
     @curation.major_id = params[:major_select]
     @curation.student_id = current_user.id
     if @curation.save
@@ -39,8 +53,8 @@ class CurationsController < ApplicationController
     end
 
     def is_correct_user
-      @review = Curation.find(params[:id])
-      if current_user.id != @review.student_id
+      @curation = Curation.find(params[:id])
+      if current_user.id != @curation.student_id
         redirect_to curations_path
       end
     end

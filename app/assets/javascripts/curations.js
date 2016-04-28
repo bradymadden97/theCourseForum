@@ -11,10 +11,10 @@ ready = function() {
 		}
 		
 	$("#subdept_select").bind("change", function() {
-			// $("#prof_select").prop("disabled", true);
+			$("#prof_select").prop("disabled", true);
 			$("#course_select").prop("disabled", false);
 			$("#course_select").empty();
-			// $("#prof_select").empty();
+			$("#prof_select").empty();
 			var value = $(this).find(":selected").val();
 			$.ajax({
 				url: '/subdepartments/' + value,
