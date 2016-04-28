@@ -28,6 +28,8 @@ class ReviewsController < ApplicationController
    # @professors = Professor.all.sort_by{|e| e[:last_name]}
 
     @course_id = params[:c]
+    p "It is"
+    p @course_id
     @prof_id = params[:p]
 
     if @course_id
