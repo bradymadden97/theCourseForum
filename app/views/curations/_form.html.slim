@@ -18,12 +18,12 @@
           .col-md-4 align="center" id="courses" 
             / = f.label 'Course:'
             = select_tag :course_select, options_for_select(@courses.map{|c| [@mnemonic + " #{c.course_number}", c.id]}, @course_id), :include_blank => true
-  .row
-    .col-md-3.col-md-offset-1
-      = f.label 'Course curating'
-      br
-    .col-md-6
-      input type="text" placeholder="Type to Search" name="query" id="search-query1" class="form-control"
+  / .row
+  /   .col-md-3.col-md-offset-1
+  /     = f.label 'Course curating'
+  /     br
+  /   .col-md-6
+  /     input type="text" placeholder="Type to Search" name="query" id="search-query1" class="form-control"
   
   br
   
