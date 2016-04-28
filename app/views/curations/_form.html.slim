@@ -1,33 +1,32 @@
-- content_for :page_heading, "My Curation List"
 = form_for @curation do |f|
-	
-	.row
-		.col-md-3.col-md-offset-1
-			= f.label 'Major'
-		.col-md-6
-			= select_tag :major_select, options_for_select(@majors.map{|s| [s.name, s.id]}), prompt: "Major", class: "form-control"
-	br
-	.row
-		.col-md-3.col-md-offset-1
-			= f.label 'Course curating'
-			br
-		.col-md-6
-			input type="text" placeholder="Type to Search" name="query" id="search-query1" class="form-control"
-	br
-	.row
-		.col-md-3.col-md-offset-1
-			= f.label 'Tell us more about the course:'
-			br
-		.col-md-6
-			= f.text_area :description, class: "form-control", placeholder: "Try to focus more on course content and utility rather than the individual professor."
-	br
-	.row
-		.col-md-3.col-md-offset-1
-			= f.label :required
-		.col-md-6
-			= f.check_box :required
-	br
-	.row
-		.col-md-3.col-md-offset-1
-			= f.submit 'Add another!', :class => "btn btn-primary btn-lg"
+  
+  .row
+    .col-md-3.col-md-offset-1
+      = f.label 'Major'
+    .col-md-6
+      = select_tag :major_select, options_for_select(@majors.map{|s| [s.name, s.id]}), prompt: "Major", class: "form-control"
+  br
+  .row
+    .col-md-3.col-md-offset-1
+      = f.label 'Course curating'
+      br
+    .col-md-6
+      input type="text" placeholder="Type to Search" name="query" id="search-query1" class="form-control"
+  br
+  .row
+    .col-md-3.col-md-offset-1
+      = f.label 'Tell us more about the course:'
+      br
+    .col-md-6
+      = f.text_area :description, class: "form-control", placeholder: "Try to focus more on course content and utility rather than the individual professor."
+  br
+  .row
+    .col-md-3.col-md-offset-1
+      = f.label :required
+    .col-md-6
+      = f.check_box :required
+  br
+  .row
+    .col-md-3.col-md-offset-1
+      = f.submit 'Add another!', :class => "btn btn-primary btn-lg"
 

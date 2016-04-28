@@ -1,7 +1,9 @@
-- content_for :page_heading, "Browse Curations By Department"
-- @majors.each do |major|
-	span
-		a href="/curations/#{major.id}" =major.name
-	br
+- content_for :title, "Browse By Major"
+- content_for :page_heading, "Browse By Major"
 
-		
+- @majors.each do |major|
+  span
+    a href="/curations/#{major.id}" =major.name
+  br
+
+    
