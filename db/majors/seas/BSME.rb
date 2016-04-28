@@ -14,7 +14,7 @@ bsme = Major.create(
 #Required Courses
 
 core = MajorRequirement.create(
-	:major_id => bscs.id,
+	:major_id => bsme.id,
 	:category => 'Core',
 	:credits_required => 47
 )
@@ -32,8 +32,8 @@ core.courses = Course.find_by_mnemonic_number([
 	'MAE 3140',
 	'MAE 3620',
 	'MAE 3840',
-	'MAE 4710'
-	'APMA 3110'
+	'MAE 4710',
+	'APMA 3110',
 	'APMA 2130'
 ])
 
