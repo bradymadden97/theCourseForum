@@ -1,4 +1,5 @@
 class Major < ActiveRecord::Base
+  has_many :student_majors
   has_many :students, :through => :student_majors
   has_many :major_requirements
 
