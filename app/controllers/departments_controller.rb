@@ -16,12 +16,16 @@ class DepartmentsController < ApplicationController
     @artDeps = columnize(departments.select{|d| d.school_id == artSchoolId})
     @engrDeps = columnize(departments.select{|d| d.school_id == engrSchoolId })
     @otherSchools = columnize(departments.select{|d| d.school_id != artSchoolId && d.school_id != engrSchoolId })
+    @comments = self.grab_reviews
+
 
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @departments }
     end
+
   end
+
 
   # GET /departments/1
   def show
@@ -46,8 +50,29 @@ class DepartmentsController < ApplicationController
       format.html # show.html.erb
     end
   end
+  
+  def grab_reviews
+    top_20_comments = {}
+    vote_array = Vote.all.pluck(:"voteable_id")
+    freq = vote_array.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
 
- 
+    (0...20).each do
+      top_vote = vote_array.max_by { |v| freq[v]}
+      top_review = Review.find_by(id: top_vote)
+
+      top_comment = top_review["comment"]
+      top_course = Course.find(top_review["course_id"])
+      title = top_course["title"]
+
+      top_20_comments[title] = top_comment
+
+      freq.delete(top_vote)
+    end
+
+    return top_20_comments
+  end
+
+
   private
     def department_params
       params.require(:department).permit(:name)

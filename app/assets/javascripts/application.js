@@ -34,6 +34,7 @@
 //= require reviews
 //= require textbook_transactions
 //= require sidebar
+//= require top_reviews
 
 NProgress.configure({ showSpinner: false });
 

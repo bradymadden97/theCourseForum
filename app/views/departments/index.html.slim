@@ -2,6 +2,8 @@
 - content_for :page_heading, "Browse By Department"
 
 .container-fluid#browsing-content
+  
+
   #departments
     .panel.panel-default
       .school-panel-title
@@ -44,4 +46,20 @@
           .col-sm-6
             - @otherSchools[1].each do |d|
               .dept= link_to d.name, d
+    #review-values value = @comments.values
+    #review-keys value = @comments.keys
+    #top-reviews
+    .panel.panel-default
+      .school-panel-title
+        .dept-block
+          span.glyphicon.glyphicon-heart
+        h3.school-title Top Reviews
+
+      .panel-body
+        .row.department-list
+          .col-sm-12
+              #cycle1
+                  .review = @comments.keys[0]
+                  .review = @comments[@comments.keys[0]]
+   
               
