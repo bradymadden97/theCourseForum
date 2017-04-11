@@ -136,6 +136,7 @@ class TextbookTransactionsController < ApplicationController
 
     @claimed = current_user.claims
     @followed = current_user.books
+    @courses = current_user.courses
 
   end
 

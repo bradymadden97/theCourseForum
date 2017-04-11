@@ -151,6 +151,11 @@ class CoursesController < ApplicationController
     
   end
 
+  def saved
+    @courses = current_user.courses
+
+  end  
+
   private
 
   def amazon_public_site?
@@ -237,9 +242,7 @@ class CoursesController < ApplicationController
       end
 
       emphasizes
-    end
-
-    
+    end    
     
 
 end

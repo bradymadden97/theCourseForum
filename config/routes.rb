@@ -21,6 +21,7 @@ TheCourseForum::Application.routes.draw do
   resources :professors, :only => [:index, :show]
 
   get '/courses/reviews' => 'courses#reviews'
+  get '/courses/saved' => 'courses#saved', :as => "saved_courses" #saved courses page
   
   resources :courses, :only => [:show, :index, :show_professors]
 
