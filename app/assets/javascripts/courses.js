@@ -173,7 +173,6 @@ ready = function() {
   });
 
   $('#save-course-button').click(function() {
-    console.log("saved button clicked")
     var course_name = $('#course-name').text().replace(/^\s\s*/, '').replace(/\s\s*$/, '');
     course_name = course_name.split(' - ');
     course_name = course_name[0].split(' ');

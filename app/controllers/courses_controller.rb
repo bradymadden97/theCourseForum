@@ -191,6 +191,13 @@ class CoursesController < ApplicationController
       end
     end
 
+    def unsave_course
+      course = Course.find_by_mnemonic_number("#{params[:mnemonic]} #{params[:course_number]}")
+      current_user.courses.delete(course) if course and current_user.courses.include?(course)
+
+      render :nothing => true
+    end
+
     #Get aggregated emphasizes numbers
     #@todo this needs serious cleanup
     def get_review_emphasizes

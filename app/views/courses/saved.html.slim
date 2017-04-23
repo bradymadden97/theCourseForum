@@ -1,7 +1,6 @@
 - content_for :title, "My Listings"
 - content_for :page_heading, "My Saved Courses"
 
-
 - if @courses.count > 0
     table.table.table-striped#my-listing-table
       tbody#listing-list
@@ -14,21 +13,19 @@
             th Professor
       - @courses.each do |course|
           tr.a-listing
-            td.title 
-              a href=course_path(course.id) = course.title
-            td.title 
+            td.title
+              a#course-name href=course_path(course.id) = course.title
+            td 
               a href=course_path(course.id)  = course.mnemonic_number
             td.title 
               a href=course_path(course.id)  = course.professors_list[0].full_name
             td.title
-                - if current_user and current_user.courses.include? @course
-                  .btn.btn-primary#save-course-button.active data-toggle="button" aria-pressed="true" Unsave
-                - else
-                  .btn.btn-primary#save-course-button data-toggle="button" aria-pressed="false" Save Course
+              .btn.btn-primary#save-course-button.active data-toggle="button" formmethod="post" onclick="scheduler/unsave_course" aria-pressed="true" Unsave Course 
+
 - else
   .row
     .col-xs-12
       | You haven't saved any courses.
   .row
     .col-xs-12
-      = link_to "Find Courses", listings_path, :class => "btn btn-primary"
+      = link_to "Find Courses", browse_path, :class => "btn btn-primary"
