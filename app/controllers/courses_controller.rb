@@ -1,6 +1,6 @@
 class CoursesController < ApplicationController
   skip_before_action :authenticate_user!, if: -> { amazon_public_site? and ['show', 'reviews'].include?(action_name)}
-  
+
   def show
     if !current_user and !params[:p] and amazon_public_site?
       case params[:id]
@@ -38,7 +38,7 @@ class CoursesController < ApplicationController
       @required_books  = @course.book_requirements_list("Required")
       @recommended_books  = @course.book_requirements_list("Recommended")
       @optional_books  = @course.book_requirements_list("Optional")
-      @other_books = @course.books.uniq - @required_books - @recommended_books - @optional_books      
+      @other_books = @course.books.uniq - @required_books - @recommended_books - @optional_books
     end
 
     @all_reviews = @professor ? Review.where(:course_id => @course.id, :professor_id => @professor.id).includes(:votes) : Review.where(:course_id => @course.id).includes(:votes)
@@ -73,7 +73,7 @@ class CoursesController < ApplicationController
 
     @rev_ratings = get_review_ratings
     @rev_emphasizes = get_review_emphasizes
-    
+
     respond_to do |format|
       format.html # show.html.slim
       format.json { render json: @course, :methods => :professors_list}
@@ -148,7 +148,7 @@ class CoursesController < ApplicationController
     end
 
     render partial: 'reviews', locals: { reviews_with_comments: @reviews_voted_up, reviews: @reviews_voted_up, reviews_voted_down: @reviews_voted_down }, layout: false
-    
+
   end
 
   private
@@ -239,7 +239,7 @@ class CoursesController < ApplicationController
       emphasizes
     end
 
-    
-    
+
+
 
 end

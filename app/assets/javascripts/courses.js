@@ -10,7 +10,7 @@ ready = function() {
       retVal = compareProfessors(professorA, professorB, attrName);
 
       // Handle tie
-      if (retVal == 0) {
+       if (retVal == 0) {
         var otherSortOptions = [".course-rating", ".course-difficulty", ".course-gpa"];
 
         for (var i = 0; i < otherSortOptions.length; i++) {
@@ -26,11 +26,11 @@ ready = function() {
             }
             // if three-way tie, return 0
             if (i == 2 && retVal == 0) {
-              return 0;
+              retVal = 0;
             }
           }
         }
-      }
+    }
 
       return retVal;
 
@@ -39,19 +39,33 @@ ready = function() {
 
   // Compares two professor panel elements by a given stat (id)
   function compareProfessors(professorA, professorB, stat) {
-    // Get stat to sort by (rating, difficulty, gpa)
-    var aVal = parseFloat($(professorA).find(stat).text()),
-      bVal = parseFloat($(professorB).find(stat).text()),
-      retVal = bVal - aVal;
 
-    // Handle no stat
-    if (isNaN(aVal) && !isNaN(bVal)) {
-      return 1;
-    } else if (isNaN(bVal) && !isNaN(aVal)) {
-      return -1;
-    } else if (isNaN(bVal) && isNaN(aVal)) {
-      retVal = 0;
+    // index is used to get the right stat
+    var index;
+    if (stat == ".course-rating") index = 0;
+    else if (stat == ".course-difficulty") index = 1;
+    else index = 2;
+
+    // use regex to isolate the course stats
+    var aVal = parseFloat(($(professorA)[0].outerText.match(/([\d.]+|-{2})/g))[index]),
+      bVal = parseFloat(($(professorB)[0].outerText.match(/([\d.]+|-{2})/g))[index]);
+
+    // treat no-stats ("--") as 0, unless sorting by difficulty
+    if (isNaN(aVal)) {
+        aVal = 0;
+        if (stat == ".course-difficulty") {
+            aVal = 6; // sorts courses with no difficulty rating at the bottom
+        }
     }
+    if (isNaN(bVal)) {
+        bVal = 0;
+        if (stat == ".course-difficulty") {
+            bVal = 6; // same as above
+        }
+    }
+    var retVal = bVal - aVal;
+
+
 
     // Sort difficulty ascending
     if (stat == ".course-difficulty") {
@@ -65,7 +79,7 @@ ready = function() {
   // Sort professors by stats
   $('#prof-sort').change(function() {
 
-    // id of stat to sort by    
+    // id of stat to sort by
     var sortString = ".course-" + $(this).find('.active')[0].id,
       // class of which panels are displayed (current semester or all)
       selectorString = $("#all").parent().hasClass("active") ? ".prof-panel.all" : ".prof-panel.current",
@@ -73,7 +87,8 @@ ready = function() {
       numPanels = $(selectorString).length,
       slidPanels = 0,
       // sorted list of professors
-      profList = sortProfessors($(".prof-panel"), sortString);
+      profList = sortProfessors(selectorString, sortString); // $(".prof-panel")
+
     // if the number of panels displayed is small enough to have smooth animations, animate the change
     if (numPanels < 50) {
       // slide up all the panels. then, on complete, add the sorted ones and slide down what is needed.
