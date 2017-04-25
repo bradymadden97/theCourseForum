@@ -60,7 +60,7 @@ html
                     | All
             - if controller.controller_name == "courses" && controller.action_name == "show_professors"
               #filter
-                .btn-group data-toggle="buttons"
+                .btn-group#time-period data-toggle="buttons"
                   label.btn.btn-primary.active
                     input#current.active autocomplete="off" name="options" type="radio"
                     | Fall 2017

@@ -107,6 +107,14 @@ ready = function() {
     }
   });
 
+  /* $('#time-period').change(function() {
+    var sortString = ".course-" + $('#prof-sort').find('.active')[0].id,
+      selectorString = $("#all").parent().hasClass("active") ? ".prof-panel.all" : ".prof-panel.current",
+      profList = sortProfessors(selectorString, sortString);
+    $(".prof-panel-container").empty();
+    $(".prof-panel-container").append(profList);
+}); */
+
 
   // If this is not the section page (no grade wheel),
   // then the rest of this code is not needed
