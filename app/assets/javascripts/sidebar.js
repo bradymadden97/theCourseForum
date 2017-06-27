@@ -121,6 +121,7 @@ var ready = function() {
 				},
 				success: function(data) {
 					response($.map(data.results, function(item) {
+						console.log(item);
 						return {
 							label: item.label,
 							course_id: item.course_id

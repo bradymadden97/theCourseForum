@@ -40,7 +40,7 @@ class SearchController < ApplicationController
 
     @departments = @departments.uniq(&:first)
     @count = @departments.count + @courses.count + @professors.count
-
+    puts @professors
     respond_to do |format|
       format.html
       format.json {render json: {
