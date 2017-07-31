@@ -18,7 +18,7 @@ html
         = render 'layouts/sidebar'
       section#main
         = render 'layouts/notice'
-        - if controller.controller_name == "courses" || (controller.controller_name == "departments" && controller.action_name == "show")
+        - if (controller.controller_name == "courses" && controller.action_name != "saved") || (controller.controller_name == "departments" && controller.action_name == "show")
           .breadcrumb-header
             ol.breadcrumb
               = render_breadcrumbs :tag => :li, :separator => ""
@@ -46,7 +46,7 @@ html
             - if controller.controller_name == "courses" && controller.action_name == "show"
               #save-course
                 - if current_user and current_user.courses.include? @course
-                  .btn.btn-primary#save-course-button.active data-toggle="button" aria-pressed="true" Unsave
+                  .btn.btn-primary#save-course-button.active data-toggle="button" aria-pressed="true" Unsave Course
                 - else
                   .btn.btn-primary#save-course-button data-toggle="button" aria-pressed="false" Save Course
             - if controller.controller_name == "departments" && controller.action_name == "show"

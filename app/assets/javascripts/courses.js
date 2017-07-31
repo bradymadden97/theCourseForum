@@ -92,6 +92,49 @@ ready = function() {
     }
   });
 
+  $('#save-course-button').click(function() {
+    var page_title = $('.page-title').text().replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    var course_name = $('#course-name').text().replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    if(page_title == 'My Saved Courses') {
+      course_name = $('#course-id').text().replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    }
+    course_name = course_name.split(' - ');
+    course_name = course_name[0].split(' ');
+
+    if ($('#save-course-button').text().trim() == 'Unsave Course') {
+      $('#save-course-button').text("Save Course");
+
+      $.ajax('/scheduler/unsave_course', {
+        method: "POST",
+        data: {
+          mnemonic: course_name[0],
+          course_number: course_name[1]
+        },
+        success: function(response) {
+          // alert('Course saved for scheduler!');
+        },
+        failure: function(response) {
+          console.log('Could not load corresponding course!');
+        }
+      });
+    } else {
+      $('#save-course-button').text("Unsave Course");
+      $.ajax('/scheduler/course', {
+        method: "POST",
+        data: {
+          mnemonic: course_name[0],
+          course_number: course_name[1]
+        },
+        success: function(response) {
+          // alert('Course saved for scheduler!');
+        },
+        failure: function(response) {
+          console.log('Could not load corresponding course!');
+        }
+      });
+    }
+
+  });
 
   // If this is not the section page (no grade wheel),
   // then the rest of this code is not needed
@@ -171,47 +214,6 @@ ready = function() {
     loadReviews(dropdownVal);
 
   });
-
-  $('#save-course-button').click(function() {
-    var course_name = $('#course-name').text().replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-    course_name = course_name.split(' - ');
-    course_name = course_name[0].split(' ');
-
-    if ($('#save-course-button').text().trim() == 'Unsave') {
-      $('#save-course-button').text("Save Course");
-
-      $.ajax('/scheduler/unsave_course', {
-        method: "POST",
-        data: {
-          mnemonic: course_name[0],
-          course_number: course_name[1]
-        },
-        success: function(response) {
-          // alert('Course saved for scheduler!');
-        },
-        failure: function(response) {
-          console.log('Could not load corresponding course!');
-        }
-      });
-    } else {
-      $('#save-course-button').text("Unsave");
-      $.ajax('/scheduler/course', {
-        method: "POST",
-        data: {
-          mnemonic: course_name[0],
-          course_number: course_name[1]
-        },
-        success: function(response) {
-          // alert('Course saved for scheduler!');
-        },
-        failure: function(response) {
-          console.log('Could not load corresponding course!');
-        }
-      });
-    }
-
-  });
-
 
   $('.skillbar').each(function() {
     $(this).find('.skillbar-bar').animate({

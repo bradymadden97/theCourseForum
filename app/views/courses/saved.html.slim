@@ -1,4 +1,3 @@
-- content_for :title, "My Listings"
 - content_for :page_heading, "My Saved Courses"
 
 - if @courses.count > 0
@@ -16,16 +15,17 @@
             td.title
               a#course-name href=course_path(course.id) = course.title
             td 
-              a href=course_path(course.id)  = course.mnemonic_number
+              a#course-id href=course_path(course.id)  = course.mnemonic_number
             td.title 
               a href=course_path(course.id)  = course.professors_list[0].full_name
             td.title
-              .btn.btn-primary#save-course-button.active data-toggle="button" formmethod="post" onclick="scheduler/unsave_course" aria-pressed="true" Unsave Course 
+              .btn.btn-primary#save-course-button.active data-toggle="button" aria-pressed="true" Unsave Course 
 
 - else
   .row
     .col-xs-12
       | You haven't saved any courses.
+  br
   .row
     .col-xs-12
       = link_to "Find Courses", browse_path, :class => "btn btn-primary"
